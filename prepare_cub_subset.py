@@ -3,7 +3,7 @@ from PIL import Image
 
 ROOT = "CUB_200_2011"
 OUT = "CUB_subset"
-N_CLASSES = 8
+N_CLASSES = 25
 
 with open(f"{ROOT}/images.txt") as f:
     images = dict(line.strip().split(" ", 1) for line in f)
