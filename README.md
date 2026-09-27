@@ -1,4 +1,4 @@
-# LucidPPN Reproduction — Milestone 2 (Data Pipeline + Forward Pass)
+# LucidPPN Reproduction
 
 Team: Rayyan Saeed (31629), Laksh Kumar (30598), Ahmad Mustafa Khan (30496)
 
@@ -10,32 +10,55 @@ Paper: https://openreview.net/forum?id=BM9qfolt6p | Code: https://github.com/mat
 ## What the model does
 LucidPPN splits each input image into a grayscale version (shape/texture) and a color version, learns separate visual "prototypes" for each, and combines both to classify the image — while keeping color-based evidence separate from shape/texture-based evidence, so predictions are easier to explain (e.g. "this matched on belly color" vs "this matched on wing shape").
 
-## What we did for this milestone
-1. Downloaded CUB-200-2011 (11,788 images, 200 bird species) from Caltech.
-2. Built a data pipeline (`prepare_cub_subset.py`) that selects a subset of 8 species, crops each image to its bounding box, and splits into train/test — producing 424 images in a folder structure usable by the authors' data loader.
-3. Loaded the official MetiNet model code (`get_network`, `MetiNet`) from the authors' repository and ran one real forward pass on a batch from our data (`forward_pass_test.py`).
+## The full pipeline, and what we ran
+The method has three stages. We implemented and ran all three, at reduced scale (25 of 200 CUB classes, few epochs instead of the paper's 28/60+) to fit our compute budget:
 
-## Result
-Forward pass succeeded on a batch of 8 images (8 classes, ResNet18 backbone):
-- Input shape: `[8, 3, 224, 224]`
-- Output logits shape: `[8, 8]`
-- No NaNs in output
+1. **Part detection (PDiscoNet)** — a ResNet101-based model that learns to locate 8 semantic bird parts per image. We trained this for 5 epochs on our 25-class subset (`part_detection/train_pdisco_quick.py`), then generated part-location maps for every train/test image (`part_detection/generate_maps_quick.py`).
+2. **MetiNet training** — the main LucidPPN model (grayscale + color branches, prototype learning). We trained for 10 epochs using the real part maps from stage 1 (`MetiNet/train_quick.py`).
+3. **Evaluation** — classification accuracy on held-out test images, computed with the authors' own `topk_accuracy` function.
 
-Full log: `MetiNet/forward_pass_log.txt`
+## Results
 
-## What's NOT done yet (planned for Week 4)
-- **Part-segmentation stage**: the official pipeline first trains a separate part-detection model (`part_detection/run_training.sh`, ~28 epochs) to generate body-part masks, which MetiNet normally uses as an additional input. We ran MetiNet in the code's built-in "dummy" mode (no part maps) to prove the core model runs — this is a real, documented simplification, not the full pipeline.
-- Full training (60+ epochs per the authors' defaults) and accuracy comparison against the paper.
-- Our planned ablation experiment (removing the color branch).
+| Setup | Classes | Train imgs | Epochs | Train acc | Test top-1 acc |
+|---|---|---|---|---|---|
+| No part maps (part_weight=0) | 25 | 750 | 10 | 51.5-54.5% | 33.9-34.2% |
+| **Full pipeline, with part maps** | 25 | 750 | 10 | 51.2% | **41.6%** |
+
+Random-chance baseline for 25 classes: 4.0%.
+
+**Key finding:** adding real part-detection supervision improved test accuracy by ~7-8 points (34%→41.6%) and roughly *halved the train-test gap* (~20pts→~10pts), while train accuracy stayed flat. This means the part maps aren't just adding signal — they're acting as a regularizer, pushing the model to learn prototypes tied to genuine bird anatomy rather than memorizing incidental patterns in the small training set. This matches the method's core motivation and gives us confidence the reproduction reflects the actual mechanism the paper describes, not just a black-box result.
+
+Full logs: `MetiNet/training_log_25class_10epoch_WITH_parts.txt` (with maps), `MetiNet/training_log_25class_10epoch.txt` (without, for comparison), `part_detection/train_pdisco_log.txt`, `part_detection/generate_maps_log.txt`.
+
+## Honest comparison to the paper
+The paper reports CUB accuracy well above our 41.6% (prototype networks on full CUB typically reach 80%+). Attributable to:
+- 25 classes / 750 train images vs. the paper's full 200-class, ~6,000-image split
+- 10 epochs (MetiNet) / 5 epochs (PDiscoNet) vs. the authors' 60+ / 28
+- ResNet18 (MetiNet) and reduced image size 224 (PDiscoNet, vs. their 448) — smaller/faster choices for speed, not the paper's ConvNeXt-Tiny/full-resolution setup
+
+This is an expected outcome at this compute budget. The direction and structure of our result (part supervision measurably reduces overfitting) reproduces the qualitative mechanism of the method even though the absolute accuracy is far below paper-scale numbers.
 
 ## Provenance
 | Component | Source |
 |---|---|
-| MetiNet model code (`metinet/metinet.py`), data loading (`util/data.py`) | Reused as-is from https://github.com/mateuszpach/LucidPPN |
+| PDiscoNet model/training code (`part_detection/nets.py`, `train.py`, `datasets.py`) | Reused as-is from https://github.com/mateuszpach/LucidPPN |
+| MetiNet model code (`metinet/metinet.py`), training loop (`metinet/train.py`), data loading (`util/data.py`) | Reused as-is from https://github.com/mateuszpach/LucidPPN |
 | `prepare_cub_subset.py` | Written by us |
-| `forward_pass_test.py` | Written by us (adapted the forward-pass logic embedded in the authors' `main.py` into a standalone script, bypassing hardcoded cluster paths and the full training loop) |
+| `forward_pass_test.py` | Written by us (adapted from logic embedded in the authors' `MetiNet/main.py`) |
+| `part_detection/train_pdisco_quick.py` | Adapted from the authors' `part_detection/main.py` — reuses their real `train`/`validation` functions; our own driver filters to 25 classes and cuts epochs 28→5 |
+| `part_detection/generate_maps_quick.py` | Adapted from the authors' `part_detection/save_maps.py` — reuses their `CUBDataset` and `save_maps` as-is, pointed at our subset and checkpoint |
+| `MetiNet/train_quick.py` | Adapted from the authors' `MetiNet/main.py` — reuses their real `train_metinet` function and loss; our own driver (optimizer/scheduler setup, epoch loop) since the original assumes wandb and hardcoded cluster paths. Evaluation rewritten to skip part-segmentation IoU metrics (which crash without full-dataset part maps) while reusing their `topk_accuracy` for classification accuracy. |
+
+## What's NOT done
+- Full 200-class training (we used 25)
+- Full epoch counts (paper: 28 PDiscoNet / 60+ MetiNet, ours: 5 / 10)
+- Paper's actual backbones (ConvNeXt-Tiny) and full image resolution (448)
+- Our planned ablation experiment (removing the color branch) — next step
 
 ## How to reproduce
-1. `pip install -r requirements_pip.txt` (or use Colab, which has torch/torchvision preinstalled)
-2. `python prepare_cub_subset.py` (downloads/expects `CUB_200_2011/` in the working directory — see script)
-3. `cd MetiNet && python forward_pass_test.py`
+1. `pip install -r requirements_pip.txt` (or use Colab, torch/torchvision preinstalled)
+2. `python prepare_cub_subset.py` (expects `CUB_200_2011/` in the working directory, downloads not included in this script — see script comments)
+3. `cd part_detection && python train_pdisco_quick.py` (~3.5 min on T4)
+4. `cd part_detection && python generate_maps_quick.py` (~1 min)
+5. `cd MetiNet && python forward_pass_test.py` (sanity check)
+6. `cd MetiNet && python train_quick.py` (~4 min, full pipeline with part maps)
