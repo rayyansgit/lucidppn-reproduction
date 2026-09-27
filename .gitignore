@@ -4,3 +4,6 @@ CUB_subset/
 *.tgz
 wandb/
 __pycache__/
+CUB_subset_maps/
+part_detection/cub_quick/
+*.pt
