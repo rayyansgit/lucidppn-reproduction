@@ -1,0 +1,34 @@
+2026-09-27 14:40:27.303259: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Loading data...
+Additional augmentations switched off
+25 classes, 750 train images, 652 test images
+Device: cuda
+Building model...
+Training for 10 epochs (part_weight=0: no part-map supervision, see README)...
+Train Epoch1:   0% 0/46 [00:00<?, ?it/s]/content/LucidPPN/MetiNet/metinet/train.py:43: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  scheduler_net.step()
+/content/LucidPPN/MetiNet/metinet/train.py:44: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  scheduler_color.step()
+Train Epoch1:  24% 11/46 [00:02<00:06,  5.35it/s, L:3.079, PL:0.000, PCL:2.506, CCL:0.573, A:0.000]Train Epoch1:  72% 33/46 [00:04<00:01,  8.35it/s, L:0.871, PL:0.000, PCL:0.579, CCL:0.292, A:0.000]Train Epoch1: 100% 46/46 [00:05<00:00,  8.55it/s, L:0.643, PL:0.000, PCL:0.406, CCL:0.236, A:0.000]
+Epoch 1/10 | loss=2.0110 | train_acc=0.0516 | test_top1=0.0445
+Train Epoch2:   0% 0/46 [00:00<?, ?it/s]Train Epoch2:  39% 18/46 [00:02<00:03,  8.79it/s, L:0.543, PL:0.000, PCL:0.330, CCL:0.213, A:0.000]Train Epoch2:  87% 40/46 [00:04<00:00,  9.86it/s, L:0.509, PL:0.000, PCL:0.304, CCL:0.205, A:0.000]Train Epoch2: 100% 46/46 [00:04<00:00,  9.84it/s, L:0.493, PL:0.000, PCL:0.294, CCL:0.199, A:0.000]
+Epoch 2/10 | loss=0.5642 | train_acc=0.0530 | test_top1=0.0383
+Train Epoch3:   0% 0/46 [00:00<?, ?it/s]Train Epoch3:  24% 11/46 [00:02<00:06,  5.25it/s, L:0.371, PL:0.000, PCL:0.188, CCL:0.183, A:0.000]Train Epoch3:  54% 25/46 [00:04<00:03,  6.24it/s, L:0.372, PL:0.000, PCL:0.186, CCL:0.186, A:0.000]Train Epoch3:  85% 39/46 [00:06<00:01,  6.56it/s, L:0.367, PL:0.000, PCL:0.181, CCL:0.186, A:0.125]Train Epoch3: 100% 46/46 [00:07<00:00,  6.42it/s, L:0.360, PL:0.000, PCL:0.178, CCL:0.182, A:0.000]
+Epoch 3/10 | loss=0.3694 | train_acc=0.0543 | test_top1=0.0521
+Train Epoch4:   0% 0/46 [00:00<?, ?it/s]Train Epoch4:  26% 12/46 [00:02<00:05,  5.99it/s, L:0.356, PL:0.000, PCL:0.177, CCL:0.180, A:0.188]Train Epoch4:  57% 26/46 [00:04<00:03,  6.49it/s, L:0.340, PL:0.000, PCL:0.168, CCL:0.172, A:0.250]Train Epoch4:  87% 40/46 [00:06<00:00,  6.66it/s, L:0.343, PL:0.000, PCL:0.170, CCL:0.173, A:0.188]Train Epoch4: 100% 46/46 [00:06<00:00,  6.58it/s, L:0.338, PL:0.000, PCL:0.168, CCL:0.170, A:0.250]
+Epoch 4/10 | loss=0.3513 | train_acc=0.1155 | test_top1=0.0905
+Train Epoch5:   0% 0/46 [00:00<?, ?it/s]Train Epoch5:  26% 12/46 [00:02<00:05,  5.96it/s, L:0.345, PL:0.000, PCL:0.173, CCL:0.172, A:0.000]Train Epoch5:  57% 26/46 [00:04<00:03,  6.37it/s, L:0.341, PL:0.000, PCL:0.170, CCL:0.171, A:0.188]Train Epoch5:  87% 40/46 [00:06<00:00,  6.50it/s, L:0.339, PL:0.000, PCL:0.170, CCL:0.169, A:0.125]Train Epoch5: 100% 46/46 [00:07<00:00,  6.36it/s, L:0.345, PL:0.000, PCL:0.173, CCL:0.172, A:0.188]
+Epoch 5/10 | loss=0.3385 | train_acc=0.1630 | test_top1=0.1488
+Train Epoch6:   0% 0/46 [00:00<?, ?it/s]Train Epoch6:  26% 12/46 [00:02<00:05,  5.71it/s, L:0.323, PL:0.000, PCL:0.161, CCL:0.162, A:0.312]Train Epoch6:  54% 25/46 [00:04<00:03,  6.14it/s, L:0.335, PL:0.000, PCL:0.168, CCL:0.167, A:0.188]Train Epoch6:  83% 38/46 [00:06<00:01,  5.82it/s, L:0.345, PL:0.000, PCL:0.172, CCL:0.173, A:0.250]Train Epoch6: 100% 46/46 [00:07<00:00,  5.78it/s, L:0.312, PL:0.000, PCL:0.156, CCL:0.156, A:0.438]
+Epoch 6/10 | loss=0.3291 | train_acc=0.2799 | test_top1=0.2193
+Train Epoch7:   0% 0/46 [00:00<?, ?it/s]Train Epoch7:  24% 11/46 [00:02<00:06,  5.49it/s, L:0.322, PL:0.000, PCL:0.161, CCL:0.161, A:0.438]Train Epoch7:  48% 22/46 [00:04<00:04,  5.46it/s, L:0.327, PL:0.000, PCL:0.164, CCL:0.163, A:0.375]Train Epoch7:  72% 33/46 [00:06<00:02,  5.32it/s, L:0.311, PL:0.000, PCL:0.154, CCL:0.157, A:0.500]Train Epoch7: 100% 46/46 [00:08<00:00,  5.62it/s, L:0.314, PL:0.000, PCL:0.157, CCL:0.157, A:0.438]Train Epoch7: 100% 46/46 [00:08<00:00,  5.51it/s, L:0.314, PL:0.000, PCL:0.157, CCL:0.157, A:0.438]
+Epoch 7/10 | loss=0.3183 | train_acc=0.3791 | test_top1=0.2914
+Train Epoch8:   0% 0/46 [00:00<?, ?it/s]Train Epoch8:  22% 10/46 [00:02<00:07,  4.60it/s, L:0.297, PL:0.000, PCL:0.148, CCL:0.149, A:0.625]Train Epoch8:  46% 21/46 [00:04<00:04,  5.02it/s, L:0.290, PL:0.000, PCL:0.145, CCL:0.145, A:0.750]Train Epoch8:  72% 33/46 [00:06<00:02,  5.37it/s, L:0.311, PL:0.000, PCL:0.155, CCL:0.156, A:0.438]Train Epoch8:  98% 45/46 [00:08<00:00,  5.55it/s, L:0.323, PL:0.000, PCL:0.161, CCL:0.161, A:0.375]Train Epoch8: 100% 46/46 [00:08<00:00,  5.36it/s, L:0.302, PL:0.000, PCL:0.151, CCL:0.151, A:0.438]
+Epoch 8/10 | loss=0.3068 | train_acc=0.4891 | test_top1=0.3359
+Train Epoch9:   0% 0/46 [00:00<?, ?it/s]Train Epoch9:  24% 11/46 [00:02<00:06,  5.30it/s, L:0.312, PL:0.000, PCL:0.156, CCL:0.156, A:0.438]Train Epoch9:  52% 24/46 [00:04<00:03,  5.78it/s, L:0.274, PL:0.000, PCL:0.137, CCL:0.137, A:0.750]Train Epoch9:  80% 37/46 [00:06<00:01,  5.95it/s, L:0.311, PL:0.000, PCL:0.155, CCL:0.155, A:0.375]Train Epoch9: 100% 46/46 [00:07<00:00,  5.90it/s, L:0.288, PL:0.000, PCL:0.144, CCL:0.144, A:0.688]
+Epoch 9/10 | loss=0.2964 | train_acc=0.5503 | test_top1=0.3512
+Train Epoch10:   0% 0/46 [00:00<?, ?it/s]Train Epoch10:  26% 12/46 [00:02<00:05,  5.68it/s, L:0.295, PL:0.000, PCL:0.147, CCL:0.148, A:0.688]Train Epoch10:  54% 25/46 [00:04<00:03,  6.07it/s, L:0.303, PL:0.000, PCL:0.152, CCL:0.151, A:0.438]Train Epoch10:  83% 38/46 [00:06<00:01,  6.23it/s, L:0.288, PL:0.000, PCL:0.144, CCL:0.144, A:0.562]Train Epoch10: 100% 46/46 [00:07<00:00,  6.13it/s, L:0.311, PL:0.000, PCL:0.156, CCL:0.156, A:0.312]
+Epoch 10/10 | loss=0.2980 | train_acc=0.5149 | test_top1=0.3390
+
+Done. Final test top-1 accuracy: 0.3390
