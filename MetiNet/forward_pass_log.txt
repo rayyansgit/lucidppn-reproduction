@@ -1,0 +1,11 @@
+Building dataset from CUB_subset ...
+Additional augmentations switched off
+Classes found: ['Black_footed_Albatross', 'Crested_Auklet', 'Groove_billed_Ani', 'Laysan_Albatross', 'Least_Auklet', 'Parakeet_Auklet', 'Rhinoceros_Auklet', 'Sooty_Albatross']
+Train set size: 240
+Building MetiNet model ...
+Model built. Device: cuda
+Running one forward pass ...
+FORWARD PASS SUCCEEDED
+Input batch shape: torch.Size([8, 3, 224, 224])
+Output logits shape: torch.Size([8, 8])
+Output contains NaN: False
