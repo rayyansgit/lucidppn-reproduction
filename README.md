@@ -1,67 +1,41 @@
-## 
-<h1 align="center">💡LucidPPN: Unambiguous Prototypical Parts Networks for User-centric Interpretable Computer Vision</h1>
+# LucidPPN Reproduction — Milestone 2 (Data Pipeline + Forward Pass)
 
-<div align="center">
-<a href="https://www.eml-munich.de/people/mateusz-pach">Mateusz Pach</a>,
-<a href="https://neuroscience.ips.uj.edu.pl/team/koryna-lewandowska">Koryna Lewandowska</a>,
-<a href="https://matinf.uj.edu.pl/en_GB/pracownicy/wizytowka?person_id=Jacek_Tabor">Jacek Tabor</a>,
-<a href="https://bartoszzielinski.github.io/">Bartosz Zieliński</a>,
-<a href="https://dawrym.github.io/">Dawid Rymarczyk</a>
-<br>
-<br>
+Team: Rayyan Saeed (31629), Laksh Kumar (30598), Ahmad Mustafa Khan (30496)
 
-[![OpenReview](https://img.shields.io/badge/OpenReview-Paper-%3CCOLOR%3E.svg)](https://openreview.net/pdf?id=BM9qfolt6p)
-</div>
+## Paper
+LucidPPN: Unambiguous Prototypical Parts Network for User-centric Interpretable Computer Vision.
+Pach, Lewandowska, Tabor, Zieliński, Rymarczyk. ICLR 2025.
+Paper: https://openreview.net/forum?id=BM9qfolt6p | Code: https://github.com/mateuszpach/LucidPPN
 
-<h3 align="center">Abstract</h3>
+## What the model does
+LucidPPN splits each input image into a grayscale version (shape/texture) and a color version, learns separate visual "prototypes" for each, and combines both to classify the image — while keeping color-based evidence separate from shape/texture-based evidence, so predictions are easier to explain (e.g. "this matched on belly color" vs "this matched on wing shape").
 
-<p align="justify">
-Prototypical parts networks combine the power of deep learning with the explainability of case-based reasoning to make accurate, interpretable decisions. They follow the this looks like that reasoning, representing each prototypical part with patches from training images. However, a single image patch comprises multiple visual features, such as color, shape, and texture, making it difficult for users to identify which feature is important to the model.
-To reduce this ambiguity, we introduce the Lucid Prototypical Parts Network (LucidPPN), a novel prototypical parts network that separates color prototypes from other visual features. Our method employs two reasoning branches: one for non-color visual features, processing grayscale images, and another focusing solely on color information. This separation allows us to clarify whether the model's decisions are based on color, shape, or texture. Additionally, LucidPPN identifies prototypical parts corresponding to semantic parts of classified objects, making comparisons between data classes more intuitive, e.g., when two bird species might differ primarily in belly color.
-Our experiments demonstrate that the two branches are complementary and together achieve results comparable to baseline methods. More importantly, LucidPPN generates less ambiguous prototypical parts, enhancing user understanding.</p>
-<br>
-<div align="center">
-    <img src="assets/teaser.png" alt="Teaser" width="1000">
-</div>
+## What we did for this milestone
+1. Downloaded CUB-200-2011 (11,788 images, 200 bird species) from Caltech.
+2. Built a data pipeline (`prepare_cub_subset.py`) that selects a subset of 8 species, crops each image to its bounding box, and splits into train/test — producing 424 images in a folder structure usable by the authors' data loader.
+3. Loaded the official MetiNet model code (`get_network`, `MetiNet`) from the authors' repository and ran one real forward pass on a batch from our data (`forward_pass_test.py`).
 
----
-### Setup
-Install required PIP packages.
-```bash
-conda create --name lucidppn --file requirements.txt
-```
-Then prepare datasets with the following steps.
-- download CUB from https://www.vision.caltech.edu/datasets/cub_200_2011/,
-- download CARS from https://www.kaggle.com/datasets/jessicali9530/stanford-cars-dataset,
-- download FLOWER from https://www.robots.ox.ac.uk/~vgg/data/flowers/102/,
-- download DOGS from http://vision.stanford.edu/aditya86/ImageNetDogs/,
-- run `preprocess_data/prepare_dogs.py` to organize DOGS,
-- run `preprocess_data/prepare_flowers.py` to organize FLOWER,
-- convert CARS into ImageDataset format i.e into two directories: `train/` and `test/` with subdirectory for each class
-- cutout CUB images as in https://github.com/cfchen-duke/ProtoPNet,
-- set dataset locations in `PIPNet/util/data.py` and `MetiNet/util/data.py` and `run_training.sh` files.
+## Result
+Forward pass succeeded on a batch of 8 images (8 classes, ResNet18 backbone):
+- Input shape: `[8, 3, 224, 224]`
+- Output logits shape: `[8, 8]`
+- No NaNs in output
 
-### Running Experiments
+Full log: `MetiNet/forward_pass_log.txt`
 
-To train and evaluate LucidPPN:
-1. Run `part_detection/run_training.sh` to generate segmentation masks.
-2. Run `MetiNet/run_training.sh` after uncommenting desired experiments.
+## What's NOT done yet (planned for Week 4)
+- **Part-segmentation stage**: the official pipeline first trains a separate part-detection model (`part_detection/run_training.sh`, ~28 epochs) to generate body-part masks, which MetiNet normally uses as an additional input. We ran MetiNet in the code's built-in "dummy" mode (no part maps) to prove the core model runs — this is a real, documented simplification, not the full pipeline.
+- Full training (60+ epochs per the authors' defaults) and accuracy comparison against the paper.
+- Our planned ablation experiment (removing the color branch).
 
-To train and evaluate the PIP-Net run `PIPNet/run_training.sh` after uncommenting desired experiments.
+## Provenance
+| Component | Source |
+|---|---|
+| MetiNet model code (`metinet/metinet.py`), data loading (`util/data.py`) | Reused as-is from https://github.com/mateuszpach/LucidPPN |
+| `prepare_cub_subset.py` | Written by us |
+| `forward_pass_test.py` | Written by us (adapted the forward-pass logic embedded in the authors' `main.py` into a standalone script, bypassing hardcoded cluster paths and the full training loop) |
 
-Hint: Before running you may want to update wandb project and entity names found in the source code.
-### Citation
-```bibtex
-@inproceedings{
-    pach2025lucidppn,
-    title={Lucid{PPN}: Unambiguous Prototypical Parts Network for User-centric Interpretable Computer Vision},
-    author={Mateusz Pach and Koryna Lewandowska and Jacek Tabor and Bartosz Micha{\l} Zieli{\'n}ski and Dawid Damian Rymarczyk},
-    booktitle={The Thirteenth International Conference on Learning Representations},
-    year={2025},
-    url={https://openreview.net/forum?id=BM9qfolt6p}
-}
-```
-
-### Acknowledgements 
-
-The work of M. Pach, K. Lewandowska and B. Zieliński work was funded by National Centre of Science (Poland) grant no. 2022/47/B/ST6/03397. The work of D. Rymarczyk was funded by National Centre of Science (Poland) grant no. 2022/45/N/ST6/04147. The work of J. Tabor was funded by National Centre of Science (Poland) grant no. 2023/49/B/ST6/01137. We gratefully acknowledge Polish high-performance computing infrastructure PLGrid (HPC Centers: ACK Cyfronet AGH) for providing computer facilities and support within computational grant no. PLG/2023/016555. Some experiments were performed on servers purchased with funds from the Priority Research Area (Artificial Intelligence Computing Center Core Facility) under the Strategic Programme Excellence Initiative at Jagiellonian University. We are grateful to Jakub Pach and Tomasz Pach for their assistance in composing images for the survey according to our developed template.
+## How to reproduce
+1. `pip install -r requirements_pip.txt` (or use Colab, which has torch/torchvision preinstalled)
+2. `python prepare_cub_subset.py` (downloads/expects `CUB_200_2011/` in the working directory — see script)
+3. `cd MetiNet && python forward_pass_test.py`
