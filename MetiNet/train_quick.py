@@ -15,7 +15,7 @@ args = argparse.Namespace(
     optimizer='Adam', lr_net=0.0005, lr_class=0.05, lr_color=0.0005, weight_decay=0.0,
     part_weight=1.0, proto_class_weight=1.0, color_class_weight=1.0,
     use_classification_layer=False, aggregate='mean',
-    epochs=8, freeze_epochs=2, no_color_epochs=2, batch_size=16, seed=1, disable_cuda=False,
+    epochs=80, freeze_epochs=10, no_color_epochs=2, batch_size=32, seed=1, disable_cuda=False,
 )
 torch.manual_seed(args.seed); torch.cuda.manual_seed_all(args.seed)
 
