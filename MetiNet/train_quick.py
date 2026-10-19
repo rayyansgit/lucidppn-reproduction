@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, json
 sys.path.append(os.path.dirname(__file__))
 import argparse
 import torch
@@ -17,6 +17,20 @@ args = argparse.Namespace(
     use_classification_layer=False, aggregate='mean',
     epochs=80, freeze_epochs=10, no_color_epochs=2, batch_size=32, seed=1, disable_cuda=False,
 )
+# Command-line overrides (defaults above = Jump 4). Used for the Stage 4 runs, e.g.
+#   python train_quick.py --part_weight 0 --run_name no_parts
+cli = argparse.ArgumentParser()
+for k in ['epochs', 'freeze_epochs', 'batch_size', 'seed']:
+    cli.add_argument(f'--{k}', type=int, default=getattr(args, k))
+for k in ['part_weight', 'color_class_weight', 'lr_net', 'lr_color']:
+    cli.add_argument(f'--{k}', type=float, default=getattr(args, k))
+cli.add_argument('--run_name', default='quick_train')
+cli.add_argument('--num_workers', type=int, default=2, help='use 0 on Windows')
+cli_args = cli.parse_args()
+for k, v in vars(cli_args).items():
+    if k not in ('run_name', 'num_workers'):
+        setattr(args, k, v)
+print("Config:", {k: getattr(args, k) for k in vars(cli_args) if k not in ('run_name', 'num_workers')}, "| run:", cli_args.run_name)
 torch.manual_seed(args.seed); torch.cuda.manual_seed_all(args.seed)
 
 print("Loading data...")
@@ -27,8 +41,8 @@ trainset, projectset, testset, classes, train_indices, targets = create_datasets
 )
 print(f"{len(classes)} classes, {len(trainset)} train images, {len(testset)} test images")
 
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True, drop_last=True, num_workers=2)
-testloader = torch.utils.data.DataLoader(testset, batch_size=1, shuffle=False, num_workers=2)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.batch_size, shuffle=True, drop_last=True, num_workers=cli_args.num_workers)
+testloader = torch.utils.data.DataLoader(testset, batch_size=1, shuffle=False, num_workers=cli_args.num_workers)
 
 device = torch.device('cuda' if torch.cuda.is_available() and not args.disable_cuda else 'cpu')
 print(f"Device: {device}")
@@ -66,7 +80,8 @@ scheduler_classifier = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(opti
 
 part_criterion = nn.BCELoss(reduction='mean').to(device)
 class_criterion = nn.BCELoss(reduction='mean').to(device)
-writer = SummaryWriter(log_dir='runs/quick_train')
+writer = SummaryWriter(log_dir=f'runs/{cli_args.run_name}')
+history = []
 
 backbone_frozen, no_color = True, True
 for p in net.module._classification.parameters(): p.requires_grad = True
@@ -75,7 +90,7 @@ for p in params_to_train: p.requires_grad = True
 for p in params_backbone: p.requires_grad = False
 
 total_epochs = args.epochs + args.no_color_epochs
-print(f"Training for {total_epochs} epochs WITH part-detection maps (part_weight=1.0)...")
+print(f"Training for {total_epochs} epochs (part_weight={args.part_weight})...")
 for epoch in range(1, total_epochs + 1):
     if epoch > args.freeze_epochs and backbone_frozen:
         for p in params_backbone: p.requires_grad = True
@@ -89,24 +104,35 @@ for epoch in range(1, total_epochs + 1):
                                args.use_classification_layer, args.part_weight, args.proto_class_weight,
                                args.color_class_weight, args.num_classes, args.num_parts, args.aggregate)
     net.eval()
-    top1_total, top5_total, n_total = 0., 0., 0
+    top1_total, top5_total, shape_top1_total, n_total = 0., 0., 0., 0
     with torch.no_grad():
         for x, x_aug, m, y in testloader:
             x, x_aug, y = x.to(device), x_aug.to(device), y.to(device)
-            _, _, _, _, _, out = net(x, x_aug, m, args.use_classification_layer, args.aggregate)
+            _, proto_pooled, _, _, _, out = net(x, x_aug, m, args.use_classification_layer, args.aggregate)
             top1, top5 = topk_accuracy(out, y, topk=[1, 5])
             top1_total += torch.sum(top1).item()
             top5_total += torch.sum(top5).item()
+            # ShapeTexNet-only prediction (grayscale branch, no ColorNet): mean over parts, as in the paper's P_S
+            shape_top1_total += torch.sum(topk_accuracy(proto_pooled.mean(dim=1), y, topk=[1])[0]).item()
             n_total += len(y)
-    eval_info = {'top1_accuracy/ensemble': top1_total / n_total, 'top5_accuracy/ensemble': top5_total / n_total}
+    eval_info = {'top1_accuracy/ensemble': top1_total / n_total, 'top5_accuracy/ensemble': top5_total / n_total,
+                 'top1_accuracy/shapetexnet': shape_top1_total / n_total}
     net.train()
 
     train_acc, test_acc, loss = train_info['train_accuracy/mean'], eval_info['top1_accuracy/ensemble'], train_info['loss/mean']
-    print(f"Epoch {epoch}/{total_epochs} | loss={loss:.4f} | train_acc={train_acc:.4f} | test_top1={test_acc:.4f}")
+    shape_acc = eval_info['top1_accuracy/shapetexnet']
+    print(f"Epoch {epoch}/{total_epochs} | loss={loss:.4f} | train_acc={train_acc:.4f} | test_top1={test_acc:.4f} | shapetexnet_top1={shape_acc:.4f}")
     writer.add_scalar('loss/train', loss, epoch)
     writer.add_scalar('accuracy/train', train_acc, epoch)
     writer.add_scalar('accuracy/test_top1', test_acc, epoch)
+    writer.add_scalar('accuracy/test_top1_shapetexnet', shape_acc, epoch)
+    history.append({'epoch': epoch, 'loss': loss, 'train_acc': train_acc, 'test_top1': test_acc,
+                    'test_top5': eval_info['top5_accuracy/ensemble'], 'test_top1_shapetexnet': shape_acc})
 
 writer.close()
-torch.save(net.state_dict(), 'checkpoint_quick_train.pt')
+# We report the FINAL epoch only: picking the best epoch by test accuracy would be selecting on the test set.
+ckpt_name = 'checkpoint_quick_train.pt' if cli_args.run_name == 'quick_train' else f'checkpoint_{cli_args.run_name}.pt'
+torch.save(net.state_dict(), ckpt_name)
+with open(f'history_{cli_args.run_name}.json', 'w') as f:
+    json.dump({'config': {k: getattr(args, k) for k in vars(cli_args) if k not in ('run_name', 'num_workers')}, 'history': history}, f, indent=1)
 print(f"\nDone. Final test top-1 accuracy: {test_acc:.4f}")
