@@ -1,0 +1,44 @@
+{
+ "request_1": "curl -F \"file=@CUB_subset/test/Cardinal/Cardinal_0001_17057.jpg\" \"http://localhost:8000/predict?top_k=3\"",
+ "response_1": {
+  "prediction": "Cardinal",
+  "shapetexnet_prediction": "Cardinal",
+  "hue_shift": 0.0,
+  "top_k": [
+   {"class": "Cardinal", "class_index": 4, "lucidppn_score": 0.7252, "shapetexnet_score": 0.7257},
+   {"class": "Painted Bunting", "class_index": 14, "lucidppn_score": 0.0754, "shapetexnet_score": 0.0875},
+   {"class": "Gray Catbird", "class_index": 8, "lucidppn_score": 0.0688, "shapetexnet_score": 0.1737}
+  ],
+  "parts": [
+   {"part": 1, "shape_texture": 0.7289, "shape_plus_colour": 0.7289},
+   {"part": 2, "shape_texture": 0.8109, "shape_plus_colour": 0.8108},
+   {"part": 3, "shape_texture": 0.9953, "shape_plus_colour": 0.9912},
+   {"part": 4, "shape_texture": 0.0738, "shape_plus_colour": 0.0738},
+   {"part": 5, "shape_texture": 0.9398, "shape_plus_colour": 0.9398},
+   {"part": 6, "shape_texture": 0.9734, "shape_plus_colour": 0.9734},
+   {"part": 7, "shape_texture": 0.3337, "shape_plus_colour": 0.3337},
+   {"part": 8, "shape_texture": 0.95, "shape_plus_colour": 0.95}
+  ]
+ },
+ "request_2": "curl -F \"file=@CUB_subset/test/Cardinal/Cardinal_0001_17057.jpg\" \"http://localhost:8000/predict?top_k=3&hue_shift=0.5\"",
+ "response_2": {
+  "prediction": "Cardinal",
+  "shapetexnet_prediction": "Cardinal",
+  "hue_shift": 0.5,
+  "top_k": [
+   {"class": "Cardinal", "class_index": 4, "lucidppn_score": 0.3677, "shapetexnet_score": 0.727},
+   {"class": "Gray Catbird", "class_index": 8, "lucidppn_score": 0.17, "shapetexnet_score": 0.17},
+   {"class": "Brewer Blackbird", "class_index": 3, "lucidppn_score": 0.0726, "shapetexnet_score": 0.0728}
+  ],
+  "parts": [
+   {"part": 1, "shape_texture": 0.7239, "shape_plus_colour": 0.0008},
+   {"part": 2, "shape_texture": 0.8119, "shape_plus_colour": 0.0},
+   {"part": 3, "shape_texture": 0.9952, "shape_plus_colour": 0.0},
+   {"part": 4, "shape_texture": 0.0738, "shape_plus_colour": 0.0738},
+   {"part": 5, "shape_texture": 0.9401, "shape_plus_colour": 0.9401},
+   {"part": 6, "shape_texture": 0.974, "shape_plus_colour": 0.974},
+   {"part": 7, "shape_texture": 0.3458, "shape_plus_colour": 0.0012},
+   {"part": 8, "shape_texture": 0.9515, "shape_plus_colour": 0.9515}
+  ]
+ }
+}

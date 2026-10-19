@@ -1,0 +1,10 @@
+# Versions the app and API were tested with (CPU). Colab's preinstalled torch/torchvision also work.
+torch==2.14.1
+torchvision==0.29.1
+pillow>=10.0
+numpy>=1.26
+matplotlib==3.11.2
+streamlit==1.66.0
+fastapi==0.149.0
+uvicorn==0.54.0
+python-multipart==0.0.32
