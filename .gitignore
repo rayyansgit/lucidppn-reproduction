@@ -7,3 +7,12 @@ __pycache__/
 CUB_subset_maps/
 part_detection/cub_quick/
 *.pt
+# Trained Jump 4 model (rerun, 46 MB): committed so the demo works straight after cloning
+!MetiNet/checkpoint_quick_train.pt
+# Local demo environment created by run_demo.bat / run_demo.sh
+.venv/
+# Downloaded/extracted Colab outputs (duplicates of MetiNet/results and the checkpoint)
+MetiNet/*.zip
+MetiNet/stage4_outputs/
+# Local copy of a Colab notebook that contains a GitHub token: never commit it
+Copy_of_Untitled1.ipynb

@@ -1,0 +1,3 @@
+# Keep script line endings correct on every OS after cloning
+*.bat text eol=crlf
+*.sh text eol=lf
