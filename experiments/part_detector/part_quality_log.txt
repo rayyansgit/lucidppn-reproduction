@@ -1,0 +1,15 @@
+Keypoint-regression fit set: 750 train images | evaluation: 652 test images
+Evaluating the model for the whole data split...
+=> fitting and evaluating the regressor
+Mean L2 Distance on the test set is 14.34%.
+Evaluation finished for model.
+5ep: NMI 24.12 | ARI 11.79 | keypoint regression error 14.34%
+Evaluating the model for the whole data split...
+=> fitting and evaluating the regressor
+Mean L2 Distance on the test set is 12.74%.
+Evaluation finished for model.
+28ep: NMI 30.98 | ARI 14.86 | keypoint regression error 12.74%
+| Part detector | NMI ↑ | ARI ↑ | Keypoint regression error ↓ |
+|---|---|---|---|
+| 5ep | 24.12 | 11.79 | 14.34% |
+| 28ep | 30.98 | 14.86 | 12.74% |

@@ -105,3 +105,86 @@ matters with long training. Jumps 2 and 3 only compared these at 10 epochs.
 Jump 4 bundles three changes rather than isolating them (time-constrained). Given the plateau pattern observed, a natural, cheap follow-up would be re-running at ~40 epochs with 
 best-checkpoint saving — likely reaching similar accuracy in roughly half the training time, and avoiding the late-training overfitting regrowth. This would be a reasonable candidate 
 for the Week 4 planned hyperparameter-study experiment.
+
+## Jumps 5-7 — Training recipe × part detector, 3 seeds each (run after Stage 4)
+
+Everything below was trained locally (RTX 2080 Max-Q) with the same 25 classes, ResNet18 backbone, K = 8 parts, test
+set and evaluation as Jump 4. Folders, configs, per-epoch logs and exact commands: [`experiments/`](experiments/README.md).
+
+**Question:** do the paper's published training settings, and a part detector trained as long as the paper's, improve
+on our Stage 3 configuration, once seed-to-seed noise is taken into account?
+
+**Design (2 × 2, one change per axis):**
+- *Training recipe.* "Code defaults" = Jump 4 (the official repo's `args.py` defaults plus our Jump 4 changes: 80 + 2
+  epochs, lr 0.0005, α_D = 1.0, batch 32). "Paper recipe" = the authors' own launch script `MetiNet/run_training.sh`
+  ("Main results"), which matches the paper's supplement: 40 epochs, 15 frozen, lr 0.002 for both branches, ColorNet
+  from epoch 1, α_D = 1.4, batch 64.
+- *Part detector.* PDiscoNet trained 5 epochs (Stage 3) vs 28 epochs (the paper's length). With 5 epochs its
+  step-wise learning-rate decay (every 5 epochs) never took effect.
+- 3 seeds per cell. The code-defaults / 5-epoch cell also includes the team's original Jump 4 run (81.9%).
+
+**Part quality** (authors' `evaluate_cub.py` metrics against CUB's 15 annotated keypoints, 25-class test set):
+
+| Part detector | NMI ↑ | ARI ↑ | Keypoint regression error ↓ |
+|---|---|---|---|
+| 5 epochs (Stage 3) | 24.1 | 11.8 | 14.3% |
+| 28 epochs | **31.0** | **14.9** | **12.7%** |
+
+**Classification** (test top-1 at the final epoch, mean ± std over runs):
+
+| | 5-epoch part detector | 28-epoch part detector |
+|---|---|---|
+| Code defaults (82 epochs) | **83.1 ± 1.0** (4 runs) | **83.0 ± 0.7** (3) |
+| Paper recipe (40 epochs) | 81.0 ± 1.7 (3) | 81.4 ± 2.0 (3) |
+
+![Every run's test accuracy per epoch](experiments/summary.png)
+
+**Findings:**
+1. **The better part detector gives clearly better parts but no better accuracy** (83.1 → 83.0 and 81.0 → 81.4, both
+   well inside the seed spread). Our ResNet18 shrinks every part map to 7×7 before the alignment loss sees it, so
+   finer part boundaries are largely lost, and classification only needs parts to be roughly right. Whether the
+   better parts make the *explanations* better (prototype-part IoU) we did not measure.
+2. **On our small subset, the code-default recipe beats the paper's recipe by about 2 points.** The paper recipe
+   learns faster (higher learning rate; ~75% by epoch 25 vs ~68%) but stops at epoch 40. With 750 training images and
+   batch 64 it makes only ~440 weight updates, against ~1,900 for Jump 4. The paper's schedule was designed for 8×
+   more images (all 200 classes), so it does not transfer one-to-one to a 25-class subset.
+3. **Seed-to-seed spread is 0.7-2.0 points,** larger than the paper's ±0.4 (5,794 test images vs our 652, where one
+   image = 0.15 points). Differences between single runs of up to ~2 points, including Jump 4's original 81.9% vs
+   rerun 84.0%, are noise.
+4. **Correction to the warm-up explanation in Jump 4.** With the paper's 4× higher learning rate, accuracy rises
+   while the backbone is still frozen (~14% at epoch 10 and 28-31% at epoch 15, the end of its frozen phase). With the
+   code-default rate it stays near chance for the whole frozen phase (≤ 6% at epoch 10). So the "dead" warm-up of
+   Jump 4 was mainly caused by the low learning rate, not only by the missing `layer4.2` block.
+
+## Stage 4 revisited — colour ablation on all 12 trained models
+
+The Stage 4 evaluation (`MetiNet/eval_ablation.py`, 5 hue-perturbation seeds, now with per-species results) was run on
+every checkpoint we have: the Jump 4 rerun and the 11 models of Jumps 4-7.
+
+| Configuration | ShapeTexNet only | Colour gain (clean) | Change at hue shift 0.5 |
+|---|---|---|---|
+| Code defaults, 5-ep parts (3 models) | 82.1 ± 0.9 | +1.5 ± 0.4 | −3.3 ± 0.7 |
+| Code defaults, 28-ep parts (3) | 81.5 ± 0.6 | +1.5 ± 0.8 | −4.4 ± 0.5 |
+| Paper recipe, 5-ep parts (3) | 79.6 ± 0.9 | +1.4 ± 0.9 | −4.0 ± 3.7 |
+| Paper recipe, 28-ep parts (3) | 80.4 ± 1.9 | +1.1 ± 0.4 | −4.5 ± 2.6 |
+| **All 12 models** | | **+1.4** (paper +1.4) | **−4.1** (paper −10.2) |
+
+**Findings:**
+1. **The colour gain is real.** It is positive in 12 of 12 models (sign test p = 0.0005), +1.4 points on average,
+   matching the paper's +1.4. Pooled over all models, colour fixed 162 test decisions and broke 55. On one model
+   (Stage 4 originally) the same gain was not significant (p ≈ 0.14): multiple seeds were needed to show it.
+2. **Colour reliance varies a lot between seeds.** With identical settings, the hue-shift change ranges from +0.2 to
+   −6.6 points (paper recipe, 5-ep parts). A single-model ablation can therefore give a misleading picture. Models
+   whose ColorNet output varies more with pixel colour tended to lose more under hue shift.
+3. **Colourful species carry almost all of the hue sensitivity.** Per species, the accuracy drop at hue shift 0.5
+   correlates with the colourfulness of its images (Hasler & Süsstrunk metric; Spearman ρ = 0.62, p = 0.001, 25
+   species). The 12 most colourful species lose 7.2 points on average, the 12 least colourful 0.8. Cardinal (−29) and
+   Indigo Bunting (−28) drive most of it; albatrosses, cormorants and auklets barely change. This explains why our
+   average drop (−4.1) is well below the paper's (−10.2): our 25 species are mostly grey, brown and black, while the
+   full 200-class CUB has many more colour-defined species (warblers, tanagers, orioles). Details:
+   [`experiments/colour_by_species.md`](experiments/colour_by_species.md).
+
+![Hue sensitivity vs colourfulness per species](experiments/colour_by_species.png)
+
+The deployed demo model (Jump 4 rerun, 84.0%) remains the best single model; none of the new configurations is
+better on average, so it was not replaced.

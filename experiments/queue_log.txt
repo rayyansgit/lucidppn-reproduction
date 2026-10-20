@@ -1,0 +1,36 @@
+[05:46:01] waiting for 28-epoch PDiscoNet
+[05:48:31] maps from 28-epoch detector
+Generating maps for train set (750 images)...
+Generating maps for test set (652 images)...
+Done. Maps saved to ../CUB_subset_maps_pdisco28/{train,test}/0..7/<class>/<image>
+[05:50:01] part quality
+[05:55:43]   -> | Part detector | NMI ↑ | ARI ↑ | Keypoint regression error ↓ | |---|---|---|---| | 5ep | 24.12 | 11.79 | 14.34% | | 28ep | 30.98 | 14.86 | 12.74% | 
+[05:55:43] train --epochs
+[06:04:40]   -> Done. Final test top-1 accuracy: 0.7914
+[06:04:40] train --epochs
+[06:14:24]   -> Done. Final test top-1 accuracy: 0.8298
+[06:14:24] train --epochs
+[06:23:56]   -> Done. Final test top-1 accuracy: 0.8221
+[06:24:12] waiting for 28-epoch PDiscoNet
+[06:24:12] skip jump6_paper_recipe_pdisco28/seed1 (done)
+[06:24:12] skip jump6_paper_recipe_pdisco28/seed2 (done)
+[06:24:12] skip jump6_paper_recipe_pdisco28/seed3 (done)
+[06:24:13] train jump4_code_defaults/seed2 (seed 2, maps ../CUB_subset_maps)
+[06:41:15]   -> Done. Final test top-1 accuracy: 0.8374
+[06:41:15] train jump4_code_defaults/seed3 (seed 3, maps ../CUB_subset_maps)
+[06:58:19]   -> Done. Final test top-1 accuracy: 0.8282
+[06:58:19] train jump7_code_defaults_pdisco28/seed1 (seed 1, maps ../CUB_subset_maps_pdisco28)
+[07:15:28]   -> Done. Final test top-1 accuracy: 0.8359
+[07:15:28] train jump7_code_defaults_pdisco28/seed2 (seed 2, maps ../CUB_subset_maps_pdisco28)
+[07:32:38]   -> Done. Final test top-1 accuracy: 0.8221
+[07:32:38] train jump7_code_defaults_pdisco28/seed3 (seed 3, maps ../CUB_subset_maps_pdisco28)
+[07:49:44]   -> Done. Final test top-1 accuracy: 0.8328
+[07:49:44] ablation jump6_paper_recipe_pdisco28/seed1
+[07:53:01] ablation jump6_paper_recipe_pdisco28/seed2
+[07:56:15] ablation jump6_paper_recipe_pdisco28/seed3
+[07:59:29] ablation jump4_code_defaults/seed2
+[08:02:41] ablation jump4_code_defaults/seed3
+[08:05:54] ablation jump7_code_defaults_pdisco28/seed1
+[08:09:07] ablation jump7_code_defaults_pdisco28/seed2
+[08:12:20] ablation jump7_code_defaults_pdisco28/seed3
+[08:15:37] QUEUE DONE

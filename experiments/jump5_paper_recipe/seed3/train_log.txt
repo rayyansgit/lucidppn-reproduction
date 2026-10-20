@@ -1,0 +1,196 @@
+Config: {'epochs': 40, 'freeze_epochs': 15, 'batch_size': 64, 'seed': 3, 'no_color_epochs': 0, 'part_weight': 1.4, 'color_class_weight': 1.0, 'lr_net': 0.002, 'lr_color': 0.002, 'maps_dir': '../CUB_subset_maps'} | run: jump5_seed3
+Loading data...
+Additional augmentations switched off
+25 classes, 750 train images, 652 test images
+Device: cuda
+Building model...
+Training for 40 epochs (part_weight=1.4)...
+  scheduler_net.step()
+D:\Assignments\lucidppn-reproduction\MetiNet\metinet\train.py:44: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  scheduler_color.step()
+Train Epoch1:   9% 1/11 [00:03<00:31,  3.15s/it, L:7.582, PL:1.434, PCL:5.473, CCL:0.675, A:0.047]
+Train Epoch1:  64% 7/11 [00:05<00:02,  1.49it/s, L:1.235, PL:0.263, PCL:0.719, CCL:0.253, A:0.031]
+Train Epoch1: 100% 11/11 [00:06<00:00,  1.61it/s, L:0.844, PL:0.292, PCL:0.370, CCL:0.183, A:0.078]
+Epoch 1/40 | loss=2.6107 | train_acc=0.0327 | test_top1=0.0475 | shapetexnet_top1=0.0368
+Train Epoch2:   9% 1/11 [00:02<00:25,  2.53s/it, L:0.830, PL:0.287, PCL:0.346, CCL:0.196, A:0.094]
+Train Epoch2:  55% 6/11 [00:04<00:03,  1.35it/s, L:0.820, PL:0.363, PCL:0.269, CCL:0.188, A:0.016]
+Train Epoch2: 100% 11/11 [00:06<00:00,  1.64it/s, L:0.747, PL:0.341, PCL:0.231, CCL:0.174, A:0.016]
+Epoch 2/40 | loss=0.7988 | train_acc=0.0369 | test_top1=0.0414 | shapetexnet_top1=0.0353
+Train Epoch3:   9% 1/11 [00:02<00:25,  2.57s/it, L:0.755, PL:0.350, PCL:0.232, CCL:0.174, A:0.031]
+Train Epoch3:  55% 6/11 [00:05<00:03,  1.34it/s, L:0.748, PL:0.357, PCL:0.216, CCL:0.175, A:0.000]
+Train Epoch3: 100% 11/11 [00:06<00:00,  1.63it/s, L:0.733, PL:0.356, PCL:0.203, CCL:0.174, A:0.109]
+Epoch 3/40 | loss=0.7566 | train_acc=0.0497 | test_top1=0.0399 | shapetexnet_top1=0.0506
+Train Epoch4:   9% 1/11 [00:02<00:26,  2.64s/it, L:0.769, PL:0.380, PCL:0.214, CCL:0.175, A:0.031]
+Train Epoch4:  55% 6/11 [00:05<00:03,  1.34it/s, L:0.727, PL:0.343, PCL:0.209, CCL:0.175, A:0.016]
+Train Epoch4: 100% 11/11 [00:06<00:00,  1.62it/s, L:0.704, PL:0.318, PCL:0.209, CCL:0.176, A:0.016]
+Epoch 4/40 | loss=0.7287 | train_acc=0.0355 | test_top1=0.0506 | shapetexnet_top1=0.0567
+Train Epoch5:   9% 1/11 [00:02<00:25,  2.57s/it, L:0.722, PL:0.328, PCL:0.217, CCL:0.177, A:0.031]
+Train Epoch5:  55% 6/11 [00:05<00:03,  1.34it/s, L:0.692, PL:0.302, PCL:0.212, CCL:0.178, A:0.047]
+Train Epoch5: 100% 11/11 [00:06<00:00,  1.60it/s, L:0.697, PL:0.306, PCL:0.215, CCL:0.176, A:0.078]
+Epoch 5/40 | loss=0.6986 | train_acc=0.0497 | test_top1=0.0567 | shapetexnet_top1=0.0613
+Train Epoch6:   9% 1/11 [00:02<00:26,  2.63s/it, L:0.683, PL:0.288, PCL:0.219, CCL:0.175, A:0.078]
+Train Epoch6:  55% 6/11 [00:05<00:03,  1.33it/s, L:0.641, PL:0.253, PCL:0.213, CCL:0.175, A:0.078]
+Train Epoch6: 100% 11/11 [00:06<00:00,  1.62it/s, L:0.648, PL:0.252, PCL:0.220, CCL:0.176, A:0.000]
+Epoch 6/40 | loss=0.6632 | train_acc=0.0526 | test_top1=0.0368 | shapetexnet_top1=0.0491
+Train Epoch7:   9% 1/11 [00:02<00:26,  2.64s/it, L:0.655, PL:0.259, PCL:0.219, CCL:0.176, A:0.062]
+Train Epoch7:  55% 6/11 [00:05<00:03,  1.32it/s, L:0.646, PL:0.250, PCL:0.221, CCL:0.175, A:0.016]
+Train Epoch7: 100% 11/11 [00:06<00:00,  1.60it/s, L:0.630, PL:0.238, PCL:0.218, CCL:0.174, A:0.047]
+Epoch 7/40 | loss=0.6439 | train_acc=0.0483 | test_top1=0.0583 | shapetexnet_top1=0.0690
+Train Epoch8:   9% 1/11 [00:02<00:27,  2.77s/it, L:0.624, PL:0.228, PCL:0.223, CCL:0.173, A:0.094]
+Train Epoch8:  55% 6/11 [00:05<00:03,  1.30it/s, L:0.638, PL:0.241, PCL:0.221, CCL:0.175, A:0.094]
+Train Epoch8: 100% 11/11 [00:07<00:00,  1.56it/s, L:0.609, PL:0.217, PCL:0.219, CCL:0.172, A:0.062]
+Epoch 8/40 | loss=0.6221 | train_acc=0.0753 | test_top1=0.0767 | shapetexnet_top1=0.1012
+Train Epoch9:   9% 1/11 [00:02<00:26,  2.65s/it, L:0.605, PL:0.215, PCL:0.218, CCL:0.172, A:0.125]
+Train Epoch9:  55% 6/11 [00:05<00:03,  1.29it/s, L:0.618, PL:0.228, PCL:0.218, CCL:0.173, A:0.156]
+Train Epoch9: 100% 11/11 [00:07<00:00,  1.56it/s, L:0.606, PL:0.216, PCL:0.216, CCL:0.174, A:0.094]
+Epoch 9/40 | loss=0.6040 | train_acc=0.1051 | test_top1=0.1043 | shapetexnet_top1=0.1196
+Train Epoch10:   9% 1/11 [00:02<00:25,  2.56s/it, L:0.589, PL:0.205, PCL:0.213, CCL:0.171, A:0.125]
+Train Epoch10:  55% 6/11 [00:05<00:03,  1.33it/s, L:0.600, PL:0.212, PCL:0.215, CCL:0.173, A:0.094]
+Train Epoch10: 100% 11/11 [00:06<00:00,  1.60it/s, L:0.585, PL:0.196, PCL:0.216, CCL:0.173, A:0.156]
+Epoch 10/40 | loss=0.5918 | train_acc=0.1307 | test_top1=0.1350 | shapetexnet_top1=0.1426
+Train Epoch11:   9% 1/11 [00:02<00:25,  2.60s/it, L:0.582, PL:0.198, PCL:0.214, CCL:0.171, A:0.141]
+Train Epoch11:  55% 6/11 [00:05<00:03,  1.32it/s, L:0.573, PL:0.192, PCL:0.212, CCL:0.170, A:0.188]
+Train Epoch11: 100% 11/11 [00:06<00:00,  1.61it/s, L:0.574, PL:0.193, PCL:0.211, CCL:0.170, A:0.266]
+Epoch 11/40 | loss=0.5805 | train_acc=0.1662 | test_top1=0.1687 | shapetexnet_top1=0.1595
+Train Epoch12:   9% 1/11 [00:02<00:26,  2.67s/it, L:0.578, PL:0.204, PCL:0.207, CCL:0.168, A:0.219]
+Train Epoch12:  55% 6/11 [00:05<00:03,  1.30it/s, L:0.566, PL:0.190, PCL:0.206, CCL:0.169, A:0.203]
+Train Epoch12: 100% 11/11 [00:06<00:00,  1.58it/s, L:0.555, PL:0.182, PCL:0.205, CCL:0.169, A:0.203]
+Epoch 12/40 | loss=0.5661 | train_acc=0.2045 | test_top1=0.1979 | shapetexnet_top1=0.2071
+Train Epoch13:   9% 1/11 [00:02<00:27,  2.78s/it, L:0.556, PL:0.187, PCL:0.202, CCL:0.167, A:0.156]
+Train Epoch13:  55% 6/11 [00:05<00:03,  1.28it/s, L:0.562, PL:0.187, PCL:0.205, CCL:0.169, A:0.266]
+Train Epoch13: 100% 11/11 [00:07<00:00,  1.53it/s, L:0.556, PL:0.185, PCL:0.202, CCL:0.169, A:0.203]
+Epoch 13/40 | loss=0.5560 | train_acc=0.2557 | test_top1=0.2239 | shapetexnet_top1=0.2347
+Train Epoch14:   9% 1/11 [00:02<00:27,  2.73s/it, L:0.556, PL:0.184, PCL:0.204, CCL:0.168, A:0.234]
+Train Epoch14:  55% 6/11 [00:05<00:03,  1.29it/s, L:0.546, PL:0.182, PCL:0.197, CCL:0.166, A:0.312]
+Train Epoch14: 100% 11/11 [00:07<00:00,  1.55it/s, L:0.551, PL:0.179, PCL:0.203, CCL:0.170, A:0.156]
+Epoch 14/40 | loss=0.5475 | train_acc=0.2841 | test_top1=0.2377 | shapetexnet_top1=0.2515
+Train Epoch15:   9% 1/11 [00:02<00:26,  2.66s/it, L:0.548, PL:0.180, PCL:0.199, CCL:0.168, A:0.297]
+Train Epoch15:  55% 6/11 [00:05<00:03,  1.30it/s, L:0.547, PL:0.177, PCL:0.201, CCL:0.168, A:0.234]
+Train Epoch15: 100% 11/11 [00:06<00:00,  1.58it/s, L:0.535, PL:0.174, PCL:0.195, CCL:0.166, A:0.297]
+Epoch 15/40 | loss=0.5413 | train_acc=0.2983 | test_top1=0.2822 | shapetexnet_top1=0.2776
+Train Epoch16:   9% 1/11 [00:03<00:30,  3.02s/it, L:0.542, PL:0.179, PCL:0.196, CCL:0.167, A:0.312]
+Train Epoch16:  45% 5/11 [00:05<00:05,  1.04it/s, L:0.513, PL:0.155, PCL:0.188, CCL:0.170, A:0.234]
+Train Epoch16:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.480, PL:0.137, PCL:0.177, CCL:0.166, A:0.312]
+Train Epoch16: 100% 11/11 [00:08<00:00,  1.27it/s, L:0.478, PL:0.133, PCL:0.176, CCL:0.168, A:0.219]
+Epoch 16/40 | loss=0.5071 | train_acc=0.2969 | test_top1=0.2684 | shapetexnet_top1=0.2868
+Train Epoch17:   9% 1/11 [00:02<00:29,  2.94s/it, L:0.466, PL:0.130, PCL:0.172, CCL:0.164, A:0.375]
+Train Epoch17:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.454, PL:0.118, PCL:0.173, CCL:0.162, A:0.328]
+Train Epoch17:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.444, PL:0.120, PCL:0.165, CCL:0.159, A:0.469]
+Train Epoch17: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.443, PL:0.120, PCL:0.165, CCL:0.158, A:0.453]
+Epoch 17/40 | loss=0.4519 | train_acc=0.3864 | test_top1=0.3850 | shapetexnet_top1=0.3911
+Train Epoch18:   9% 1/11 [00:02<00:29,  2.97s/it, L:0.435, PL:0.114, PCL:0.163, CCL:0.158, A:0.516]
+Train Epoch18:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.433, PL:0.114, PCL:0.163, CCL:0.156, A:0.500]
+Train Epoch18:  82% 9/11 [00:07<00:01,  1.36it/s, L:0.423, PL:0.109, PCL:0.161, CCL:0.153, A:0.609]
+Train Epoch18: 100% 11/11 [00:08<00:00,  1.27it/s, L:0.421, PL:0.110, PCL:0.157, CCL:0.153, A:0.594]
+Epoch 18/40 | loss=0.4309 | train_acc=0.5341 | test_top1=0.5322 | shapetexnet_top1=0.5291
+Train Epoch19:   9% 1/11 [00:02<00:29,  2.93s/it, L:0.414, PL:0.110, PCL:0.155, CCL:0.149, A:0.688]
+Train Epoch19:  45% 5/11 [00:05<00:05,  1.04it/s, L:0.415, PL:0.107, PCL:0.158, CCL:0.150, A:0.672]
+Train Epoch19:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.412, PL:0.109, PCL:0.156, CCL:0.148, A:0.672]
+Train Epoch19: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.410, PL:0.109, PCL:0.153, CCL:0.148, A:0.578]
+Epoch 19/40 | loss=0.4145 | train_acc=0.6278 | test_top1=0.6273 | shapetexnet_top1=0.6242
+Train Epoch20:   9% 1/11 [00:02<00:29,  2.92s/it, L:0.402, PL:0.106, PCL:0.151, CCL:0.145, A:0.656]
+Train Epoch20:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.401, PL:0.109, PCL:0.149, CCL:0.144, A:0.719]
+Train Epoch20:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.398, PL:0.111, PCL:0.147, CCL:0.140, A:0.719]
+Train Epoch20: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.396, PL:0.108, PCL:0.147, CCL:0.141, A:0.688]
+Epoch 20/40 | loss=0.3970 | train_acc=0.7401 | test_top1=0.6610 | shapetexnet_top1=0.6887
+Train Epoch21:   9% 1/11 [00:02<00:29,  2.95s/it, L:0.380, PL:0.103, PCL:0.142, CCL:0.135, A:0.797]
+Train Epoch21:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.385, PL:0.105, PCL:0.142, CCL:0.137, A:0.812]
+Train Epoch21:  82% 9/11 [00:07<00:01,  1.36it/s, L:0.387, PL:0.104, PCL:0.145, CCL:0.138, A:0.766]
+Train Epoch21: 100% 11/11 [00:08<00:00,  1.27it/s, L:0.378, PL:0.105, PCL:0.140, CCL:0.133, A:0.859]
+Epoch 21/40 | loss=0.3828 | train_acc=0.8097 | test_top1=0.7193 | shapetexnet_top1=0.7347
+Train Epoch22:   9% 1/11 [00:02<00:29,  2.94s/it, L:0.369, PL:0.101, PCL:0.137, CCL:0.131, A:0.844]
+Train Epoch22:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.377, PL:0.104, PCL:0.140, CCL:0.133, A:0.797]
+Train Epoch22:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.363, PL:0.101, PCL:0.134, CCL:0.128, A:0.891]
+Train Epoch22: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.368, PL:0.103, PCL:0.135, CCL:0.130, A:0.828]
+Epoch 22/40 | loss=0.3678 | train_acc=0.8366 | test_top1=0.7270 | shapetexnet_top1=0.7577
+Train Epoch23:   9% 1/11 [00:03<00:30,  3.07s/it, L:0.360, PL:0.098, PCL:0.134, CCL:0.127, A:0.781]
+Train Epoch23:  45% 5/11 [00:05<00:05,  1.03it/s, L:0.353, PL:0.101, PCL:0.130, CCL:0.123, A:0.922]
+Train Epoch23:  82% 9/11 [00:07<00:01,  1.35it/s, L:0.357, PL:0.097, PCL:0.134, CCL:0.127, A:0.859]
+Train Epoch23: 100% 11/11 [00:08<00:00,  1.26it/s, L:0.345, PL:0.100, PCL:0.126, CCL:0.119, A:0.938]
+Epoch 23/40 | loss=0.3566 | train_acc=0.8750 | test_top1=0.7868 | shapetexnet_top1=0.7837
+Train Epoch24:   9% 1/11 [00:02<00:29,  2.96s/it, L:0.353, PL:0.104, PCL:0.128, CCL:0.120, A:0.938]
+Train Epoch24:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.339, PL:0.098, PCL:0.124, CCL:0.117, A:0.859]
+Train Epoch24:  82% 9/11 [00:07<00:01,  1.36it/s, L:0.351, PL:0.100, PCL:0.129, CCL:0.122, A:0.891]
+Train Epoch24: 100% 11/11 [00:08<00:00,  1.27it/s, L:0.348, PL:0.095, PCL:0.130, CCL:0.122, A:0.922]
+Epoch 24/40 | loss=0.3438 | train_acc=0.8963 | test_top1=0.8037 | shapetexnet_top1=0.7853
+Train Epoch25:   9% 1/11 [00:02<00:29,  2.96s/it, L:0.341, PL:0.096, PCL:0.126, CCL:0.119, A:0.891]
+Train Epoch25:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.338, PL:0.099, PCL:0.123, CCL:0.116, A:0.906]
+Train Epoch25:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.339, PL:0.103, PCL:0.120, CCL:0.116, A:0.969]
+Train Epoch25: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.323, PL:0.098, PCL:0.116, CCL:0.109, A:0.938]
+Epoch 25/40 | loss=0.3339 | train_acc=0.9261 | test_top1=0.7807 | shapetexnet_top1=0.7791
+Train Epoch26:   9% 1/11 [00:02<00:29,  2.98s/it, L:0.327, PL:0.092, PCL:0.121, CCL:0.114, A:0.922]
+Train Epoch26:  45% 5/11 [00:05<00:05,  1.04it/s, L:0.324, PL:0.093, PCL:0.119, CCL:0.112, A:0.875]
+Train Epoch26:  82% 9/11 [00:07<00:01,  1.36it/s, L:0.323, PL:0.098, PCL:0.116, CCL:0.109, A:0.953]
+Train Epoch26: 100% 11/11 [00:08<00:00,  1.27it/s, L:0.314, PL:0.096, PCL:0.113, CCL:0.106, A:1.000]
+Epoch 26/40 | loss=0.3203 | train_acc=0.9389 | test_top1=0.7914 | shapetexnet_top1=0.7899
+Train Epoch27:   9% 1/11 [00:02<00:28,  2.87s/it, L:0.310, PL:0.098, PCL:0.110, CCL:0.103, A:0.953]
+Train Epoch27:  45% 5/11 [00:05<00:05,  1.06it/s, L:0.302, PL:0.088, PCL:0.110, CCL:0.104, A:0.969]
+Train Epoch27:  82% 9/11 [00:07<00:01,  1.38it/s, L:0.306, PL:0.090, PCL:0.112, CCL:0.104, A:0.953]
+Train Epoch27: 100% 11/11 [00:08<00:00,  1.29it/s, L:0.307, PL:0.093, PCL:0.111, CCL:0.103, A:0.984]
+Epoch 27/40 | loss=0.3112 | train_acc=0.9361 | test_top1=0.8098 | shapetexnet_top1=0.8129
+Train Epoch28:   9% 1/11 [00:02<00:29,  2.94s/it, L:0.309, PL:0.097, PCL:0.109, CCL:0.103, A:0.953]
+Train Epoch28:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.306, PL:0.096, PCL:0.107, CCL:0.102, A:0.953]
+Train Epoch28:  82% 9/11 [00:07<00:01,  1.38it/s, L:0.310, PL:0.095, PCL:0.111, CCL:0.104, A:0.953]
+Train Epoch28: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.285, PL:0.090, PCL:0.102, CCL:0.094, A:1.000]
+Epoch 28/40 | loss=0.2999 | train_acc=0.9560 | test_top1=0.8267 | shapetexnet_top1=0.8052
+Train Epoch29:   9% 1/11 [00:02<00:28,  2.87s/it, L:0.294, PL:0.091, PCL:0.105, CCL:0.098, A:0.984]
+Train Epoch29:  45% 5/11 [00:05<00:05,  1.06it/s, L:0.280, PL:0.084, PCL:0.101, CCL:0.095, A:0.953]
+Train Epoch29:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.298, PL:0.096, PCL:0.103, CCL:0.098, A:0.922]
+Train Epoch29: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.290, PL:0.094, PCL:0.101, CCL:0.095, A:0.953]
+Epoch 29/40 | loss=0.2913 | train_acc=0.9645 | test_top1=0.8221 | shapetexnet_top1=0.8021
+Train Epoch30:   9% 1/11 [00:02<00:28,  2.90s/it, L:0.277, PL:0.090, PCL:0.097, CCL:0.090, A:0.969]
+Train Epoch30:  45% 5/11 [00:05<00:05,  1.06it/s, L:0.274, PL:0.086, PCL:0.097, CCL:0.091, A:0.969]
+Train Epoch30:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.288, PL:0.094, PCL:0.100, CCL:0.094, A:0.969]
+Train Epoch30: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.288, PL:0.093, PCL:0.100, CCL:0.095, A:0.938]
+Epoch 30/40 | loss=0.2787 | train_acc=0.9616 | test_top1=0.8160 | shapetexnet_top1=0.7945
+Train Epoch31:   9% 1/11 [00:02<00:29,  2.93s/it, L:0.272, PL:0.086, PCL:0.096, CCL:0.090, A:0.969]
+Train Epoch31:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.288, PL:0.090, PCL:0.102, CCL:0.096, A:0.953]
+Train Epoch31:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.268, PL:0.084, PCL:0.095, CCL:0.089, A:0.938]
+Train Epoch31: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.267, PL:0.090, PCL:0.092, CCL:0.086, A:0.984]
+Epoch 31/40 | loss=0.2758 | train_acc=0.9602 | test_top1=0.8160 | shapetexnet_top1=0.7991
+Train Epoch32:   9% 1/11 [00:02<00:28,  2.86s/it, L:0.274, PL:0.087, PCL:0.096, CCL:0.090, A:0.953]
+Train Epoch32:  45% 5/11 [00:05<00:05,  1.06it/s, L:0.255, PL:0.084, PCL:0.088, CCL:0.082, A:0.969]
+Train Epoch32:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.266, PL:0.088, PCL:0.091, CCL:0.087, A:0.969]
+Train Epoch32: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.264, PL:0.086, PCL:0.092, CCL:0.086, A:0.953]
+Epoch 32/40 | loss=0.2603 | train_acc=0.9688 | test_top1=0.8083 | shapetexnet_top1=0.7975
+Train Epoch33:   9% 1/11 [00:02<00:28,  2.86s/it, L:0.255, PL:0.086, PCL:0.088, CCL:0.082, A:0.984]
+Train Epoch33:  45% 5/11 [00:05<00:05,  1.06it/s, L:0.238, PL:0.084, PCL:0.080, CCL:0.074, A:1.000]
+Train Epoch33:  82% 9/11 [00:07<00:01,  1.38it/s, L:0.268, PL:0.092, PCL:0.091, CCL:0.086, A:0.938]
+Train Epoch33: 100% 11/11 [00:08<00:00,  1.29it/s, L:0.256, PL:0.084, PCL:0.089, CCL:0.084, A:0.953]
+Epoch 33/40 | loss=0.2512 | train_acc=0.9759 | test_top1=0.8113 | shapetexnet_top1=0.8006
+Train Epoch34:   9% 1/11 [00:02<00:29,  2.95s/it, L:0.249, PL:0.090, PCL:0.082, CCL:0.078, A:0.984]
+Train Epoch34:  45% 5/11 [00:05<00:05,  1.04it/s, L:0.246, PL:0.089, PCL:0.082, CCL:0.075, A:0.984]
+Train Epoch34:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.248, PL:0.085, PCL:0.084, CCL:0.079, A:0.984]
+Train Epoch34: 100% 11/11 [00:08<00:00,  1.26it/s, L:0.231, PL:0.080, PCL:0.078, CCL:0.073, A:0.953]
+Epoch 34/40 | loss=0.2441 | train_acc=0.9716 | test_top1=0.8052 | shapetexnet_top1=0.7975
+Train Epoch35:   9% 1/11 [00:03<00:31,  3.11s/it, L:0.233, PL:0.083, PCL:0.077, CCL:0.073, A:1.000]
+Train Epoch35:  45% 5/11 [00:05<00:05,  1.01it/s, L:0.235, PL:0.082, PCL:0.079, CCL:0.075, A:0.984]
+Train Epoch35:  82% 9/11 [00:07<00:01,  1.34it/s, L:0.235, PL:0.086, PCL:0.077, CCL:0.072, A:0.969]
+Train Epoch35: 100% 11/11 [00:08<00:00,  1.25it/s, L:0.246, PL:0.084, PCL:0.083, CCL:0.079, A:0.969]
+Epoch 35/40 | loss=0.2378 | train_acc=0.9858 | test_top1=0.8021 | shapetexnet_top1=0.7715
+Train Epoch36:   9% 1/11 [00:02<00:28,  2.90s/it, L:0.237, PL:0.081, PCL:0.081, CCL:0.075, A:0.984]
+Train Epoch36:  45% 5/11 [00:05<00:05,  1.06it/s, L:0.233, PL:0.082, PCL:0.078, CCL:0.073, A:0.984]
+Train Epoch36:  82% 9/11 [00:07<00:01,  1.38it/s, L:0.214, PL:0.076, PCL:0.070, CCL:0.067, A:1.000]
+Train Epoch36: 100% 11/11 [00:08<00:00,  1.29it/s, L:0.243, PL:0.086, PCL:0.081, CCL:0.077, A:0.984]
+Epoch 36/40 | loss=0.2309 | train_acc=0.9886 | test_top1=0.7899 | shapetexnet_top1=0.7807
+Train Epoch37:   9% 1/11 [00:02<00:29,  2.97s/it, L:0.221, PL:0.079, PCL:0.074, CCL:0.069, A:0.953]
+Train Epoch37:  45% 5/11 [00:05<00:05,  1.04it/s, L:0.221, PL:0.082, PCL:0.071, CCL:0.068, A:1.000]
+Train Epoch37:  82% 9/11 [00:07<00:01,  1.36it/s, L:0.215, PL:0.083, PCL:0.068, CCL:0.065, A:0.984]
+Train Epoch37: 100% 11/11 [00:08<00:00,  1.27it/s, L:0.221, PL:0.082, PCL:0.072, CCL:0.067, A:1.000]
+Epoch 37/40 | loss=0.2170 | train_acc=0.9844 | test_top1=0.7868 | shapetexnet_top1=0.7761
+Train Epoch38:   9% 1/11 [00:02<00:29,  2.95s/it, L:0.207, PL:0.078, PCL:0.067, CCL:0.062, A:1.000]
+Train Epoch38:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.198, PL:0.076, PCL:0.063, CCL:0.059, A:0.984]
+Train Epoch38:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.220, PL:0.081, PCL:0.071, CCL:0.068, A:0.984]
+Train Epoch38: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.220, PL:0.080, PCL:0.072, CCL:0.068, A:0.984]
+Epoch 38/40 | loss=0.2133 | train_acc=0.9830 | test_top1=0.8190 | shapetexnet_top1=0.8113
+Train Epoch39:   9% 1/11 [00:03<00:30,  3.06s/it, L:0.206, PL:0.080, PCL:0.065, CCL:0.061, A:0.969]
+Train Epoch39:  45% 5/11 [00:05<00:05,  1.03it/s, L:0.206, PL:0.075, PCL:0.067, CCL:0.064, A:0.984]
+Train Epoch39:  82% 9/11 [00:07<00:01,  1.35it/s, L:0.196, PL:0.076, PCL:0.062, CCL:0.058, A:1.000]
+Train Epoch39: 100% 11/11 [00:08<00:00,  1.26it/s, L:0.213, PL:0.085, PCL:0.066, CCL:0.062, A:0.969]
+Epoch 39/40 | loss=0.2045 | train_acc=0.9858 | test_top1=0.8221 | shapetexnet_top1=0.8113
+Train Epoch40:   9% 1/11 [00:02<00:29,  2.94s/it, L:0.200, PL:0.079, PCL:0.063, CCL:0.058, A:0.984]
+Train Epoch40:  45% 5/11 [00:05<00:05,  1.05it/s, L:0.201, PL:0.079, PCL:0.063, CCL:0.059, A:0.984]
+Train Epoch40:  82% 9/11 [00:07<00:01,  1.37it/s, L:0.189, PL:0.074, PCL:0.059, CCL:0.055, A:0.984]
+Train Epoch40: 100% 11/11 [00:08<00:00,  1.28it/s, L:0.187, PL:0.076, PCL:0.057, CCL:0.054, A:0.984]
+Epoch 40/40 | loss=0.2001 | train_acc=0.9872 | test_top1=0.8175 | shapetexnet_top1=0.7960
+Done. Final test top-1 accuracy: 0.8175

@@ -24,6 +24,11 @@ data, training loop or evaluation); **written by us** = new code.
 | MetiNet training driver (Jumps 2-4, Stage 4 runs) | `MetiNet/train_quick.py` | adapted from `MetiNet/main.py` | Our optimiser/scheduler setup and epoch loop; reuses upstream `train_metinet`. Evaluation loop rewritten (upstream `test.py` needs full-dataset part maps for IoU). Added: command-line overrides, per-epoch ShapeTexNet accuracy, JSON history. |
 | Colour-branch ablation and hue-robustness evaluation (Stage 4) | `MetiNet/eval_ablation.py` | written by us | Uses upstream `random_hue_jitter` (via `create_datasets`) and `topk_accuracy`. |
 | Training-curve plots | `analysis/plot_training_curves.py` | written by us | |
+| PDiscoNet driver with configurable epochs / output folder | `part_detection/train_pdisco_long.py` | adapted from `part_detection/main.py` | Same setup as `train_pdisco_quick.py` (left unchanged) plus command-line options and a Windows-safe `__main__` guard; used for the 28-epoch detector. |
+| Part-map generation for any detector | `part_detection/generate_maps.py` | adapted from `part_detection/save_maps.py` | Same as `generate_maps_quick.py` (left unchanged) with command-line options. |
+| Part-quality evaluation (NMI, ARI, keypoint regression) | `part_detection/eval_part_quality.py` | adapted from `part_detection/evaluate_cub.py` | Reuses upstream `eval_kpr` and `eval_nmi_ari` unchanged; filters upstream's 200-class CUB loader to our 25 classes. |
+| Multi-seed summary, colourfulness-vs-hue-sensitivity analysis | `analysis/summarize_runs.py`, `analysis/colour_by_species.py` | written by us | Colourfulness metric from Hasler & Süsstrunk (2003). |
+| Overnight experiment queue | `experiments/run_queue.sh` | written by us | |
 | Deployment: inference wrapper, Streamlit app, FastAPI API | `deploy/*` | written by us | Preprocessing copied from the test-time branch of upstream `util/data.py`. |
 | Colab notebook | `notebooks/stage4_stage5_colab.ipynb` | written by us | |
 | One-click demo launchers | `run_demo.bat`, `run_demo.sh` | written by us | |
@@ -37,7 +42,10 @@ data, training loop or evaluation); **written by us** = new code.
 |---|---|
 | LucidPPN CUB 81.5 ± 0.4 % (200 classes, ConvNeXt-Tiny), ShapeTexNet 80.4 %, hue-perturbed numbers | reported by the authors (paper Tables 1-3) |
 | Everything in `EXPERIMENTS.md`, `MetiNet/*log*.txt`, `part_detection/*log*.txt`, `MetiNet/results/` | obtained by our team, on Google Colab |
+| Everything in `experiments/` (Jumps 5-7, 28-epoch part detector, part quality, multi-seed Stage 4, colourfulness analysis) | obtained by our team, on a local RTX 2080 laptop GPU |
 
 ## AI assistance
 The Stage 3 review, `PROVENANCE.md`, the Colab notebook and the
 report draft were written with help from an AI assistant. The team ran all experiments.
+We also used the AI assistant to help train the models overnight and automate that process (`experiments/run_queue.sh`),
+to find the paper's training settings (in the authors' `MetiNet/run_training.sh`) and to implement them in our runs.

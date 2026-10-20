@@ -1,0 +1,151 @@
+{
+ "ablations": [
+  "experiments/jump4_rerun/ablation/ablation.json",
+  "experiments/jump4_code_defaults/seed2/ablation/ablation.json",
+  "experiments/jump4_code_defaults/seed3/ablation/ablation.json",
+  "experiments/jump5_paper_recipe/seed1/ablation/ablation.json",
+  "experiments/jump5_paper_recipe/seed2/ablation/ablation.json",
+  "experiments/jump5_paper_recipe/seed3/ablation/ablation.json",
+  "experiments/jump6_paper_recipe_pdisco28/seed1/ablation/ablation.json",
+  "experiments/jump6_paper_recipe_pdisco28/seed2/ablation/ablation.json",
+  "experiments/jump6_paper_recipe_pdisco28/seed3/ablation/ablation.json",
+  "experiments/jump7_code_defaults_pdisco28/seed1/ablation/ablation.json",
+  "experiments/jump7_code_defaults_pdisco28/seed2/ablation/ablation.json",
+  "experiments/jump7_code_defaults_pdisco28/seed3/ablation/ablation.json"
+ ],
+ "spearman_drop": [
+  0.6151183033578318,
+  0.0010662904248652815
+ ],
+ "spearman_gain": [
+  0.14208600115182157,
+  0.49808323965680895
+ ],
+ "species": {
+  "Black_footed_Albatross": {
+   "colourfulness": 32.87237880752628,
+   "hue_drop": 2.6666663587093353,
+   "colour_gain": 0.555555522441864
+  },
+  "Bobolink": {
+   "colourfulness": 38.27150662969739,
+   "hue_drop": 0.5555560191472371,
+   "colour_gain": 0.0
+  },
+  "Brandt_Cormorant": {
+   "colourfulness": 27.534527717055944,
+   "hue_drop": 0.2873562276363373,
+   "colour_gain": 1.7241376141707103
+  },
+  "Brewer_Blackbird": {
+   "colourfulness": 30.119419160900108,
+   "hue_drop": 0.11494259039560954,
+   "colour_gain": 1.1494259039560952
+  },
+  "Cardinal": {
+   "colourfulness": 68.91253305023876,
+   "hue_drop": 29.197532186905544,
+   "colour_gain": 4.320987065633139
+  },
+  "Chuck_will_Widow": {
+   "colourfulness": 39.04663718779294,
+   "hue_drop": 2.6282047231992083,
+   "colour_gain": 0.6410260995229085
+  },
+  "Crested_Auklet": {
+   "colourfulness": 32.00939530675842,
+   "hue_drop": 0.35714308420817054,
+   "colour_gain": 0.5952378114064534
+  },
+  "Eastern_Towhee": {
+   "colourfulness": 38.54793532676369,
+   "hue_drop": 3.277777632077535,
+   "colour_gain": 3.6111111442248025
+  },
+  "Gray_Catbird": {
+   "colourfulness": 40.28109232471796,
+   "hue_drop": 0.6321847438812256,
+   "colour_gain": 2.5862077871958418
+  },
+  "Groove_billed_Ani": {
+   "colourfulness": 37.67841056654617,
+   "hue_drop": -1.8333335717519124,
+   "colour_gain": -0.8333330353101095
+  },
+  "Indigo_Bunting": {
+   "colourfulness": 64.3564888013775,
+   "hue_drop": 28.44444215297699,
+   "colour_gain": 3.6111106475194297
+  },
+  "Laysan_Albatross": {
+   "colourfulness": 33.11531388357123,
+   "hue_drop": 0.4444440205891927,
+   "colour_gain": 0.8333330353101095
+  },
+  "Lazuli_Bunting": {
+   "colourfulness": 46.680358246410606,
+   "hue_drop": -0.6547619899113972,
+   "colour_gain": 2.678571144739787
+  },
+  "Least_Auklet": {
+   "colourfulness": 16.97591157856795,
+   "hue_drop": 0.0,
+   "colour_gain": 0.0
+  },
+  "Painted_Bunting": {
+   "colourfulness": 57.522836245850094,
+   "hue_drop": 3.6309505502382913,
+   "colour_gain": 0.29761840899785363
+  },
+  "Parakeet_Auklet": {
+   "colourfulness": 30.24678422853426,
+   "hue_drop": -0.0724633534749349,
+   "colour_gain": 0.0
+  },
+  "Pelagic_Cormorant": {
+   "colourfulness": 29.773670749620724,
+   "hue_drop": 1.5555554380019507,
+   "colour_gain": 3.055555621782939
+  },
+  "Red_faced_Cormorant": {
+   "colourfulness": 30.011792949507107,
+   "hue_drop": 0.9848490357398987,
+   "colour_gain": -0.7575760285059612
+  },
+  "Red_winged_Blackbird": {
+   "colourfulness": 40.699213359045146,
+   "hue_drop": 2.4444441000620527,
+   "colour_gain": 0.8333335320154825
+  },
+  "Rhinoceros_Auklet": {
+   "colourfulness": 27.764205852370157,
+   "hue_drop": 0.6481488545735676,
+   "colour_gain": 1.8518512447675068
+  },
+  "Rusty_Blackbird": {
+   "colourfulness": 34.65093259317055,
+   "hue_drop": 1.9444440801938374,
+   "colour_gain": 2.7777783572673798
+  },
+  "Sooty_Albatross": {
+   "colourfulness": 30.033194552808116,
+   "hue_drop": 0.35714308420817054,
+   "colour_gain": 1.7857144276301067
+  },
+  "Spotted_Catbird": {
+   "colourfulness": 40.39815703791799,
+   "hue_drop": 1.3333330551783242,
+   "colour_gain": 0.0
+  },
+  "Yellow_breasted_Chat": {
+   "colourfulness": 55.25143070043372,
+   "hue_drop": 9.252875049908955,
+   "colour_gain": 0.287356972694397
+  },
+  "Yellow_headed_Blackbird": {
+   "colourfulness": 52.483991245009165,
+   "hue_drop": 6.15384578704834,
+   "colour_gain": 0.0
+  }
+ }
+}

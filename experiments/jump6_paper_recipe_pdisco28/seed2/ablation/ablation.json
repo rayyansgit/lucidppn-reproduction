@@ -1,0 +1,625 @@
+{
+ "checkpoint": "D:/Assignments/lucidppn-reproduction/experiments/jump6_paper_recipe_pdisco28/seed2/checkpoint.pt",
+ "results": {
+  "0.0": {
+   "lucidppn_top1": [
+    0.8297546012269938,
+    0.0
+   ],
+   "lucidppn_top5": [
+    0.9754601226993865,
+    0.0
+   ],
+   "shapetexnet_top1": [
+    0.8144171779141104,
+    0.0
+   ],
+   "shapetexnet_top5": [
+    0.9708588957055214,
+    0.0
+   ],
+   "colour_helped": [
+    0.02607361963190184,
+    0.0
+   ],
+   "colour_hurt": [
+    0.010736196319018405,
+    0.0
+   ],
+   "per_class": {
+    "Black_footed_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.7666666507720947,
+     "shapetexnet_top1": 0.699999988079071
+    },
+    "Bobolink": {
+     "n": 30,
+     "lucidppn_top1": 0.9333333373069763,
+     "shapetexnet_top1": 0.9333333373069763
+    },
+    "Brandt_Cormorant": {
+     "n": 29,
+     "lucidppn_top1": 0.6551724076271057,
+     "shapetexnet_top1": 0.6206896305084229
+    },
+    "Brewer_Blackbird": {
+     "n": 29,
+     "lucidppn_top1": 0.7931034564971924,
+     "shapetexnet_top1": 0.7931034564971924
+    },
+    "Cardinal": {
+     "n": 27,
+     "lucidppn_top1": 0.9629629850387573,
+     "shapetexnet_top1": 0.8518518805503845
+    },
+    "Chuck_will_Widow": {
+     "n": 26,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Crested_Auklet": {
+     "n": 14,
+     "lucidppn_top1": 0.9285714030265808,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Eastern_Towhee": {
+     "n": 30,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 0.9666666388511658
+    },
+    "Gray_Catbird": {
+     "n": 29,
+     "lucidppn_top1": 0.931034505367279,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Groove_billed_Ani": {
+     "n": 30,
+     "lucidppn_top1": 0.8666666746139526,
+     "shapetexnet_top1": 0.8666666746139526
+    },
+    "Indigo_Bunting": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.7666666507720947
+    },
+    "Laysan_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Lazuli_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.8214285969734192,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Least_Auklet": {
+     "n": 11,
+     "lucidppn_top1": 0.9090909361839294,
+     "shapetexnet_top1": 0.9090909361839294
+    },
+    "Painted_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.7857142686843872,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Parakeet_Auklet": {
+     "n": 23,
+     "lucidppn_top1": 0.9130434989929199,
+     "shapetexnet_top1": 0.9130434989929199
+    },
+    "Pelagic_Cormorant": {
+     "n": 30,
+     "lucidppn_top1": 0.2666666805744171,
+     "shapetexnet_top1": 0.2666666805744171
+    },
+    "Red_faced_Cormorant": {
+     "n": 22,
+     "lucidppn_top1": 0.7727272510528564,
+     "shapetexnet_top1": 0.8181818127632141
+    },
+    "Red_winged_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.8666666746139526,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Rhinoceros_Auklet": {
+     "n": 18,
+     "lucidppn_top1": 0.7222222089767456,
+     "shapetexnet_top1": 0.6666666865348816
+    },
+    "Rusty_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.5666666626930237,
+     "shapetexnet_top1": 0.5333333611488342
+    },
+    "Sooty_Albatross": {
+     "n": 28,
+     "lucidppn_top1": 0.9285714030265808,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Spotted_Catbird": {
+     "n": 15,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Yellow_breasted_Chat": {
+     "n": 29,
+     "lucidppn_top1": 0.931034505367279,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Yellow_headed_Blackbird": {
+     "n": 26,
+     "lucidppn_top1": 0.9615384340286255,
+     "shapetexnet_top1": 0.9615384340286255
+    }
+   },
+   "n": 652,
+   "seeds": 1
+  },
+  "0.1": {
+   "lucidppn_top1": [
+    0.8306748466257667,
+    0.00174873531456922
+   ],
+   "lucidppn_top5": [
+    0.9757668711656443,
+    0.0006859104225459437
+   ],
+   "shapetexnet_top1": [
+    0.8144171779141104,
+    0.0
+   ],
+   "shapetexnet_top5": [
+    0.9708588957055214,
+    0.0
+   ],
+   "colour_helped": [
+    0.026993865030674847,
+    0.0008400652722471881
+   ],
+   "colour_hurt": [
+    0.010736196319018407,
+    0.0018784430542815782
+   ],
+   "per_class": {
+    "Black_footed_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.7666666507720947,
+     "shapetexnet_top1": 0.699999988079071
+    },
+    "Bobolink": {
+     "n": 30,
+     "lucidppn_top1": 0.9333333373069763,
+     "shapetexnet_top1": 0.9333333373069763
+    },
+    "Brandt_Cormorant": {
+     "n": 29,
+     "lucidppn_top1": 0.6551724076271057,
+     "shapetexnet_top1": 0.6206896305084229
+    },
+    "Brewer_Blackbird": {
+     "n": 29,
+     "lucidppn_top1": 0.7931034564971924,
+     "shapetexnet_top1": 0.7931034564971924
+    },
+    "Cardinal": {
+     "n": 27,
+     "lucidppn_top1": 0.9629629850387573,
+     "shapetexnet_top1": 0.8518518805503845
+    },
+    "Chuck_will_Widow": {
+     "n": 26,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Crested_Auklet": {
+     "n": 14,
+     "lucidppn_top1": 0.9285714030265808,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Eastern_Towhee": {
+     "n": 30,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 0.9666666388511658
+    },
+    "Gray_Catbird": {
+     "n": 29,
+     "lucidppn_top1": 0.931034505367279,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Groove_billed_Ani": {
+     "n": 30,
+     "lucidppn_top1": 0.8666666746139526,
+     "shapetexnet_top1": 0.8666666746139526
+    },
+    "Indigo_Bunting": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.7666666507720947
+    },
+    "Laysan_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Lazuli_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.8357142806053162,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Least_Auklet": {
+     "n": 11,
+     "lucidppn_top1": 0.9090909361839294,
+     "shapetexnet_top1": 0.9090909361839294
+    },
+    "Painted_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.8142856955528259,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Parakeet_Auklet": {
+     "n": 23,
+     "lucidppn_top1": 0.9130434989929199,
+     "shapetexnet_top1": 0.9130434989929199
+    },
+    "Pelagic_Cormorant": {
+     "n": 30,
+     "lucidppn_top1": 0.2666666805744171,
+     "shapetexnet_top1": 0.2666666805744171
+    },
+    "Red_faced_Cormorant": {
+     "n": 22,
+     "lucidppn_top1": 0.7727272510528564,
+     "shapetexnet_top1": 0.8181818127632141
+    },
+    "Red_winged_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.8666666746139526,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Rhinoceros_Auklet": {
+     "n": 18,
+     "lucidppn_top1": 0.7222222089767456,
+     "shapetexnet_top1": 0.6666666865348816
+    },
+    "Rusty_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.5666666626930237,
+     "shapetexnet_top1": 0.5333333611488342
+    },
+    "Sooty_Albatross": {
+     "n": 28,
+     "lucidppn_top1": 0.9285714030265808,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Spotted_Catbird": {
+     "n": 15,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Yellow_breasted_Chat": {
+     "n": 29,
+     "lucidppn_top1": 0.9103448390960693,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Yellow_headed_Blackbird": {
+     "n": 26,
+     "lucidppn_top1": 0.9615384340286255,
+     "shapetexnet_top1": 0.9615384340286255
+    }
+   },
+   "n": 652,
+   "seeds": 5
+  },
+  "0.25": {
+   "lucidppn_top1": [
+    0.8177914110429448,
+    0.006543168407270429
+   ],
+   "lucidppn_top5": [
+    0.9693251533742332,
+    0.0037568861085631802
+   ],
+   "shapetexnet_top1": [
+    0.8144171779141104,
+    0.0
+   ],
+   "shapetexnet_top5": [
+    0.9708588957055214,
+    0.0
+   ],
+   "colour_helped": [
+    0.0245398773006135,
+    0.002425059555343849
+   ],
+   "colour_hurt": [
+    0.02116564417177914,
+    0.00588045690573031
+   ],
+   "per_class": {
+    "Black_footed_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.753333330154419,
+     "shapetexnet_top1": 0.699999988079071
+    },
+    "Bobolink": {
+     "n": 30,
+     "lucidppn_top1": 0.9333333373069763,
+     "shapetexnet_top1": 0.9333333373069763
+    },
+    "Brandt_Cormorant": {
+     "n": 29,
+     "lucidppn_top1": 0.6482758522033691,
+     "shapetexnet_top1": 0.6206896305084229
+    },
+    "Brewer_Blackbird": {
+     "n": 29,
+     "lucidppn_top1": 0.7931034564971924,
+     "shapetexnet_top1": 0.7931034564971924
+    },
+    "Cardinal": {
+     "n": 27,
+     "lucidppn_top1": 0.7925925850868225,
+     "shapetexnet_top1": 0.8518518805503845
+    },
+    "Chuck_will_Widow": {
+     "n": 26,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Crested_Auklet": {
+     "n": 14,
+     "lucidppn_top1": 0.9285714030265808,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Eastern_Towhee": {
+     "n": 30,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 0.9666666388511658
+    },
+    "Gray_Catbird": {
+     "n": 29,
+     "lucidppn_top1": 0.931034505367279,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Groove_billed_Ani": {
+     "n": 30,
+     "lucidppn_top1": 0.8666666746139526,
+     "shapetexnet_top1": 0.8666666746139526
+    },
+    "Indigo_Bunting": {
+     "n": 30,
+     "lucidppn_top1": 0.7933332920074463,
+     "shapetexnet_top1": 0.7666666507720947
+    },
+    "Laysan_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Lazuli_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.8428571820259094,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Least_Auklet": {
+     "n": 11,
+     "lucidppn_top1": 0.9090909361839294,
+     "shapetexnet_top1": 0.9090909361839294
+    },
+    "Painted_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.8428571820259094,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Parakeet_Auklet": {
+     "n": 23,
+     "lucidppn_top1": 0.9130434989929199,
+     "shapetexnet_top1": 0.9130434989929199
+    },
+    "Pelagic_Cormorant": {
+     "n": 30,
+     "lucidppn_top1": 0.2666666805744171,
+     "shapetexnet_top1": 0.2666666805744171
+    },
+    "Red_faced_Cormorant": {
+     "n": 22,
+     "lucidppn_top1": 0.7818182110786438,
+     "shapetexnet_top1": 0.8181818127632141
+    },
+    "Red_winged_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Rhinoceros_Auklet": {
+     "n": 18,
+     "lucidppn_top1": 0.7222222089767456,
+     "shapetexnet_top1": 0.6666666865348816
+    },
+    "Rusty_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.5666666626930237,
+     "shapetexnet_top1": 0.5333333611488342
+    },
+    "Sooty_Albatross": {
+     "n": 28,
+     "lucidppn_top1": 0.9428571462631226,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Spotted_Catbird": {
+     "n": 15,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Yellow_breasted_Chat": {
+     "n": 29,
+     "lucidppn_top1": 0.8413792848587036,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Yellow_headed_Blackbird": {
+     "n": 26,
+     "lucidppn_top1": 0.9384615421295166,
+     "shapetexnet_top1": 0.9615384340286255
+    }
+   },
+   "n": 652,
+   "seeds": 5
+  },
+  "0.5": {
+   "lucidppn_top1": [
+    0.7714723926380368,
+    0.0010845196030468457
+   ],
+   "lucidppn_top5": [
+    0.9555214723926382,
+    0.0028693691616364417
+   ],
+   "shapetexnet_top1": [
+    0.8144171779141104,
+    0.0
+   ],
+   "shapetexnet_top5": [
+    0.9708588957055214,
+    0.0
+   ],
+   "colour_helped": [
+    0.018711656441717794,
+    0.0016801305444943749
+   ],
+   "colour_hurt": [
+    0.06165644171779141,
+    0.0016801305444943753
+   ],
+   "per_class": {
+    "Black_footed_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.7200000286102295,
+     "shapetexnet_top1": 0.699999988079071
+    },
+    "Bobolink": {
+     "n": 30,
+     "lucidppn_top1": 0.9333333373069763,
+     "shapetexnet_top1": 0.9333333373069763
+    },
+    "Brandt_Cormorant": {
+     "n": 29,
+     "lucidppn_top1": 0.634482741355896,
+     "shapetexnet_top1": 0.6206896305084229
+    },
+    "Brewer_Blackbird": {
+     "n": 29,
+     "lucidppn_top1": 0.7931034564971924,
+     "shapetexnet_top1": 0.7931034564971924
+    },
+    "Cardinal": {
+     "n": 27,
+     "lucidppn_top1": 0.5037037134170532,
+     "shapetexnet_top1": 0.8518518805503845
+    },
+    "Chuck_will_Widow": {
+     "n": 26,
+     "lucidppn_top1": 0.9615384340286255,
+     "shapetexnet_top1": 1.0
+    },
+    "Crested_Auklet": {
+     "n": 14,
+     "lucidppn_top1": 0.9285714030265808,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Eastern_Towhee": {
+     "n": 30,
+     "lucidppn_top1": 0.9733333587646484,
+     "shapetexnet_top1": 0.9666666388511658
+    },
+    "Gray_Catbird": {
+     "n": 29,
+     "lucidppn_top1": 0.931034505367279,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Groove_billed_Ani": {
+     "n": 30,
+     "lucidppn_top1": 0.8666666746139526,
+     "shapetexnet_top1": 0.8666666746139526
+    },
+    "Indigo_Bunting": {
+     "n": 30,
+     "lucidppn_top1": 0.4866666793823242,
+     "shapetexnet_top1": 0.7666666507720947
+    },
+    "Laysan_Albatross": {
+     "n": 30,
+     "lucidppn_top1": 0.8333333134651184,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Lazuli_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.8785714507102966,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Least_Auklet": {
+     "n": 11,
+     "lucidppn_top1": 0.9090909361839294,
+     "shapetexnet_top1": 0.9090909361839294
+    },
+    "Painted_Bunting": {
+     "n": 28,
+     "lucidppn_top1": 0.7571429014205933,
+     "shapetexnet_top1": 0.8214285969734192
+    },
+    "Parakeet_Auklet": {
+     "n": 23,
+     "lucidppn_top1": 0.9130434989929199,
+     "shapetexnet_top1": 0.9130434989929199
+    },
+    "Pelagic_Cormorant": {
+     "n": 30,
+     "lucidppn_top1": 0.23333333432674408,
+     "shapetexnet_top1": 0.2666666805744171
+    },
+    "Red_faced_Cormorant": {
+     "n": 22,
+     "lucidppn_top1": 0.7727272510528564,
+     "shapetexnet_top1": 0.8181818127632141
+    },
+    "Red_winged_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.7933332920074463,
+     "shapetexnet_top1": 0.8333333134651184
+    },
+    "Rhinoceros_Auklet": {
+     "n": 18,
+     "lucidppn_top1": 0.7222222089767456,
+     "shapetexnet_top1": 0.6666666865348816
+    },
+    "Rusty_Blackbird": {
+     "n": 30,
+     "lucidppn_top1": 0.5400000214576721,
+     "shapetexnet_top1": 0.5333333611488342
+    },
+    "Sooty_Albatross": {
+     "n": 28,
+     "lucidppn_top1": 0.9571428298950195,
+     "shapetexnet_top1": 0.9285714030265808
+    },
+    "Spotted_Catbird": {
+     "n": 15,
+     "lucidppn_top1": 1.0,
+     "shapetexnet_top1": 1.0
+    },
+    "Yellow_breasted_Chat": {
+     "n": 29,
+     "lucidppn_top1": 0.6827585697174072,
+     "shapetexnet_top1": 0.931034505367279
+    },
+    "Yellow_headed_Blackbird": {
+     "n": 26,
+     "lucidppn_top1": 0.892307698726654,
+     "shapetexnet_top1": 0.9615384340286255
+    }
+   },
+   "n": 652,
+   "seeds": 5
+  }
+ }
+}

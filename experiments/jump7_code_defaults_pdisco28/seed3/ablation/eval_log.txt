@@ -1,0 +1,39 @@
+Additional augmentations switched off
+hue=0.00 seed=0 | LucidPPN 0.8328 | ShapeTexNet 0.8221 | colour helped 0.0184, hurt 0.0077
+Strong hue augmentation switched on (0.1)
+hue=0.10 seed=0 | LucidPPN 0.8328 | ShapeTexNet 0.8221 | colour helped 0.0169, hurt 0.0061
+Strong hue augmentation switched on (0.1)
+hue=0.10 seed=1 | LucidPPN 0.8344 | ShapeTexNet 0.8221 | colour helped 0.0199, hurt 0.0077
+Strong hue augmentation switched on (0.1)
+hue=0.10 seed=2 | LucidPPN 0.8313 | ShapeTexNet 0.8221 | colour helped 0.0169, hurt 0.0077
+Strong hue augmentation switched on (0.1)
+hue=0.10 seed=3 | LucidPPN 0.8328 | ShapeTexNet 0.8221 | colour helped 0.0184, hurt 0.0077
+Strong hue augmentation switched on (0.1)
+hue=0.10 seed=4 | LucidPPN 0.8359 | ShapeTexNet 0.8221 | colour helped 0.0184, hurt 0.0046
+Strong hue augmentation switched on (0.25)
+hue=0.25 seed=0 | LucidPPN 0.8282 | ShapeTexNet 0.8221 | colour helped 0.0153, hurt 0.0092
+Strong hue augmentation switched on (0.25)
+hue=0.25 seed=1 | LucidPPN 0.8221 | ShapeTexNet 0.8221 | colour helped 0.0199, hurt 0.0199
+Strong hue augmentation switched on (0.25)
+hue=0.25 seed=2 | LucidPPN 0.8190 | ShapeTexNet 0.8221 | colour helped 0.0153, hurt 0.0184
+Strong hue augmentation switched on (0.25)
+hue=0.25 seed=3 | LucidPPN 0.8221 | ShapeTexNet 0.8221 | colour helped 0.0215, hurt 0.0215
+Strong hue augmentation switched on (0.25)
+hue=0.25 seed=4 | LucidPPN 0.8236 | ShapeTexNet 0.8221 | colour helped 0.0138, hurt 0.0123
+Strong hue augmentation switched on (0.5)
+hue=0.50 seed=0 | LucidPPN 0.8006 | ShapeTexNet 0.8221 | colour helped 0.0153, hurt 0.0368
+Strong hue augmentation switched on (0.5)
+hue=0.50 seed=1 | LucidPPN 0.7776 | ShapeTexNet 0.8221 | colour helped 0.0092, hurt 0.0537
+Strong hue augmentation switched on (0.5)
+hue=0.50 seed=2 | LucidPPN 0.7945 | ShapeTexNet 0.8221 | colour helped 0.0123, hurt 0.0399
+Strong hue augmentation switched on (0.5)
+hue=0.50 seed=3 | LucidPPN 0.7991 | ShapeTexNet 0.8221 | colour helped 0.0199, hurt 0.0429
+Strong hue augmentation switched on (0.5)
+hue=0.50 seed=4 | LucidPPN 0.8006 | ShapeTexNet 0.8221 | colour helped 0.0123, hurt 0.0337
+
+| Max hue shift | LucidPPN top-1 | ShapeTexNet top-1 | Colour helped | Colour hurt |
+|---|---|---|---|---|
+| 0.0 | 83.3 | 82.2 | 1.8 | 0.8 |
+| 0.1 | 83.3 ± 0.2 | 82.2 | 1.8 ± 0.1 | 0.7 ± 0.1 |
+| 0.25 | 82.3 ± 0.3 | 82.2 | 1.7 ± 0.3 | 1.6 ± 0.5 |
+| 0.5 | 79.4 ± 1.0 | 82.2 | 1.4 ± 0.4 | 4.1 ± 0.8 |

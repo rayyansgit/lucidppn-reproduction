@@ -1,0 +1,12 @@
+{
+ "epochs": 80,
+ "freeze_epochs": 10,
+ "batch_size": 32,
+ "seed": 2,
+ "no_color_epochs": 2,
+ "part_weight": 1.0,
+ "color_class_weight": 1.0,
+ "lr_net": 0.0005,
+ "lr_color": 0.0005,
+ "maps_dir": "../CUB_subset_maps_pdisco28"
+}

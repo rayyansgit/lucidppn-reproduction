@@ -1,0 +1,14 @@
+{
+ "5ep": {
+  "checkpoint": "cub_quick/cub_quick_25class.pt",
+  "nmi": 24.119460837312314,
+  "ari": 11.792561421099988,
+  "kpr_error": 14.343911132131945
+ },
+ "28ep": {
+  "checkpoint": "../experiments/part_detector/pdisco_28ep/pdisco.pt",
+  "nmi": 30.981699439937987,
+  "ari": 14.857667585872097,
+  "kpr_error": 12.743748800178574
+ }
+}

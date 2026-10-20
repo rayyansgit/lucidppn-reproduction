@@ -1,0 +1,10 @@
+{
+ "epochs": 28,
+ "n_classes": 25,
+ "num_parts": 8,
+ "image_size": 224,
+ "batch_size": 16,
+ "seed": 1,
+ "num_workers": 5,
+ "out_dir": "../experiments/part_detector/pdisco_28ep"
+}

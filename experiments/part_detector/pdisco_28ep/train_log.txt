@@ -1,0 +1,81 @@
+Train: 750 images | Val: 652 images
+Downloading: "https://download.pytorch.org/models/resnet101-cd907fc2.pth" to C:\Users\DT/.cache\torch\hub\checkpoints\resnet101-cd907fc2.pth
+  0%|          | 0.00/171M [00:00<?, ?B/s]
+  0%|          | 512k/171M [00:00<00:37, 4.78MB/s]
+  3%|2         | 4.38M/171M [00:00<00:06, 25.0MB/s]
+  6%|5         | 10.1M/171M [00:00<00:04, 40.4MB/s]
+  9%|9         | 15.4M/171M [00:00<00:03, 45.6MB/s]
+ 12%|#2        | 21.2M/171M [00:00<00:03, 51.2MB/s]
+ 15%|#5        | 26.2M/171M [00:00<00:03, 46.3MB/s]
+ 19%|#8        | 31.9M/171M [00:00<00:02, 49.9MB/s]
+ 22%|##2       | 37.6M/171M [00:00<00:02, 52.9MB/s]
+ 25%|##5       | 43.0M/171M [00:00<00:02, 53.8MB/s]
+ 28%|##8       | 48.2M/171M [00:01<00:03, 38.8MB/s]
+ 31%|###       | 52.6M/171M [00:01<00:03, 33.8MB/s]
+ 33%|###3      | 56.9M/171M [00:01<00:03, 35.8MB/s]
+ 36%|###5      | 60.8M/171M [00:01<00:03, 35.3MB/s]
+ 38%|###7      | 64.5M/171M [00:01<00:03, 35.3MB/s]
+ 40%|###9      | 68.1M/171M [00:01<00:03, 34.1MB/s]
+ 42%|####2     | 71.6M/171M [00:01<00:03, 34.0MB/s]
+ 44%|####3     | 75.0M/171M [00:02<00:02, 33.6MB/s]
+ 46%|####5     | 78.4M/171M [00:02<00:02, 33.7MB/s]
+ 48%|####7     | 81.8M/171M [00:02<00:02, 34.1MB/s]
+ 50%|####9     | 85.1M/171M [00:02<00:02, 33.5MB/s]
+ 52%|#####1    | 88.5M/171M [00:02<00:02, 33.2MB/s]
+ 54%|#####3    | 91.8M/171M [00:02<00:02, 33.4MB/s]
+ 56%|#####5    | 95.0M/171M [00:02<00:02, 33.5MB/s]
+ 58%|#####7    | 98.5M/171M [00:02<00:02, 33.5MB/s]
+ 60%|#####9    | 102M/171M [00:02<00:02, 33.4MB/s] 
+ 62%|######1   | 105M/171M [00:02<00:02, 33.4MB/s]
+ 64%|######3   | 108M/171M [00:03<00:01, 33.4MB/s]
+ 66%|######5   | 112M/171M [00:03<00:01, 33.3MB/s]
+ 68%|######7   | 115M/171M [00:03<00:01, 33.9MB/s]
+ 69%|######9   | 118M/171M [00:03<00:01, 33.1MB/s]
+ 71%|#######1  | 122M/171M [00:03<00:01, 33.7MB/s]
+ 73%|#######3  | 125M/171M [00:03<00:01, 33.3MB/s]
+ 76%|#######5  | 129M/171M [00:03<00:01, 32.7MB/s]
+ 78%|#######7  | 132M/171M [00:03<00:01, 33.2MB/s]
+ 80%|#######9  | 136M/171M [00:03<00:01, 33.0MB/s]
+ 82%|########1 | 139M/171M [00:04<00:00, 34.0MB/s]
+ 84%|########3 | 142M/171M [00:04<00:00, 33.7MB/s]
+ 86%|########5 | 146M/171M [00:04<00:00, 33.2MB/s]
+ 88%|########7 | 150M/171M [00:04<00:00, 33.1MB/s]
+ 90%|######### | 154M/171M [00:04<00:00, 33.3MB/s]
+ 92%|#########2| 158M/171M [00:04<00:00, 34.0MB/s]
+ 94%|#########4| 161M/171M [00:04<00:00, 33.5MB/s]
+ 97%|#########6| 165M/171M [00:04<00:00, 36.3MB/s]
+ 99%|#########8| 169M/171M [00:04<00:00, 35.2MB/s]
+100%|##########| 171M/171M [00:05<00:00, 35.6MB/s]
+Training PDiscoNet for 28 epochs on 25 classes...
+  x = torch.nn.functional.upsample_bilinear(x, size=(l3.shape[-2], l3.shape[-1]))
+D:\lgpu\Lib\site-packages\torch\functional.py:505: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\native\TensorShape.cpp:4383.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Validation after epoch 0 (lr now 1.00e-04):
+Validation after epoch 1 (lr now 1.00e-04):
+Validation after epoch 2 (lr now 1.00e-04):
+Validation after epoch 3 (lr now 1.00e-04):
+Validation after epoch 4 (lr now 5.00e-05):
+Validation after epoch 5 (lr now 5.00e-05):
+Validation after epoch 6 (lr now 5.00e-05):
+Validation after epoch 7 (lr now 5.00e-05):
+Validation after epoch 8 (lr now 5.00e-05):
+Validation after epoch 9 (lr now 2.50e-05):
+Validation after epoch 10 (lr now 2.50e-05):
+Validation after epoch 11 (lr now 2.50e-05):
+Validation after epoch 12 (lr now 2.50e-05):
+Validation after epoch 13 (lr now 2.50e-05):
+Validation after epoch 14 (lr now 1.25e-05):
+Validation after epoch 15 (lr now 1.25e-05):
+Validation after epoch 16 (lr now 1.25e-05):
+Validation after epoch 17 (lr now 1.25e-05):
+Validation after epoch 18 (lr now 1.25e-05):
+Validation after epoch 19 (lr now 6.25e-06):
+Validation after epoch 20 (lr now 6.25e-06):
+Validation after epoch 21 (lr now 6.25e-06):
+Validation after epoch 22 (lr now 6.25e-06):
+Validation after epoch 23 (lr now 6.25e-06):
+Validation after epoch 24 (lr now 3.13e-06):
+Validation after epoch 25 (lr now 3.13e-06):
+Validation after epoch 26 (lr now 3.13e-06):
+Validation after epoch 27 (lr now 3.13e-06):
+PDiscoNet training done. Checkpoint saved to D:\Assignments\lucidppn-reproduction\experiments\part_detector\pdisco_28ep\pdisco.pt
