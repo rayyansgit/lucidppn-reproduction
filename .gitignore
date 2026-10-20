@@ -22,3 +22,5 @@ CUB_subset_maps_pdisco28/
 MetiNet/pretrained_models/
 # Side file written by the upstream PDiscoNet CUB loader
 testset.tsv
+# Downloaded CUB archive (rebuild CUB_subset with prepare_cub_subset.py)
+dataset/

@@ -31,7 +31,7 @@ data, training loop or evaluation); **written by us** = new code.
 | Evaluation summary and figures | `analysis/summarize_eval.py` | written by us | |
 | Multi-seed summary, colourfulness-vs-hue-sensitivity analysis | `analysis/summarize_runs.py`, `analysis/colour_by_species.py` | written by us | Colourfulness metric from Hasler & Süsstrunk (2003). |
 | Overnight experiment queue | `experiments/run_queue.sh` | written by us | |
-| Deployment: inference wrapper, Streamlit app, FastAPI API | `deploy/*` | written by us | Preprocessing copied from the test-time branch of upstream `util/data.py`. |
+| Deployment: inference wrapper, Streamlit app, FastAPI API | `deploy/*`, `.streamlit/config.toml` | written by us | Preprocessing follows the test-time branch of upstream `util/data.py`. Per-part colour evidence, accepted-colour grid (trained colour branch evaluated on an RGB grid), part comparison and the in-app ablation view are our additions. |
 | Prototype patches ("this looks like that") | `deploy/build_prototypes.py`, `deploy/prototypes/` | written by us | Patches cropped from our CUB training images at each prototype's strongest activation, following the paper's prototype visualisation. |
 | Colab notebook | `notebooks/stage4_stage5_colab.ipynb` | written by us | |
 | One-click demo launchers | `run_demo.bat`, `run_demo.sh` | written by us | |
@@ -46,9 +46,14 @@ data, training loop or evaluation); **written by us** = new code.
 | LucidPPN CUB 81.5 ± 0.4 % (200 classes, ConvNeXt-Tiny), ShapeTexNet 80.4 %, hue-perturbed numbers | reported by the authors (paper Tables 1-3) |
 | Everything in `EXPERIMENTS.md`, `MetiNet/*log*.txt`, `part_detection/*log*.txt`, `MetiNet/results/` | obtained by our team, on Google Colab |
 | Everything in `experiments/` (Jumps 5-7, 28-epoch part detector, part quality, multi-seed Stage 4, colourfulness analysis) | obtained by our team, on a local RTX 2080 laptop GPU |
+| Colour ablation split by species colourfulness (12 most vs 12 least colourful species), shown in the app and the report | computed with the AI assistant from our per-species results in `experiments/*/ablation/ablation.json`; no new runs |
 
 ## AI assistance
 The Stage 3 review, `PROVENANCE.md`, the Colab notebook and the
 report draft were written with help from an AI assistant. The team ran all experiments.
 We also used the AI assistant to help train the models overnight and automate that process (`experiments/run_queue.sh`),
 to find the paper's training settings (in the authors' `MetiNet/run_training.sh`) and to implement them in our runs.
+For the final submission an AI assistant (Claude) reviewed the repository and re-checked the reported numbers against
+the raw result files, rewrote the Streamlit app's layout and explanation views (`deploy/app.py`,
+`deploy/lucid_inference.py`), and drafted the updated documentation, report and slides. The team reviewed and edited
+these and is responsible for the content.

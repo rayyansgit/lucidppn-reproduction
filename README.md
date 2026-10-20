@@ -2,103 +2,82 @@
 
 Team: Rayyan Saeed (31629), Laksh Kumar (30598), Ahmad Mustafa Khan (30496)
 
+Paper: Pach, Lewandowska, Tabor, Zieliński, Rymarczyk. *LucidPPN: Unambiguous Prototypical Parts Network for
+User-centric Interpretable Computer Vision.* ICLR 2025.
+[Paper](https://openreview.net/forum?id=BM9qfolt6p) | [Official code](https://github.com/mateuszpach/LucidPPN)
+
 ## Run the demo
-Needs Python 3.10-3.13. No GPU, dataset or Colab is required: the trained model and example images are in the repo.
-- **Windows:** double-click `run_demo.bat`
+Needs Python 3.10-3.13. No GPU, dataset or Colab: the trained model and example images are in the repository.
+- **Windows:** double-click `run_demo.bat` (in PowerShell: `.\run_demo.bat`)
 - **macOS / Linux:** `bash run_demo.sh`
 
-The first run installs its dependencies into `.venv` (about 5-10 minutes). The app then opens at
-http://localhost:8501. Details, the REST API and screenshots: [`deploy/README.md`](deploy/README.md).
+The first run installs dependencies into `.venv` (5-10 minutes); the app then opens at http://localhost:8501.
+App, REST API and worked example: [`deploy/README.md`](deploy/README.md).
 
-## Paper
-LucidPPN: Unambiguous Prototypical Parts Network for User-centric Interpretable Computer Vision.
-Pach, Lewandowska, Tabor, Zieliński, Rymarczyk. ICLR 2025.
-Paper: https://openreview.net/forum?id=BM9qfolt6p | Code: https://github.com/mateuszpach/LucidPPN
+## What LucidPPN does
+A prototypical-parts network classifies an image by matching its parts to parts of training images ("this looks like
+that"). LucidPPN makes these explanations unambiguous in two ways: a **shape branch** sees only a grayscale copy of the
+image and a separate **colour branch** sees only pixel colours, so every part's evidence splits into shape and colour;
+and part maps from PDiscoNet tie prototype *k* to the same object part in every class.
 
-## What the model does
-LucidPPN splits each input image into a grayscale version (shape/texture) and a color version, learns separate visual "prototypes" for each, and combines both to classify the image — while keeping color-based evidence separate from shape/texture-based evidence, so predictions are easier to explain (e.g. "this matched on belly color" vs "this matched on wing shape").
+## What we did
+We ran the full three-stage pipeline (PDiscoNet part discovery, then the two-branch MetiNet, then evaluation) on the
+first 25 CUB-200-2011 species (750 train / 652 test images), with the authors' model and loss code unchanged and our own
+data preparation, training and evaluation drivers. Every file is tagged in [`PROVENANCE.md`](PROVENANCE.md); every run
+is logged in [`EXPERIMENTS.md`](EXPERIMENTS.md) and [`experiments/`](experiments/README.md).
 
-## The full pipeline, and what we ran
-The method has three stages. We implemented and ran all three, at reduced scale (25 of 200 CUB classes) to fit our compute budget:
-1. **Part detection (PDiscoNet)** — locates 8 semantic bird parts per image. Trained 5 epochs on our subset, then generated part-location maps for all train/test images.
-2. **MetiNet training** — the main LucidPPN model (grayscale + color branches, prototype learning), trained using the real part maps from stage 1.
-3. **Evaluation** — classification accuracy on held-out test images.
-
-## Results — 81.9% test top-1 accuracy (final epoch of Jump 4)
-We ran four labeled experiments, each building on the last. Full details, per-epoch analysis, and honest caveats for every run: **[`EXPERIMENTS.md`](EXPERIMENTS.md)**.
-
-| Jump | What changed | Test top-1 |
+| | Paper | Ours |
 |---|---|---|
-| 1 | Forward pass only, untrained | n/a (sanity check) |
-| 2 | First real training, no part-detection maps | 33.9-34.2% |
-| 3 | Added real part-detection maps (full 3-stage pipeline) | 41.6% |
-| 4 | Longer training (82 epochs) + delayed backbone unfreeze + larger batch | **81.9%** |
+| Classes | 200 | 25 |
+| Shape backbone | ConvNeXt-Tiny, 28 x 28 feature maps | ResNet18, also 28 x 28 (the authors' ResNet code uses stride 1 in its last two stages) |
+| Parts K | 12 (best model) | 8 |
+| PDiscoNet (authors' scripts) | 448 px, 28 epochs | 224 px, 5 epochs (28 in the follow-up study) |
 
-Random-chance baseline for 25 classes: 4.0%.
+## Results
+All numbers are test top-1 at the final epoch on 652 images; mean ± std over runs. Random chance is 4%.
 
-We report the **final-epoch** accuracy only. The highest single epoch (83.6%, epoch 68) was picked by looking at
-test accuracy, which is selection on the test set, so it is not a fair estimate.
+**Reproduction.** Our Jump 4 configuration reaches **83.1 ± 1.0%** over 4 runs (81.9, 84.0, 83.7, 82.8). The paper
+reports 81.5 ± 0.4% on 200 classes. The numbers look alike but are not comparable: 25 classes is a much easier task,
+and our backbone is weaker.
 
 ![Training curves](analysis/figures/training_curves.png)
 
-**Key findings** (see `EXPERIMENTS.md` for full detail):
-- Part-detection supervision (Jump 3) reduced overfitting, not just raw accuracy: the train-test gap roughly halved.
-- In every run, test accuracy stays at chance (~4-5%) until the backbone is unfrozen (dashed lines in the figure).
-  With ResNet18 the warm-up phase trains only the 1×1 prototype layer: the upstream code unfreezes a block called
-  `layer4.2`, and ResNet18 has no such block. So Jump 4's gain comes from training **72 unfrozen epochs instead of 8**,
-  not from delaying the unfreeze. Those 10 frozen epochs were wasted.
-- Accuracy plateaus from about epoch 40, while train accuracy approaches 99% and the train-test gap widens again.
+**Our experiment: ablation of the colour branch.** The shape branch never receives gradients from the colour branch
+(stop-gradient in the fusion), so the shape-only model is obtained without retraining. Over 12 trained models:
 
-## Honest comparison to the paper
-| | Paper (Table 1) | Ours |
-|---|---|---|
-| Classes | 200 | 25 (first 25 CUB species) |
-| Test top-1 | **81.5 ± 0.4%** (3 runs) | **81.9%** (1 run) |
-| ShapeTexNet backbone | ConvNeXt-Tiny, 28×28 feature maps | ResNet18, also 28×28 feature maps: the authors' ResNet code uses stride 1 in its last two stages |
-| Object parts K | 12 (best model) | 8 |
-| PDiscoNet | 448 px, 28 epochs | 224 px, 5 epochs |
-| Schedule | 40 epochs, batch 64, lr 0.002 → 0.0002, 15 frozen | 82 epochs, batch 32, lr 0.0005 → 0.00005, 10 frozen |
+| Test images | Colour gain, original colours | Full model, hue shift up to 0.5 | Shape only, hue shift up to 0.5 |
+|---|---|---|---|
+| All 25 species | +1.4 (positive in 12 of 12 models; paper +1.4) | −4.1 | 0.0 |
+| 12 most colourful species | +1.7 | −7.5 | 0.0 |
+| 12 least colourful species | +1.3 | −0.9 | 0.0 |
+| Paper, 200 species | +1.4 | −10.2 | 0.0 |
 
-The numbers look the same, but they don't measure the same thing. Telling 25 species apart is much easier than
-telling 200 apart, and our backbone is weaker (ResNet18 vs ConvNeXt-Tiny). So our 81.9% shows that the pipeline and method
-work end to end at a meaningful scale. It is not evidence that we matched the paper. On 200 classes we would expect a
-clearly lower number with this setup.
+The colour branch adds a small, consistent gain and becomes a liability when colours are misleading, almost entirely
+on colourful species. Our first 25 species are mostly grey, brown and black, which is consistent with our smaller
+average cost than the paper's.
 
-## Provenance
-Full log: [`PROVENANCE.md`](PROVENANCE.md). Summary:
+**Follow-up study (3 seeds per setting).**
+- The paper's training recipe (from the authors' `run_training.sh`) gives 81.0-81.4%, about 2 points below our Jump 4
+  recipe: on 750 images its 40 epochs make 4x fewer weight updates.
+- A part detector trained for the paper's 28 epochs finds clearly better parts (NMI 24.1 → 31.0) but leaves accuracy
+  unchanged (83.1 vs 83.0). It does place the prototypes more consistently on the same body parts (keypoint NMI 17.6 →
+  20.8 and 18.1 → 22.6). This keypoint score is our adaptation of PDiscoNet's metric and is not reported in the
+  LucidPPN paper.
+- Several prototypes often concentrate on the head, the most distinctive region; the demo flags parts that share a
+  spot.
 
-| Component | Source |
-|---|---|
-| PDiscoNet model/training code (`part_detection/nets.py`, `train.py`, `datasets.py`) | Reused as-is from https://github.com/mateuszpach/LucidPPN |
-| MetiNet model code (`metinet/metinet.py`), training loop (`metinet/train.py`), data loading (`util/data.py`) | Reused as-is from https://github.com/mateuszpach/LucidPPN |
-| `prepare_cub_subset.py` | Written by us |
-| `forward_pass_test.py` | Written by us (adapted from logic in the authors' `MetiNet/main.py`) |
-| `part_detection/train_pdisco_quick.py`, `generate_maps_quick.py` | Adapted from the authors' `part_detection/main.py` and `save_maps.py` — reuse their real training/inference functions; our own driver code for class-filtering and reduced epoch counts |
-| `MetiNet/train_quick.py` | Adapted from the authors' `MetiNet/main.py` — reuses their real `train_metinet` function and loss; our own driver (optimizer/scheduler setup, epoch loop, hyperparameter sweeps for Jumps 2-4). Evaluation loop rewritten to skip part-segmentation IoU metrics (crash without full-dataset maps) while reusing their `topk_accuracy` function. |
+## Not done
+- Full 200-class training, the ConvNeXt-Tiny backbone, K = 12 parts, PDiscoNet at 448 px
+- The paper's user studies, the other three datasets, the PIP-Net comparison
+- A validation split: we report final epochs only, never a test-selected best epoch
 
-## Stage 4 — our experiment: colour-branch ablation
-**Question:** how much of our LucidPPN's accuracy comes from the ColorNet branch, and how much robustness to colour
-changes does that cost? `MetiNet/eval_ablation.py` scores the Jump 4 checkpoint as the full model and as the
-grayscale ShapeTexNet branch alone, on clean and hue-perturbed test images (paper Tables 2-3). Results go to
-`MetiNet/results/`. Run it with `notebooks/stage4_stage5_colab.ipynb`. Details are in `EXPERIMENTS.md`.
+## Reproduce
+1. `pip install -r requirements_pip.txt` (Colab has torch preinstalled)
+2. `python prepare_cub_subset.py` (expects `CUB_200_2011/` in the repository root)
+3. `cd part_detection && python train_pdisco_quick.py && python generate_maps_quick.py`
+4. `cd MetiNet && python forward_pass_test.py` (sanity check)
+5. `cd MetiNet && python train_quick.py` (defaults = Jump 4; add `--num_workers 0` on Windows)
+6. `cd MetiNet && python eval_ablation.py` and `python eval_full.py` (experiment and full evaluation)
+7. `streamlit run deploy/app.py` or `uvicorn deploy.api:app` (deployment)
 
-## Stage 5 — deployment
-A Streamlit web app and a FastAPI REST API. See [`deploy/README.md`](deploy/README.md).
-
-## What's NOT done
-- Full 200-class training (we used 25)
-- Paper's actual backbone (ConvNeXt-Tiny), K=12 parts, and full PDiscoNet resolution (448)
-- Multiple seeds (the paper reports mean ± std over 3 runs; we have 1 run)
-- Part-alignment IoU metric (upstream `test.py` needs full-dataset maps)
-
-## How to reproduce
-1. `pip install -r requirements_pip.txt` (or use Colab, torch/torchvision preinstalled)
-2. `python prepare_cub_subset.py` (expects `CUB_200_2011/` in the working directory)
-3. `cd part_detection && python train_pdisco_quick.py`
-4. `cd part_detection && python generate_maps_quick.py`
-5. `cd MetiNet && python forward_pass_test.py` (sanity check)
-6. `cd MetiNet && python train_quick.py` (defaults = Jump 4; e.g. `--epochs 8 --freeze_epochs 2 --batch_size 16` for Jump 3 — see `EXPERIMENTS.md`; add `--num_workers 0` on Windows)
-7. `cd MetiNet && python eval_ablation.py` (Stage 4)
-8. `streamlit run deploy/app.py` or `uvicorn deploy.api:app` (Stage 5)
-
-Or run steps 2-8 on Colab with [`notebooks/stage4_stage5_colab.ipynb`](notebooks/stage4_stage5_colab.ipynb).
+Steps 2-7 also run on Colab with [`notebooks/stage4_stage5_colab.ipynb`](notebooks/stage4_stage5_colab.ipynb).

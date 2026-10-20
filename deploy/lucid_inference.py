@@ -9,6 +9,7 @@ import os
 import sys
 import json
 import argparse
+import colorsys
 
 import torch
 import torch.nn.functional as F
@@ -59,26 +60,77 @@ def load_model(checkpoint=DEFAULT_CHECKPOINT, device='cpu'):
     return net.to(device).eval()
 
 
-def shift_hue(image: Image.Image, shift: float) -> Image.Image:
-    """Rotate hue by `shift` (in [-0.5, 0.5]) while keeping per-pixel luminance, as in the authors' random_hue_jitter
-    (deterministic here so the demo is repeatable)."""
-    if shift == 0:
-        return image
-    x = TF.to_tensor(image.convert('RGB'))
+def shift_hue(x: torch.Tensor, shift: float) -> torch.Tensor:
+    """Rotate the hue of an RGB tensor (3 x H x W, values in [0, 1]) by `shift` (in [-0.5, 0.5]) and rescale each
+    pixel so its luminance is exactly the original's: the authors' random_hue_jitter (util/func.py) with a fixed
+    instead of a random shift. As there, the result is not clipped to [0, 1]; clipping would change the luminance
+    of saturated pixels and with it what the shape branch sees."""
     gray = TF.rgb_to_grayscale(x, 3)
     y = TF.adjust_hue(x, shift)
-    y = torch.nan_to_num(y * gray / TF.rgb_to_grayscale(y, 3), nan=0.0).clamp(0, 1)
-    return TF.to_pil_image(y)
+    return torch.nan_to_num(y * gray / TF.rgb_to_grayscale(y, 3), nan=0.0)
 
 
-def crop_patch(image224: Image.Image, row: int, col: int, grid: int) -> Image.Image:
-    """The PATCH x PATCH region of a 224x224 image centred on cell (row, col) of a grid x grid feature map (28x28 for
-    the authors' ResNet18, whose last two stages use stride 1), kept inside the image."""
+def patch_box(row: int, col: int, grid: int):
+    """(left, top, right, bottom) of the PATCH x PATCH region of a 224x224 image centred on cell (row, col) of a
+    grid x grid feature map (28x28 for the authors' ResNet18, whose last two stages use stride 1), kept inside the
+    image."""
     cell = IMG_SIZE / grid
     cx, cy = (col + 0.5) * cell, (row + 0.5) * cell
     left = int(min(max(cx - PATCH / 2, 0), IMG_SIZE - PATCH))
     top = int(min(max(cy - PATCH / 2, 0), IMG_SIZE - PATCH))
-    return image224.crop((left, top, left + PATCH, top + PATCH))
+    return left, top, left + PATCH, top + PATCH
+
+
+def crop_patch(image224: Image.Image, row: int, col: int, grid: int) -> Image.Image:
+    return image224.crop(patch_box(row, col, grid))
+
+
+# ColorNet scores one RGB value at a time, so its whole behaviour can be read off by sweeping the colour cube.
+_COLOUR_GRID = torch.cartesian_prod(*[torch.linspace(0, 1, 16)] * 3)       # 4,096 colours, RGB in [0, 1]
+ACCEPT = 0.5
+
+
+@torch.no_grad()
+def colour_acceptance(net):
+    """ColorNet output for every colour of a 16^3 RGB grid: [4096, parts, classes]. Precomputed once per model."""
+    device = next(net.parameters()).device
+    out = net._color_net(_COLOUR_GRID.to(device)).cpu()
+    return out.unflatten(1, (NUM_PARTS, len(CLASSES)))
+
+
+def accepted_colours(acceptance, part: int, cls: int, max_n: int = 40):
+    """Colours that ColorNet accepts (score > 0.5) for part `part` (0-based) of class `cls`, as RGB 0-255 tuples sorted
+    by hue, plus the fraction of the colour cube accepted. A fraction near 1 means colour has no say for that part."""
+    s = acceptance[:, part, cls]
+    ok = s > ACCEPT
+    frac = ok.float().mean().item()
+    cols = _COLOUR_GRID[ok]
+    if len(cols) > max_n:
+        cols = cols[torch.linspace(0, len(cols) - 1, max_n).long()]
+    hsv = [colorsys.rgb_to_hsv(*c.tolist()) for c in cols]
+    order = sorted(range(len(cols)), key=lambda i: (round(hsv[i][0] * 12) if hsv[i][1] > 0.15 else -1, hsv[i][2]))
+    return [tuple(int(round(255 * v)) for v in cols[i].tolist()) for i in order], frac
+
+
+def shared_spots(parts, max_cells: int = 2):
+    """Groups of parts whose strongest cells lie within `max_cells` cells (16 px at 28x28) of each other: those
+    parts show the same image region, so they are not separate evidence."""
+    n = len(parts)
+    group = list(range(n))
+
+    def find(i):
+        while group[i] != i:
+            i = group[i]
+        return i
+    for i in range(n):
+        for j in range(i + 1, n):
+            (r1, c1), (r2, c2) = parts[i]['location'], parts[j]['location']
+            if max(abs(r1 - r2), abs(c1 - c2)) <= max_cells:
+                group[find(j)] = find(i)
+    clusters = {}
+    for i in range(n):
+        clusters.setdefault(find(i), []).append(parts[i]['part'])
+    return [sorted(c) for c in clusters.values() if len(c) > 1]
 
 
 def load_prototypes():
@@ -98,12 +150,21 @@ def preprocess(image: Image.Image):
 
 
 @torch.no_grad()
-def predict(net, image: Image.Image, top_k=5, hue_shift=0.0):
-    """Returns a JSON-serialisable dict with the top-k classes and, for the top class, per-part evidence."""
+def predict(net, image: Image.Image, top_k=5, hue_shift=0.0, compare=None):
+    """Returns a JSON-serialisable dict with the top-k classes, per-part evidence for the predicted class and the
+    same evidence for a comparison class (`compare`, a class index; default: the runner-up), plus the ShapeTexNet
+    maps of the predicted class upsampled to 224x224 and the 224x224 model input."""
     device = next(net.parameters()).device
-    image = shift_hue(image, hue_shift)
+    if not hasattr(net, '_colour_acceptance'):
+        net._colour_acceptance = colour_acceptance(net)
     x, x_aug, resized = preprocess(image)
-    proto_feat, proto_pooled, color_feat, color_pooled, _, out = net(x.to(device), x_aug.to(device), None)
+    if hue_shift:
+        # As in the authors' evaluation: resize, then recolour. Only the colour branch's input changes; the luminance,
+        # and so the shape branch's grayscale input, is the original image's.
+        x = shift_hue(x[0], hue_shift).unsqueeze(0)
+        resized = TF.to_pil_image(x[0].clamp(0, 1))     # for display only
+    x, x_aug = x.to(device), x_aug.to(device)
+    proto_feat, proto_pooled, color_feat, color_pooled, _, out = net(x, x_aug, None)
     # out: LucidPPN score per class (mean over parts of the fused colour x shape resemblance)
     # proto_pooled: ShapeTexNet (grayscale) resemblance per part and class; its mean over parts is P_S
     lucid = out[0]
@@ -112,18 +173,45 @@ def predict(net, image: Image.Image, top_k=5, hue_shift=0.0):
     # the scores do not sum to 1. "Share of evidence" normalises them over the 25 species: it sums to 100% and reads
     # like a probability, but it is not a calibrated one.
     share = lucid / lucid.sum()
-    order = torch.argsort(lucid, descending=True)[:top_k].tolist()
+    ranked = torch.argsort(lucid, descending=True).tolist()
     top = [{'class': pretty(CLASSES[c]), 'class_index': c, 'lucidppn_score': round(lucid[c].item(), 4),
             'share_of_evidence': round(share[c].item(), 4),
-            'shapetexnet_score': round(shape[c].item(), 4)} for c in order]
-    c = order[0]
-    # Strongest cell of each part's prototype map for the predicted class: where on the bird the evidence is
+            'shapetexnet_score': round(shape[c].item(), 4)} for c in ranked[:top_k]]
+
+    # The image as ColorNet sees it: downsampled to the feature-map size, as in MetiNet.forward
     grid = proto_feat.shape[-1]
-    peak = proto_feat[0, :, c].flatten(1).argmax(dim=1)
-    parts = [{'part': k + 1,
-              'shape_texture': round(proto_pooled[0, k, c].item(), 4),
-              'shape_plus_colour': round(color_pooled[0, k, c].item(), 4),
-              'location': [int(peak[k]) // grid, int(peak[k]) % grid], 'grid': grid} for k in range(NUM_PARTS)]
+    pixels = (255 * TF.resize(x, [grid, grid], antialias=True)[0]).round().int().cpu()
+
+    def evidence(c):
+        """Per part, for class c:
+        - shape_texture: ShapeTexNet resemblance (max over the image), at `location`;
+        - shape_plus_colour: the fused score the prediction uses (max over the image of shape x colour);
+        - colour_match: combined / shape, the share of the shape evidence that the colour check lets through
+          (1 = colour fits, 0 = colour vetoes the part), so combined = shape x colour_match;
+        - pixel_colour: the colour ColorNet saw (RGB of the 28x28 downsampled image) where the combined score peaks,
+          or at the shape peak when colour vetoed the part;
+        - colour_space_accepted: share of all colours ColorNet accepts for this part (1.0 = colour has no say)."""
+        peak = proto_feat[0, :, c].flatten(1).argmax(dim=1)
+        fused_peak = color_feat[0, :, c].flatten(1).argmax(dim=1)
+        parts = []
+        for k in range(NUM_PARTS):
+            r, q = int(peak[k]) // grid, int(peak[k]) % grid
+            shape_k, fused_k = proto_pooled[0, k, c].item(), color_pooled[0, k, c].item()
+            match = min(1.0, fused_k / max(shape_k, 1e-6))
+            spot = fused_peak[k] if match >= 0.1 else peak[k]
+            _, frac = accepted_colours(net._colour_acceptance, k, c, max_n=0)
+            parts.append({'part': k + 1,
+                          'shape_texture': round(shape_k, 4),
+                          'colour_match': round(match, 4),
+                          'shape_plus_colour': round(fused_k, 4),
+                          'location': [r, q], 'grid': grid,
+                          'pixel_colour': pixels[:, int(spot) // grid, int(spot) % grid].tolist(),
+                          'colour_space_accepted': round(frac, 3)})
+        return parts
+
+    c = ranked[0]
+    other = ranked[1] if compare is None or compare == c else int(compare)
+    parts = evidence(c)
     # Where each part's prototype of the predicted class fires: ShapeTexNet map, upsampled to the image size
     maps = F.interpolate(proto_feat[0, :, c].unsqueeze(0), size=(IMG_SIZE, IMG_SIZE), mode='bilinear',
                          align_corners=False)[0].cpu()
@@ -133,4 +221,9 @@ def predict(net, image: Image.Image, top_k=5, hue_shift=0.0):
         'hue_shift': hue_shift,
         'top_k': top,
         'parts': parts,
+        'parts_at_same_spot': shared_spots(parts),
+        'comparison': {'class': pretty(CLASSES[other]), 'class_index': other,
+                       'lucidppn_score': round(lucid[other].item(), 4),
+                       'shapetexnet_score': round(shape[other].item(), 4),
+                       'parts': evidence(other)},
     }, maps, resized

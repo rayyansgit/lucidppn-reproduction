@@ -31,7 +31,8 @@ most of the overfitting reduction Jump 3 achieved via the part-loss regularizati
 did not implement best-checkpoint saving. We deliberately report the final epoch anyway: without a separate validation
 split, choosing an epoch by its test accuracy would be selection on the test set.
 
-**Correction to our own reading of Jump 4 (Stage 3 review).** In all three runs, test accuracy sits at chance
+**Correction to our own reading of Jump 4 (Stage 3 review; the cause is corrected again in Jumps 5-7, finding 4:
+mainly the low learning rate).** In all three runs, test accuracy sits at chance
 (Jump 2: 3.8%, Jump 3: 5.2%, Jump 4: 4.8% at the last frozen epoch) and only starts rising once the backbone is
 unfrozen (`analysis/figures/training_curves.png`). The upstream optimiser setup keeps only blocks named `layer4.2`
 trainable during warm-up, and ResNet18 has only `layer4.0` and `layer4.1`. So during warm-up only the 1×1 prototype
@@ -95,8 +96,9 @@ McNemar p ≈ 0.14, so it is not significant on its own. Under strong hue change
 interpretation is in `REPORT.md` Section 8.
 
 **Jump 4 rerun (reproducibility check).** The Stage 3 checkpoint was lost with the Colab session, so Jump 4 was
-retrained with the unmodified scripts and settings. Final test top-1: **84.0%** (original 81.9%). The difference comes
-from GPU non-determinism alone. Log: `MetiNet/training_log_JUMP4_rerun.txt`.
+retrained with the unmodified scripts and settings. Final test top-1: **84.0%** (original 81.9%). The rerun also retrained
+PDiscoNet and regenerated the part maps (the notebook repeats the whole Stage 3 pipeline), so the 2.1-point difference
+comes from non-determinism in both training stages, with identical code, settings and seed. Log: `MetiNet/training_log_JUMP4_rerun.txt`.
 
 **Optional follow-up (B):** re-run the Jump 4 schedule with `--part_weight 0` to test whether part supervision still
 matters with long training. Jumps 2 and 3 only compared these at 10 epochs.
@@ -115,7 +117,8 @@ set and evaluation as Jump 4. Folders, configs, per-epoch logs and exact command
 on our Stage 3 configuration, once seed-to-seed noise is taken into account?
 
 **Design (2 × 2, one change per axis):**
-- *Training recipe.* "Code defaults" = Jump 4 (the official repo's `args.py` defaults plus our Jump 4 changes: 80 + 2
+- *Training recipe.* "Code defaults" = Jump 4 (the official repo's `args.py` defaults plus our Jump 4 changes; the name is loose, since
+  `args.py` itself defaults to 60 epochs and batch 64: 80 + 2
   epochs, lr 0.0005, α_D = 1.0, batch 32). "Paper recipe" = the authors' own launch script `MetiNet/run_training.sh`
   ("Main results"), which matches the paper's supplement: 40 epochs, 15 frozen, lr 0.002 for both branches, ColorNet
   from epoch 1, α_D = 1.4, batch 64.
@@ -179,8 +182,10 @@ every checkpoint we have: the Jump 4 rerun and the 11 models of Jumps 4-7.
 3. **Colourful species carry almost all of the hue sensitivity.** Per species, the accuracy drop at hue shift 0.5
    correlates with the colourfulness of its images (Hasler & Süsstrunk metric; Spearman ρ = 0.62, p = 0.001, 25
    species). The 12 most colourful species lose 7.2 points on average, the 12 least colourful 0.8. Cardinal (−29) and
-   Indigo Bunting (−28) drive most of it; albatrosses, cormorants and auklets barely change. This explains why our
-   average drop (−4.1) is well below the paper's (−10.2): our 25 species are mostly grey, brown and black, while the
+   Indigo Bunting (−28) drive most of it; albatrosses, cormorants and auklets barely change. Weighted by test images
+   instead of averaged per species (as shown in the app): 12 most colourful −7.5 points (full model below shape-only
+   in 11 of 12 models), 12 least colourful −0.9, 6 most colourful −12.8. This is consistent with our average drop
+   (−4.1) being well below the paper's (−10.2): our 25 species are mostly grey, brown and black, while the
    full 200-class CUB has many more colour-defined species (warblers, tanagers, orioles). Details:
    [`experiments/colour_by_species.md`](experiments/colour_by_species.md).
 
