@@ -132,15 +132,33 @@ code's default arguments. We crossed this recipe with a part detector trained fo
 | 28 epochs | 31.0 | 14.9 | 12.7% | 20.8 / 22.6 |
 
 - **The paper's recipe ends about 2 points lower on our subset.** With 750 images and batch 64, its 40 epochs make
-  about 440 weight updates against about 1,900 for Jump 4. It was designed for eight times more images.
+  about 440 weight updates against about 1,900 for Jump 4. It was designed for eight times more images. Its higher
+  learning rate makes it learn faster at first (about 76% against 67% at epoch 25), but it stops at epoch 40 while the
+  Jump 4 recipe keeps improving to about 83%.
+
+![Test accuracy per epoch for every run of the follow-up study (one line per seed)](experiments/summary.png)
+
 - **Better parts improved alignment, not accuracy.** The longer-trained detector finds clearly better parts (first
   three columns, the authors' metrics). Accuracy did not change, but every model trained with the better parts places
   its prototypes more consistently on the same annotated body parts (last column). This prototype keypoint score is our
   adaptation of PDiscoNet's metric and is not reported in the LucidPPN paper, so it only compares our own models. For
-  reference, the original PDiscoNet reaches an NMI of 50.1 with 8 parts on full CUB: our parts are weak.
+  reference, the original PDiscoNet reaches an NMI of 50.1 with 8 parts on full CUB: our parts are weak. (With only 5
+  epochs, the detector's learning-rate decay, scheduled every 5 epochs, never took effect.)
+- **Prototype IoU, the paper's own part metric** (authors' definition: each part's prototype map against that part's
+  PDiscoNet mask): 0.33 for the Jump 4 recipe and 0.44 for the paper recipe with the same 5-epoch masks; 0.27 and 0.31
+  with the 28-epoch masks. The paper's stronger part weight (1.4) makes prototypes follow their masks more closely, as
+  in the paper's own analysis of this weight. IoU is not comparable across the two detectors, whose unsupervised parts
+  differ, which is why we added the keypoint score as a common reference.
+
+![Prototype keypoint NMI per configuration (dots: individual models). Every model trained with the 28-epoch parts aligns better than every model trained with the 5-epoch parts](experiments/part_alignment.png)
+
 - **Top-5 accuracy** is 97-98% in every setting. The most frequent confusions are within look-alike dark species:
   Pelagic Cormorant as Brandt's Cormorant (30% of its images), Rusty Blackbird as Brewer's Blackbird (26%) and
-  Black-footed Albatross as Sooty Albatross (19%). These three groups account for 37% of all errors.
+  Black-footed Albatross as Sooty Albatross (19%). These three groups account for 37% of all errors. The hardest
+  species are Brandt's Cormorant (47%) and Pelagic Cormorant (51%); 10 of the 25 species are above 90%.
+
+![Confusion matrix of all 12 models pooled (% of each species' test images)](experiments/confusion_matrix.png)
+
 
 ## 7. Our experiment: ablation of the colour branch
 
@@ -176,9 +194,18 @@ Accuracy differences in points, mean over the 12 models.
   broken. Its size matches the paper's.
 - **The shape branch is exactly unaffected** at every hue level in every model. The perturbation keeps brightness and
   the shape branch only sees brightness, so this confirms that the two branches really are separated.
+- **The damage grows with the size of the colour change.** Shifts up to 0.1 change nothing; from about 0.25 the colour
+  branch hurts more often than it helps, and at 0.5 the full model falls below the shape-only model (figure above).
+- **How much a model relies on colour depends strongly on the seed.** With identical settings (paper recipe, 5-epoch
+  parts) the change at hue shift 0.5 ranged from +0.2 to −6.6 points. Models whose colour branch responds more
+  strongly to differences in pixel colour tend to lose more (Spearman ρ = −0.48 over the 12 models, not significant,
+  p = 0.11). A single-model ablation, like our first one, can therefore give a misleading picture.
 - **The cost depends on the species.** On the 12 most colourful species the full model loses 7.5 points and falls below
   the shape-only model in 11 of 12 models; on the 12 least colourful it loses 0.9. Per species, the loss correlates
   with colourfulness (Spearman ρ = 0.62, p = 0.001); the Cardinal loses 29 points and the Indigo Bunting 28.
+
+![Accuracy drop at hue shift 0.5 against the colourfulness of each species' test images, averaged over the 12 models](experiments/colour_by_species.png)
+
 
 **Answer.** The colour branch adds about 1.4 points, as in the paper. When colours are wrong it costs accuracy, and
 the cost falls almost entirely on colourful species. Our average cost (−4.1) is smaller than the paper's (−10.2), which
@@ -218,7 +245,9 @@ A Streamlit application and a FastAPI REST API share one inference module and th
 example: `deploy/README.md`.
 
 The application has three views:
-1. **Prediction:** species, correctness for test images, and the top 3 relative match scores.
+1. **Prediction:** species, correctness for test images, and the top 3 relative match scores. Each species is scored
+   by its own sigmoid, so the scores do not sum to one; the app shows each score's share of the total, not a
+   calibrated probability.
 2. **Explanation:** for each of the 8 parts, where its prototype fires, the image patch, the matching patch of a
    training image (grayscale, because shape is judged without colour), and the colour check: the colour on the bird
    and the colours the colour branch accepts for that part of that species. A chart compares the parts of the
