@@ -4,7 +4,7 @@ Two front ends share one inference module (`lucid_inference.py`):
 
 | | What it is | Start it |
 |---|---|---|
-| **Streamlit app** (`app.py`) | Web UI: upload a bird photo or pick a test image, see the top-5 species as a share-of-evidence bar chart (and, for test images, whether the prediction is correct), per-part shape vs colour evidence, prototype heatmaps, and a hue slider that recolours the bird live | `streamlit run deploy/app.py` |
+| **Streamlit app** (`app.py`) | Web UI: upload a bird photo or pick a test image, see the top-5 species as a share-of-evidence bar chart (and, for test images, whether the prediction is correct), per-part shape vs colour evidence, a "this looks like that" view (each part's image patch next to a training bird's prototype patch), and a hue slider that recolours the bird live | `streamlit run deploy/app.py` |
 | **REST API** (`api.py`) | FastAPI service returning JSON; interactive docs at `/docs` | `uvicorn deploy.api:app --port 8000` |
 
 Both run on an ordinary laptop CPU (the checkpoint loads in about 0.2 s and each prediction takes about 0.1 s) or on
@@ -117,7 +117,24 @@ colour and which on shape.
 Error handling: a non-image upload returns `400 {"detail": "file is not an image"}`, and a `hue_shift` outside
 [-0.5, 0.5] returns `400`.
 
-## 5. Screenshots
+## 5. "This looks like that": prototype patches
+For each of the 8 parts the app shows three images:
+1. **Where the part's prototype fires on your image** (heatmap; the white box marks the strongest spot).
+2. **Your image's patch** at that spot.
+3. **The prototype patch:** the patch of a *training* image of the predicted species where the same prototype fires
+   most strongly.
+
+Together they read as "this part of your bird looks like that part of a training bird", which is the paper's
+prototype visualisation. The prototype patches are precomputed for all 25 species × 8 parts (64×64 px, about 1 MB in
+total) and committed in `deploy/prototypes/`, so the app needs no dataset. To regenerate them after retraining (needs
+`CUB_subset/train`):
+```bash
+python deploy/build_prototypes.py
+```
+
+![This looks like that](../assets/demo/this_looks_like_that_cardinal.png)
+
+## 6. Screenshots
 App running the trained checkpoint on Colab (Black-footed Albatross and Rusty Blackbird test images):
 
 | Full page: prediction, top-5, part evidence, prototype heatmaps |

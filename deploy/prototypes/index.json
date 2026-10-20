@@ -1,0 +1,2055 @@
+{
+ "checkpoint": "MetiNet/checkpoint_quick_train.pt",
+ "prototypes": {
+  "Black_footed_Albatross": {
+   "1": {
+    "file": "Black_footed_Albatross/part1.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0056_796078.jpg",
+    "activation": 0.9993,
+    "location": [
+     21,
+     23
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Black_footed_Albatross/part2.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0019_796104.jpg",
+    "activation": 0.9954,
+    "location": [
+     15,
+     14
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Black_footed_Albatross/part3.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0041_796108.jpg",
+    "activation": 0.9968,
+    "location": [
+     23,
+     4
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Black_footed_Albatross/part4.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0041_796108.jpg",
+    "activation": 0.9897,
+    "location": [
+     24,
+     4
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Black_footed_Albatross/part5.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0057_796106.jpg",
+    "activation": 0.9964,
+    "location": [
+     6,
+     19
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Black_footed_Albatross/part6.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0080_796096.jpg",
+    "activation": 0.9912,
+    "location": [
+     20,
+     23
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Black_footed_Albatross/part7.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0010_796097.jpg",
+    "activation": 0.9875,
+    "location": [
+     19,
+     14
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Black_footed_Albatross/part8.jpg",
+    "source": "CUB_subset/train/Black_footed_Albatross/Black_Footed_Albatross_0038_212.jpg",
+    "activation": 0.9982,
+    "location": [
+     3,
+     5
+    ],
+    "grid": 28
+   }
+  },
+  "Bobolink": {
+   "1": {
+    "file": "Bobolink/part1.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0014_11055.jpg",
+    "activation": 0.9952,
+    "location": [
+     10,
+     10
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Bobolink/part2.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0065_9375.jpg",
+    "activation": 0.9953,
+    "location": [
+     9,
+     16
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Bobolink/part3.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0092_10026.jpg",
+    "activation": 0.9996,
+    "location": [
+     5,
+     9
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Bobolink/part4.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0117_10215.jpg",
+    "activation": 0.9982,
+    "location": [
+     2,
+     6
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Bobolink/part5.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0001_9261.jpg",
+    "activation": 0.9944,
+    "location": [
+     8,
+     17
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Bobolink/part6.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0099_9314.jpg",
+    "activation": 0.9964,
+    "location": [
+     3,
+     18
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Bobolink/part7.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0102_10807.jpg",
+    "activation": 0.978,
+    "location": [
+     9,
+     12
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Bobolink/part8.jpg",
+    "source": "CUB_subset/train/Bobolink/Bobolink_0107_10252.jpg",
+    "activation": 0.9952,
+    "location": [
+     2,
+     5
+    ],
+    "grid": 28
+   }
+  },
+  "Brandt_Cormorant": {
+   "1": {
+    "file": "Brandt_Cormorant/part1.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0023_23254.jpg",
+    "activation": 0.9975,
+    "location": [
+     13,
+     21
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Brandt_Cormorant/part2.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0080_23002.jpg",
+    "activation": 0.9973,
+    "location": [
+     8,
+     17
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Brandt_Cormorant/part3.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0035_23000.jpg",
+    "activation": 0.9986,
+    "location": [
+     3,
+     7
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Brandt_Cormorant/part4.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0076_23021.jpg",
+    "activation": 0.9907,
+    "location": [
+     12,
+     13
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Brandt_Cormorant/part5.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0025_22820.jpg",
+    "activation": 0.9959,
+    "location": [
+     11,
+     9
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Brandt_Cormorant/part6.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0025_22820.jpg",
+    "activation": 0.9944,
+    "location": [
+     5,
+     10
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Brandt_Cormorant/part7.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0035_23000.jpg",
+    "activation": 0.9849,
+    "location": [
+     6,
+     13
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Brandt_Cormorant/part8.jpg",
+    "source": "CUB_subset/train/Brandt_Cormorant/Brandt_Cormorant_0087_23126.jpg",
+    "activation": 0.9997,
+    "location": [
+     4,
+     15
+    ],
+    "grid": 28
+   }
+  },
+  "Brewer_Blackbird": {
+   "1": {
+    "file": "Brewer_Blackbird/part1.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0032_2214.jpg",
+    "activation": 0.9976,
+    "location": [
+     5,
+     7
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Brewer_Blackbird/part2.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0142_2636.jpg",
+    "activation": 0.9816,
+    "location": [
+     9,
+     4
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Brewer_Blackbird/part3.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0078_2659.jpg",
+    "activation": 0.9296,
+    "location": [
+     13,
+     18
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Brewer_Blackbird/part4.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0064_2290.jpg",
+    "activation": 0.9905,
+    "location": [
+     5,
+     5
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Brewer_Blackbird/part5.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0026_2625.jpg",
+    "activation": 0.9973,
+    "location": [
+     5,
+     20
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Brewer_Blackbird/part6.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0032_2214.jpg",
+    "activation": 0.9965,
+    "location": [
+     5,
+     7
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Brewer_Blackbird/part7.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0002_2278.jpg",
+    "activation": 0.9969,
+    "location": [
+     3,
+     11
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Brewer_Blackbird/part8.jpg",
+    "source": "CUB_subset/train/Brewer_Blackbird/Brewer_Blackbird_0030_2268.jpg",
+    "activation": 1.0,
+    "location": [
+     3,
+     5
+    ],
+    "grid": 28
+   }
+  },
+  "Cardinal": {
+   "1": {
+    "file": "Cardinal/part1.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0079_19044.jpg",
+    "activation": 0.9927,
+    "location": [
+     18,
+     10
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Cardinal/part2.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0104_17122.jpg",
+    "activation": 0.997,
+    "location": [
+     8,
+     6
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Cardinal/part3.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0012_18638.jpg",
+    "activation": 0.9999,
+    "location": [
+     4,
+     15
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Cardinal/part4.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0019_17368.jpg",
+    "activation": 0.9852,
+    "location": [
+     20,
+     5
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Cardinal/part5.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0097_17396.jpg",
+    "activation": 0.9922,
+    "location": [
+     7,
+     3
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Cardinal/part6.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0037_18092.jpg",
+    "activation": 0.9964,
+    "location": [
+     13,
+     25
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Cardinal/part7.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0002_18424.jpg",
+    "activation": 0.9852,
+    "location": [
+     11,
+     8
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Cardinal/part8.jpg",
+    "source": "CUB_subset/train/Cardinal/Cardinal_0037_18092.jpg",
+    "activation": 0.9846,
+    "location": [
+     14,
+     23
+    ],
+    "grid": 28
+   }
+  },
+  "Chuck_will_Widow": {
+   "1": {
+    "file": "Chuck_will_Widow/part1.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0057_796970.jpg",
+    "activation": 0.9875,
+    "location": [
+     10,
+     6
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Chuck_will_Widow/part2.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0023_796979.jpg",
+    "activation": 0.9983,
+    "location": [
+     9,
+     7
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Chuck_will_Widow/part3.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0016_796974.jpg",
+    "activation": 0.965,
+    "location": [
+     5,
+     4
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Chuck_will_Widow/part4.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0016_796974.jpg",
+    "activation": 0.9923,
+    "location": [
+     4,
+     4
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Chuck_will_Widow/part5.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0046_796966.jpg",
+    "activation": 0.973,
+    "location": [
+     8,
+     4
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Chuck_will_Widow/part6.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0048_796995.jpg",
+    "activation": 0.9648,
+    "location": [
+     14,
+     14
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Chuck_will_Widow/part7.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0035_796985.jpg",
+    "activation": 0.9932,
+    "location": [
+     17,
+     8
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Chuck_will_Widow/part8.jpg",
+    "source": "CUB_subset/train/Chuck_will_Widow/Chuck_Will_Widow_0006_796986.jpg",
+    "activation": 1.0,
+    "location": [
+     6,
+     4
+    ],
+    "grid": 28
+   }
+  },
+  "Crested_Auklet": {
+   "1": {
+    "file": "Crested_Auklet/part1.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0012_794960.jpg",
+    "activation": 0.9863,
+    "location": [
+     7,
+     13
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Crested_Auklet/part2.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0040_794912.jpg",
+    "activation": 0.9986,
+    "location": [
+     6,
+     19
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Crested_Auklet/part3.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0001_794941.jpg",
+    "activation": 0.9987,
+    "location": [
+     3,
+     22
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Crested_Auklet/part4.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0040_794912.jpg",
+    "activation": 0.9952,
+    "location": [
+     5,
+     19
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Crested_Auklet/part5.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0001_794941.jpg",
+    "activation": 0.9747,
+    "location": [
+     9,
+     14
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Crested_Auklet/part6.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0063_794901.jpg",
+    "activation": 0.992,
+    "location": [
+     5,
+     7
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Crested_Auklet/part7.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0047_794918.jpg",
+    "activation": 0.9767,
+    "location": [
+     12,
+     17
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Crested_Auklet/part8.jpg",
+    "source": "CUB_subset/train/Crested_Auklet/Crested_Auklet_0032_794931.jpg",
+    "activation": 0.9999,
+    "location": [
+     4,
+     8
+    ],
+    "grid": 28
+   }
+  },
+  "Eastern_Towhee": {
+   "1": {
+    "file": "Eastern_Towhee/part1.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0038_22399.jpg",
+    "activation": 0.9978,
+    "location": [
+     15,
+     19
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Eastern_Towhee/part2.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0050_22257.jpg",
+    "activation": 0.9865,
+    "location": [
+     6,
+     21
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Eastern_Towhee/part3.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0042_22155.jpg",
+    "activation": 0.9993,
+    "location": [
+     7,
+     4
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Eastern_Towhee/part4.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0093_22621.jpg",
+    "activation": 0.9857,
+    "location": [
+     17,
+     11
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Eastern_Towhee/part5.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0124_22585.jpg",
+    "activation": 0.9954,
+    "location": [
+     9,
+     7
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Eastern_Towhee/part6.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0124_22585.jpg",
+    "activation": 0.9915,
+    "location": [
+     9,
+     7
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Eastern_Towhee/part7.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0073_22247.jpg",
+    "activation": 0.9872,
+    "location": [
+     15,
+     11
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Eastern_Towhee/part8.jpg",
+    "source": "CUB_subset/train/Eastern_Towhee/Eastern_Towhee_0111_22168.jpg",
+    "activation": 0.9993,
+    "location": [
+     2,
+     5
+    ],
+    "grid": 28
+   }
+  },
+  "Gray_Catbird": {
+   "1": {
+    "file": "Gray_Catbird/part1.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0055_20671.jpg",
+    "activation": 0.9928,
+    "location": [
+     18,
+     13
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Gray_Catbird/part2.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0126_19446.jpg",
+    "activation": 0.997,
+    "location": [
+     10,
+     6
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Gray_Catbird/part3.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0015_21230.jpg",
+    "activation": 0.9858,
+    "location": [
+     9,
+     15
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Gray_Catbird/part4.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0107_20513.jpg",
+    "activation": 0.9871,
+    "location": [
+     12,
+     5
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Gray_Catbird/part5.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0091_20416.jpg",
+    "activation": 0.9824,
+    "location": [
+     12,
+     4
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Gray_Catbird/part6.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0091_20416.jpg",
+    "activation": 0.9903,
+    "location": [
+     12,
+     5
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Gray_Catbird/part7.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0006_20867.jpg",
+    "activation": 0.9993,
+    "location": [
+     14,
+     8
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Gray_Catbird/part8.jpg",
+    "source": "CUB_subset/train/Gray_Catbird/Gray_Catbird_0063_20707.jpg",
+    "activation": 0.9999,
+    "location": [
+     3,
+     21
+    ],
+    "grid": 28
+   }
+  },
+  "Groove_billed_Ani": {
+   "1": {
+    "file": "Groove_billed_Ani/part1.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0044_1731.jpg",
+    "activation": 0.9904,
+    "location": [
+     9,
+     3
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Groove_billed_Ani/part2.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0019_1585.jpg",
+    "activation": 0.9767,
+    "location": [
+     7,
+     10
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Groove_billed_Ani/part3.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0085_1612.jpg",
+    "activation": 0.9948,
+    "location": [
+     4,
+     4
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Groove_billed_Ani/part4.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0047_1706.jpg",
+    "activation": 0.9806,
+    "location": [
+     7,
+     5
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Groove_billed_Ani/part5.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0076_1661.jpg",
+    "activation": 0.9938,
+    "location": [
+     4,
+     5
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Groove_billed_Ani/part6.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0044_1731.jpg",
+    "activation": 0.9931,
+    "location": [
+     8,
+     3
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Groove_billed_Ani/part7.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0065_1502.jpg",
+    "activation": 0.9955,
+    "location": [
+     12,
+     13
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Groove_billed_Ani/part8.jpg",
+    "source": "CUB_subset/train/Groove_billed_Ani/Groove_Billed_Ani_0023_1485.jpg",
+    "activation": 1.0,
+    "location": [
+     3,
+     6
+    ],
+    "grid": 28
+   }
+  },
+  "Indigo_Bunting": {
+   "1": {
+    "file": "Indigo_Bunting/part1.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0047_12966.jpg",
+    "activation": 0.9985,
+    "location": [
+     16,
+     19
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Indigo_Bunting/part2.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0024_13523.jpg",
+    "activation": 0.9851,
+    "location": [
+     12,
+     17
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Indigo_Bunting/part3.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0084_11848.jpg",
+    "activation": 0.9979,
+    "location": [
+     4,
+     3
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Indigo_Bunting/part4.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0003_13049.jpg",
+    "activation": 0.9972,
+    "location": [
+     7,
+     6
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Indigo_Bunting/part5.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0001_12469.jpg",
+    "activation": 0.9953,
+    "location": [
+     10,
+     23
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Indigo_Bunting/part6.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0018_11883.jpg",
+    "activation": 0.9711,
+    "location": [
+     11,
+     13
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Indigo_Bunting/part7.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0024_13523.jpg",
+    "activation": 0.9939,
+    "location": [
+     13,
+     16
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Indigo_Bunting/part8.jpg",
+    "source": "CUB_subset/train/Indigo_Bunting/Indigo_Bunting_0026_11964.jpg",
+    "activation": 0.9994,
+    "location": [
+     4,
+     7
+    ],
+    "grid": 28
+   }
+  },
+  "Laysan_Albatross": {
+   "1": {
+    "file": "Laysan_Albatross/part1.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0040_472.jpg",
+    "activation": 0.9972,
+    "location": [
+     13,
+     23
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Laysan_Albatross/part2.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0013_910.jpg",
+    "activation": 0.9948,
+    "location": [
+     3,
+     20
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Laysan_Albatross/part3.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0018_492.jpg",
+    "activation": 0.9976,
+    "location": [
+     9,
+     7
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Laysan_Albatross/part4.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0055_570.jpg",
+    "activation": 0.9949,
+    "location": [
+     14,
+     9
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Laysan_Albatross/part5.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0013_910.jpg",
+    "activation": 0.9983,
+    "location": [
+     8,
+     21
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Laysan_Albatross/part6.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0051_1020.jpg",
+    "activation": 0.9954,
+    "location": [
+     3,
+     19
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Laysan_Albatross/part7.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0050_870.jpg",
+    "activation": 0.9956,
+    "location": [
+     0,
+     20
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Laysan_Albatross/part8.jpg",
+    "source": "CUB_subset/train/Laysan_Albatross/Laysan_Albatross_0025_571.jpg",
+    "activation": 0.9991,
+    "location": [
+     2,
+     6
+    ],
+    "grid": 28
+   }
+  },
+  "Lazuli_Bunting": {
+   "1": {
+    "file": "Lazuli_Bunting/part1.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0082_15047.jpg",
+    "activation": 0.9956,
+    "location": [
+     16,
+     9
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Lazuli_Bunting/part2.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0031_15018.jpg",
+    "activation": 0.9945,
+    "location": [
+     5,
+     5
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Lazuli_Bunting/part3.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0027_14895.jpg",
+    "activation": 0.9986,
+    "location": [
+     4,
+     23
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Lazuli_Bunting/part4.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0074_14854.jpg",
+    "activation": 0.9976,
+    "location": [
+     5,
+     9
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Lazuli_Bunting/part5.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0031_15018.jpg",
+    "activation": 0.9966,
+    "location": [
+     5,
+     5
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Lazuli_Bunting/part6.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0015_14690.jpg",
+    "activation": 0.9812,
+    "location": [
+     8,
+     6
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Lazuli_Bunting/part7.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0027_14895.jpg",
+    "activation": 0.9909,
+    "location": [
+     12,
+     20
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Lazuli_Bunting/part8.jpg",
+    "source": "CUB_subset/train/Lazuli_Bunting/Lazuli_Bunting_0082_15047.jpg",
+    "activation": 0.9997,
+    "location": [
+     5,
+     4
+    ],
+    "grid": 28
+   }
+  },
+  "Least_Auklet": {
+   "1": {
+    "file": "Least_Auklet/part1.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0029_795122.jpg",
+    "activation": 0.9801,
+    "location": [
+     19,
+     23
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Least_Auklet/part2.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0018_795077.jpg",
+    "activation": 0.9972,
+    "location": [
+     7,
+     13
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Least_Auklet/part3.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0010_795092.jpg",
+    "activation": 0.9984,
+    "location": [
+     4,
+     4
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Least_Auklet/part4.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0007_795123.jpg",
+    "activation": 0.9713,
+    "location": [
+     22,
+     12
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Least_Auklet/part5.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0030_795116.jpg",
+    "activation": 0.9771,
+    "location": [
+     8,
+     19
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Least_Auklet/part6.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0035_1888.jpg",
+    "activation": 0.99,
+    "location": [
+     6,
+     5
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Least_Auklet/part7.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0054_795130.jpg",
+    "activation": 0.9813,
+    "location": [
+     16,
+     10
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Least_Auklet/part8.jpg",
+    "source": "CUB_subset/train/Least_Auklet/Least_Auklet_0040_795100.jpg",
+    "activation": 0.998,
+    "location": [
+     3,
+     22
+    ],
+    "grid": 28
+   }
+  },
+  "Painted_Bunting": {
+   "1": {
+    "file": "Painted_Bunting/part1.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0006_15249.jpg",
+    "activation": 0.9845,
+    "location": [
+     15,
+     20
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Painted_Bunting/part2.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0070_16515.jpg",
+    "activation": 0.9925,
+    "location": [
+     3,
+     9
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Painted_Bunting/part3.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0083_16587.jpg",
+    "activation": 0.9995,
+    "location": [
+     4,
+     5
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Painted_Bunting/part4.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0079_15197.jpg",
+    "activation": 0.9925,
+    "location": [
+     4,
+     4
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Painted_Bunting/part5.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0076_16765.jpg",
+    "activation": 0.9814,
+    "location": [
+     13,
+     8
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Painted_Bunting/part6.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0001_16585.jpg",
+    "activation": 0.9662,
+    "location": [
+     10,
+     23
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Painted_Bunting/part7.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0091_15198.jpg",
+    "activation": 0.9981,
+    "location": [
+     10,
+     14
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Painted_Bunting/part8.jpg",
+    "source": "CUB_subset/train/Painted_Bunting/Painted_Bunting_0050_16670.jpg",
+    "activation": 0.9922,
+    "location": [
+     3,
+     19
+    ],
+    "grid": 28
+   }
+  },
+  "Parakeet_Auklet": {
+   "1": {
+    "file": "Parakeet_Auklet/part1.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0076_796001.jpg",
+    "activation": 0.999,
+    "location": [
+     6,
+     23
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Parakeet_Auklet/part2.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0027_795925.jpg",
+    "activation": 0.9981,
+    "location": [
+     5,
+     22
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Parakeet_Auklet/part3.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0001_795972.jpg",
+    "activation": 0.999,
+    "location": [
+     2,
+     5
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Parakeet_Auklet/part4.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0024_2045.jpg",
+    "activation": 0.9956,
+    "location": [
+     8,
+     10
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Parakeet_Auklet/part5.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0069_795936.jpg",
+    "activation": 0.9593,
+    "location": [
+     13,
+     12
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Parakeet_Auklet/part6.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0042_795961.jpg",
+    "activation": 0.9989,
+    "location": [
+     6,
+     6
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Parakeet_Auklet/part7.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0042_795961.jpg",
+    "activation": 0.9977,
+    "location": [
+     5,
+     5
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Parakeet_Auklet/part8.jpg",
+    "source": "CUB_subset/train/Parakeet_Auklet/Parakeet_Auklet_0056_795926.jpg",
+    "activation": 0.9996,
+    "location": [
+     5,
+     17
+    ],
+    "grid": 28
+   }
+  },
+  "Pelagic_Cormorant": {
+   "1": {
+    "file": "Pelagic_Cormorant/part1.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0062_23623.jpg",
+    "activation": 0.9972,
+    "location": [
+     4,
+     18
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Pelagic_Cormorant/part2.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0012_23565.jpg",
+    "activation": 0.9985,
+    "location": [
+     5,
+     10
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Pelagic_Cormorant/part3.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0012_23565.jpg",
+    "activation": 0.999,
+    "location": [
+     3,
+     9
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Pelagic_Cormorant/part4.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0062_23623.jpg",
+    "activation": 0.9955,
+    "location": [
+     4,
+     18
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Pelagic_Cormorant/part5.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0037_23889.jpg",
+    "activation": 0.9994,
+    "location": [
+     5,
+     17
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Pelagic_Cormorant/part6.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0062_23623.jpg",
+    "activation": 0.9941,
+    "location": [
+     4,
+     18
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Pelagic_Cormorant/part7.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0018_23880.jpg",
+    "activation": 0.9887,
+    "location": [
+     13,
+     12
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Pelagic_Cormorant/part8.jpg",
+    "source": "CUB_subset/train/Pelagic_Cormorant/Pelagic_Cormorant_0062_23623.jpg",
+    "activation": 0.9967,
+    "location": [
+     3,
+     18
+    ],
+    "grid": 28
+   }
+  },
+  "Red_faced_Cormorant": {
+   "1": {
+    "file": "Red_faced_Cormorant/part1.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0036_796329.jpg",
+    "activation": 0.9904,
+    "location": [
+     9,
+     17
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Red_faced_Cormorant/part2.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0064_23464.jpg",
+    "activation": 0.9993,
+    "location": [
+     6,
+     14
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Red_faced_Cormorant/part3.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0052_796316.jpg",
+    "activation": 0.9995,
+    "location": [
+     8,
+     16
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Red_faced_Cormorant/part4.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0009_796314.jpg",
+    "activation": 0.9911,
+    "location": [
+     5,
+     10
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Red_faced_Cormorant/part5.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0036_796329.jpg",
+    "activation": 0.9908,
+    "location": [
+     10,
+     15
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Red_faced_Cormorant/part6.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0036_796329.jpg",
+    "activation": 0.9904,
+    "location": [
+     10,
+     15
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Red_faced_Cormorant/part7.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0036_796329.jpg",
+    "activation": 0.9729,
+    "location": [
+     10,
+     15
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Red_faced_Cormorant/part8.jpg",
+    "source": "CUB_subset/train/Red_faced_Cormorant/Red_Faced_Cormorant_0017_796323.jpg",
+    "activation": 0.9573,
+    "location": [
+     8,
+     9
+    ],
+    "grid": 28
+   }
+  },
+  "Red_winged_Blackbird": {
+   "1": {
+    "file": "Red_winged_Blackbird/part1.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0021_3767.jpg",
+    "activation": 0.9972,
+    "location": [
+     9,
+     12
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Red_winged_Blackbird/part2.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0028_4709.jpg",
+    "activation": 0.9937,
+    "location": [
+     8,
+     17
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Red_winged_Blackbird/part3.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0075_4953.jpg",
+    "activation": 0.9999,
+    "location": [
+     5,
+     6
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Red_winged_Blackbird/part4.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0028_4709.jpg",
+    "activation": 0.9965,
+    "location": [
+     6,
+     17
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Red_winged_Blackbird/part5.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0028_4709.jpg",
+    "activation": 0.9888,
+    "location": [
+     6,
+     16
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Red_winged_Blackbird/part6.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0081_6081.jpg",
+    "activation": 0.9897,
+    "location": [
+     12,
+     9
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Red_winged_Blackbird/part7.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0028_4709.jpg",
+    "activation": 0.9987,
+    "location": [
+     8,
+     19
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Red_winged_Blackbird/part8.jpg",
+    "source": "CUB_subset/train/Red_winged_Blackbird/Red_Winged_Blackbird_0101_6244.jpg",
+    "activation": 0.9987,
+    "location": [
+     2,
+     22
+    ],
+    "grid": 28
+   }
+  },
+  "Rhinoceros_Auklet": {
+   "1": {
+    "file": "Rhinoceros_Auklet/part1.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0014_797522.jpg",
+    "activation": 0.9931,
+    "location": [
+     8,
+     20
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Rhinoceros_Auklet/part2.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0029_797520.jpg",
+    "activation": 0.9988,
+    "location": [
+     11,
+     16
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Rhinoceros_Auklet/part3.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0014_797522.jpg",
+    "activation": 0.9989,
+    "location": [
+     5,
+     22
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Rhinoceros_Auklet/part4.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0032_797516.jpg",
+    "activation": 0.9992,
+    "location": [
+     3,
+     6
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Rhinoceros_Auklet/part5.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0014_797522.jpg",
+    "activation": 0.9988,
+    "location": [
+     5,
+     20
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Rhinoceros_Auklet/part6.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0017_2155.jpg",
+    "activation": 0.9977,
+    "location": [
+     2,
+     22
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Rhinoceros_Auklet/part7.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0028_2056.jpg",
+    "activation": 0.9948,
+    "location": [
+     4,
+     13
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Rhinoceros_Auklet/part8.jpg",
+    "source": "CUB_subset/train/Rhinoceros_Auklet/Rhinoceros_Auklet_0015_2160.jpg",
+    "activation": 0.999,
+    "location": [
+     6,
+     8
+    ],
+    "grid": 28
+   }
+  },
+  "Rusty_Blackbird": {
+   "1": {
+    "file": "Rusty_Blackbird/part1.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0101_6880.jpg",
+    "activation": 0.9992,
+    "location": [
+     17,
+     9
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Rusty_Blackbird/part2.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0006_6633.jpg",
+    "activation": 0.9936,
+    "location": [
+     5,
+     9
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Rusty_Blackbird/part3.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0102_6590.jpg",
+    "activation": 0.9911,
+    "location": [
+     5,
+     22
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Rusty_Blackbird/part4.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0036_6550.jpg",
+    "activation": 0.9987,
+    "location": [
+     3,
+     6
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Rusty_Blackbird/part5.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0114_6760.jpg",
+    "activation": 0.9986,
+    "location": [
+     4,
+     22
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Rusty_Blackbird/part6.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0101_6880.jpg",
+    "activation": 0.968,
+    "location": [
+     15,
+     9
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Rusty_Blackbird/part7.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0102_6590.jpg",
+    "activation": 0.9962,
+    "location": [
+     14,
+     15
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Rusty_Blackbird/part8.jpg",
+    "source": "CUB_subset/train/Rusty_Blackbird/Rusty_Blackbird_0102_6590.jpg",
+    "activation": 1.0,
+    "location": [
+     2,
+     23
+    ],
+    "grid": 28
+   }
+  },
+  "Sooty_Albatross": {
+   "1": {
+    "file": "Sooty_Albatross/part1.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0022_796398.jpg",
+    "activation": 0.998,
+    "location": [
+     11,
+     21
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Sooty_Albatross/part2.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0032_1149.jpg",
+    "activation": 0.9898,
+    "location": [
+     10,
+     17
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Sooty_Albatross/part3.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0055_1160.jpg",
+    "activation": 0.9953,
+    "location": [
+     2,
+     5
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Sooty_Albatross/part4.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0064_796343.jpg",
+    "activation": 0.9961,
+    "location": [
+     4,
+     5
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Sooty_Albatross/part5.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0074_1221.jpg",
+    "activation": 0.9936,
+    "location": [
+     8,
+     18
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Sooty_Albatross/part6.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0075_796352.jpg",
+    "activation": 0.9963,
+    "location": [
+     10,
+     15
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Sooty_Albatross/part7.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0055_1160.jpg",
+    "activation": 0.9944,
+    "location": [
+     1,
+     4
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Sooty_Albatross/part8.jpg",
+    "source": "CUB_subset/train/Sooty_Albatross/Sooty_Albatross_0064_796343.jpg",
+    "activation": 1.0,
+    "location": [
+     4,
+     6
+    ],
+    "grid": 28
+   }
+  },
+  "Spotted_Catbird": {
+   "1": {
+    "file": "Spotted_Catbird/part1.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0041_796807.jpg",
+    "activation": 0.9974,
+    "location": [
+     19,
+     10
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Spotted_Catbird/part2.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0008_796789.jpg",
+    "activation": 0.9972,
+    "location": [
+     7,
+     19
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Spotted_Catbird/part3.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0036_19406.jpg",
+    "activation": 0.9753,
+    "location": [
+     3,
+     4
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Spotted_Catbird/part4.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0008_796789.jpg",
+    "activation": 0.9604,
+    "location": [
+     9,
+     19
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Spotted_Catbird/part5.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0019_796788.jpg",
+    "activation": 0.9874,
+    "location": [
+     4,
+     23
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Spotted_Catbird/part6.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0042_19430.jpg",
+    "activation": 0.9959,
+    "location": [
+     3,
+     22
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Spotted_Catbird/part7.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0023_796793.jpg",
+    "activation": 0.9981,
+    "location": [
+     13,
+     13
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Spotted_Catbird/part8.jpg",
+    "source": "CUB_subset/train/Spotted_Catbird/Spotted_Catbird_0039_796811.jpg",
+    "activation": 0.9997,
+    "location": [
+     4,
+     20
+    ],
+    "grid": 28
+   }
+  },
+  "Yellow_breasted_Chat": {
+   "1": {
+    "file": "Yellow_breasted_Chat/part1.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0065_22137.jpg",
+    "activation": 0.9829,
+    "location": [
+     17,
+     11
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Yellow_breasted_Chat/part2.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0105_21714.jpg",
+    "activation": 0.9933,
+    "location": [
+     5,
+     4
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Yellow_breasted_Chat/part3.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0098_21987.jpg",
+    "activation": 0.9971,
+    "location": [
+     3,
+     22
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Yellow_breasted_Chat/part4.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0062_21673.jpg",
+    "activation": 0.9978,
+    "location": [
+     5,
+     23
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Yellow_breasted_Chat/part5.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0033_21873.jpg",
+    "activation": 0.9814,
+    "location": [
+     6,
+     4
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Yellow_breasted_Chat/part6.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0105_21714.jpg",
+    "activation": 0.9945,
+    "location": [
+     4,
+     3
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Yellow_breasted_Chat/part7.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0039_21654.jpg",
+    "activation": 0.9877,
+    "location": [
+     8,
+     10
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Yellow_breasted_Chat/part8.jpg",
+    "source": "CUB_subset/train/Yellow_breasted_Chat/Yellow_Breasted_Chat_0033_21873.jpg",
+    "activation": 1.0,
+    "location": [
+     3,
+     5
+    ],
+    "grid": 28
+   }
+  },
+  "Yellow_headed_Blackbird": {
+   "1": {
+    "file": "Yellow_headed_Blackbird/part1.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0072_8606.jpg",
+    "activation": 0.9964,
+    "location": [
+     10,
+     14
+    ],
+    "grid": 28
+   },
+   "2": {
+    "file": "Yellow_headed_Blackbird/part2.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0031_8456.jpg",
+    "activation": 0.9861,
+    "location": [
+     5,
+     8
+    ],
+    "grid": 28
+   },
+   "3": {
+    "file": "Yellow_headed_Blackbird/part3.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0051_8387.jpg",
+    "activation": 0.9891,
+    "location": [
+     9,
+     6
+    ],
+    "grid": 28
+   },
+   "4": {
+    "file": "Yellow_headed_Blackbird/part4.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0041_8264.jpg",
+    "activation": 0.98,
+    "location": [
+     3,
+     21
+    ],
+    "grid": 28
+   },
+   "5": {
+    "file": "Yellow_headed_Blackbird/part5.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0031_8456.jpg",
+    "activation": 0.9784,
+    "location": [
+     5,
+     6
+    ],
+    "grid": 28
+   },
+   "6": {
+    "file": "Yellow_headed_Blackbird/part6.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0095_8458.jpg",
+    "activation": 0.9836,
+    "location": [
+     10,
+     10
+    ],
+    "grid": 28
+   },
+   "7": {
+    "file": "Yellow_headed_Blackbird/part7.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0040_7514.jpg",
+    "activation": 0.998,
+    "location": [
+     6,
+     10
+    ],
+    "grid": 28
+   },
+   "8": {
+    "file": "Yellow_headed_Blackbird/part8.jpg",
+    "source": "CUB_subset/train/Yellow_headed_Blackbird/Yellow_Headed_Blackbird_0025_8262.jpg",
+    "activation": 0.9999,
+    "location": [
+     3,
+     21
+    ],
+    "grid": 28
+   }
+  }
+ }
+}

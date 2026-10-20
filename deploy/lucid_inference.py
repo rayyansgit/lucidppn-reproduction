@@ -7,6 +7,7 @@ Part-segmentation maps are only used by the training loss, never at inference, s
 """
 import os
 import sys
+import json
 import argparse
 
 import torch
@@ -33,6 +34,8 @@ NUM_PARTS = 8
 IMG_SIZE = 224
 
 DEFAULT_CHECKPOINT = os.environ.get('LUCID_CHECKPOINT', os.path.join(ROOT, 'MetiNet', 'checkpoint_quick_train.pt'))
+PROTOTYPE_DIR = os.path.join(ROOT, 'deploy', 'prototypes')
+PATCH = 64                # side of the image patch shown around a prototype's strongest feature-map cell
 
 _resize = transforms.Resize(size=(IMG_SIZE, IMG_SIZE))
 _gray_norm = transforms.Compose([
@@ -68,6 +71,25 @@ def shift_hue(image: Image.Image, shift: float) -> Image.Image:
     return TF.to_pil_image(y)
 
 
+def crop_patch(image224: Image.Image, row: int, col: int, grid: int) -> Image.Image:
+    """The PATCH x PATCH region of a 224x224 image centred on cell (row, col) of a grid x grid feature map (28x28 for
+    the authors' ResNet18, whose last two stages use stride 1), kept inside the image."""
+    cell = IMG_SIZE / grid
+    cx, cy = (col + 0.5) * cell, (row + 0.5) * cell
+    left = int(min(max(cx - PATCH / 2, 0), IMG_SIZE - PATCH))
+    top = int(min(max(cy - PATCH / 2, 0), IMG_SIZE - PATCH))
+    return image224.crop((left, top, left + PATCH, top + PATCH))
+
+
+def load_prototypes():
+    """Prototype patches made by build_prototypes.py: {species: {part (1-8): {file, source, activation}}}, or {}."""
+    path = os.path.join(PROTOTYPE_DIR, 'index.json')
+    if not os.path.exists(path):
+        return {}
+    with open(path) as f:
+        return json.load(f)['prototypes']
+
+
 def preprocess(image: Image.Image):
     image = _resize(image.convert('RGB'))
     x = TF.to_tensor(image)          # ColorNet input, RGB in [0, 1]
@@ -95,9 +117,13 @@ def predict(net, image: Image.Image, top_k=5, hue_shift=0.0):
             'share_of_evidence': round(share[c].item(), 4),
             'shapetexnet_score': round(shape[c].item(), 4)} for c in order]
     c = order[0]
+    # Strongest cell of each part's prototype map for the predicted class: where on the bird the evidence is
+    grid = proto_feat.shape[-1]
+    peak = proto_feat[0, :, c].flatten(1).argmax(dim=1)
     parts = [{'part': k + 1,
               'shape_texture': round(proto_pooled[0, k, c].item(), 4),
-              'shape_plus_colour': round(color_pooled[0, k, c].item(), 4)} for k in range(NUM_PARTS)]
+              'shape_plus_colour': round(color_pooled[0, k, c].item(), 4),
+              'location': [int(peak[k]) // grid, int(peak[k]) % grid], 'grid': grid} for k in range(NUM_PARTS)]
     # Where each part's prototype of the predicted class fires: ShapeTexNet map, upsampled to the image size
     maps = F.interpolate(proto_feat[0, :, c].unsqueeze(0), size=(IMG_SIZE, IMG_SIZE), mode='bilinear',
                          align_corners=False)[0].cpu()

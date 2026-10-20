@@ -14,9 +14,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import torch
-from PIL import Image
+from PIL import Image, ImageDraw
 
-from lucid_inference import CLASSES, DEFAULT_CHECKPOINT, NUM_PARTS, ROOT, load_model, predict, pretty
+from lucid_inference import (CLASSES, DEFAULT_CHECKPOINT, NUM_PARTS, PATCH, PROTOTYPE_DIR, ROOT, crop_patch,
+                             load_model, load_prototypes, predict, pretty)
 
 st.set_page_config(page_title='LucidPPN bird classifier', layout='wide')
 
@@ -24,6 +25,11 @@ st.set_page_config(page_title='LucidPPN bird classifier', layout='wide')
 @st.cache_resource
 def get_model(path):
     return load_model(path, 'cuda' if torch.cuda.is_available() else 'cpu')
+
+
+@st.cache_resource
+def get_prototypes():
+    return load_prototypes()
 
 
 st.title('LucidPPN: interpretable bird classification')
@@ -102,13 +108,34 @@ if image is not None:
     ax.set_ylabel('Resemblance'); ax.legend(frameon=False); ax.spines[['top', 'right']].set_visible(False)
     st.pyplot(fig)
 
-    st.caption('Where each part prototype of the predicted species fires (ShapeTexNet activation, 7×7 upsampled).')
-    cols = st.columns(NUM_PARTS // 2)
+    st.subheader('This looks like that')
+    st.caption('For each part: where its prototype fires on your image (heatmap, box = strongest spot), the patch of '
+               'your image there, and the prototype: the patch of a training '
+               f"{result['prediction']} where the same prototype fires most strongly. The prediction says "
+               '"this part of your bird looks like that part of a training bird".')
+    protos = get_prototypes().get(CLASSES[result['top_k'][0]['class_index']], {})
     base = np.asarray(shown).astype(np.float32) / 255
-    for k in range(NUM_PARTS):
-        heat = maps[k].numpy()
-        overlay = 0.5 * base + 0.5 * plt.cm.jet(heat)[..., :3]
-        cols[k % len(cols)].image(np.clip(overlay, 0, 1), caption=f'Part {k + 1}: {heat.max():.2f}')
+    cols = st.columns(2)
+    for k, part in enumerate(result['parts']):
+        row, col = part['location']
+        overlay = Image.fromarray((255 * np.clip(0.5 * base + 0.5 * plt.cm.jet(maps[k].numpy())[..., :3], 0, 1))
+                                  .astype(np.uint8))
+        cell = 224 / part['grid']
+        box = (max(0, (col + 0.5) * cell - PATCH / 2), max(0, (row + 0.5) * cell - PATCH / 2))
+        ImageDraw.Draw(overlay).rectangle([box, (box[0] + PATCH, box[1] + PATCH)], outline='white', width=2)
+        proto = protos.get(str(k + 1))
+        panels = [overlay, crop_patch(shown, row, col, part['grid'])]
+        if proto:
+            panels.append(Image.open(os.path.join(PROTOTYPE_DIR, proto['file'])))
+        strip = Image.new('RGB', (len(panels) * 150 - 6, 144), 'white')
+        for i, panel in enumerate(panels):
+            strip.paste(panel.resize((144, 144)), (i * 150, 0))
+        source = f" · prototype from {os.path.basename(proto['source'])}" if proto else ''
+        cols[k % 2].image(strip, caption=f"Part {k + 1}: your image → your patch → prototype  ·  shape/texture "
+                                         f"{part['shape_texture']:.2f}, shape + colour {part['shape_plus_colour']:.2f}"
+                                         f"{source}")
+    if not protos:
+        st.info('Prototype patches not found: run `python deploy/build_prototypes.py` once to create them.')
 
     with st.expander('Raw JSON response (same as the API)'):
         st.json(result)

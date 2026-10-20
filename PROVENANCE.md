@@ -30,6 +30,7 @@ data, training loop or evaluation); **written by us** = new code.
 | Multi-seed summary, colourfulness-vs-hue-sensitivity analysis | `analysis/summarize_runs.py`, `analysis/colour_by_species.py` | written by us | Colourfulness metric from Hasler & Süsstrunk (2003). |
 | Overnight experiment queue | `experiments/run_queue.sh` | written by us | |
 | Deployment: inference wrapper, Streamlit app, FastAPI API | `deploy/*` | written by us | Preprocessing copied from the test-time branch of upstream `util/data.py`. |
+| Prototype patches ("this looks like that") | `deploy/build_prototypes.py`, `deploy/prototypes/` | written by us | Patches cropped from our CUB training images at each prototype's strongest activation, following the paper's prototype visualisation. |
 | Colab notebook | `notebooks/stage4_stage5_colab.ipynb` | written by us | |
 | One-click demo launchers | `run_demo.bat`, `run_demo.sh` | written by us | |
 | Demo example images | `deploy/examples/` | CUB-200-2011 (Wah et al., 2011) | One bounding-box-cropped test image per species, made by `prepare_cub_subset.py`. |
