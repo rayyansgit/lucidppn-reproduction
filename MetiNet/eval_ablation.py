@@ -66,6 +66,7 @@ def evaluate(net, testset):
     loader = torch.utils.data.DataLoader(testset, batch_size=32, shuffle=False, num_workers=opt.num_workers)
     n, lucid1, lucid5, shape1, shape5 = 0, 0., 0., 0., 0.
     helped, hurt = 0, 0  # colour branch flips a wrong ShapeTexNet prediction to right / right to wrong
+    per_class = torch.zeros(args.num_classes, 3)  # images, LucidPPN correct, ShapeTexNet correct
     for x, x_aug, m, y in loader:
         x, x_aug, y = x.to(device), x_aug.to(device), y.to(device)
         _, proto_pooled, _, _, _, out = net(x, x_aug, m)
@@ -74,12 +75,13 @@ def evaluate(net, testset):
         s1, s5 = topk_accuracy(shape_out, y, topk=[1, 5])
         lucid1 += l1.sum().item(); lucid5 += l5.sum().item()
         shape1 += s1.sum().item(); shape5 += s5.sum().item()
+        per_class.index_add_(0, y.cpu(), torch.stack([torch.ones(len(y)), l1.float().cpu(), s1.float().cpu()], 1))
         helped += ((l1 > 0) & (s1 == 0)).sum().item()
         hurt += ((l1 == 0) & (s1 > 0)).sum().item()
         n += len(y)
     return {'lucidppn_top1': lucid1 / n, 'lucidppn_top5': lucid5 / n,
             'shapetexnet_top1': shape1 / n, 'shapetexnet_top5': shape5 / n,
-            'colour_helped': helped / n, 'colour_hurt': hurt / n, 'n': n}
+            'colour_helped': helped / n, 'colour_hurt': hurt / n, 'n': n, 'per_class': per_class}
 
 
 def mean_std(vals):
@@ -95,12 +97,17 @@ def main():
         runs = []
         for seed in range(opt.seeds if hue > 0 else 1):  # hue=0 is deterministic
             torch.manual_seed(seed)
-            testset, _ = make_testset(hue)
+            testset, classes = make_testset(hue)
             r = evaluate(net, testset)
             runs.append(r)
             print(f"hue={hue:.2f} seed={seed} | LucidPPN {r['lucidppn_top1']:.4f} | ShapeTexNet {r['shapetexnet_top1']:.4f}"
                   f" | colour helped {r['colour_helped']:.4f}, hurt {r['colour_hurt']:.4f}")
-        results[str(hue)] = {k: mean_std([r[k] for r in runs]) for k in runs[0] if k != 'n'}
+        results[str(hue)] = {k: mean_std([r[k] for r in runs]) for k in runs[0] if k not in ('n', 'per_class')}
+        # per-species accuracy, averaged over the perturbation seeds
+        pc = torch.stack([r['per_class'] for r in runs]).mean(0)
+        results[str(hue)]['per_class'] = {c: {'n': int(pc[i, 0]), 'lucidppn_top1': (pc[i, 1] / pc[i, 0]).item(),
+                                              'shapetexnet_top1': (pc[i, 2] / pc[i, 0]).item()}
+                                          for i, c in enumerate(classes) if pc[i, 0] > 0}
         results[str(hue)]['n'] = runs[0]['n']
         results[str(hue)]['seeds'] = len(runs)
 
@@ -114,7 +121,7 @@ def main():
         lines.append(f"| {hue} | {pct(r['lucidppn_top1'])} | {pct(r['shapetexnet_top1'])} | "
                      f"{pct(r['colour_helped'])} | {pct(r['colour_hurt'])} |")
     table = '\n'.join(lines)
-    with open(os.path.join(opt.out_dir, 'ablation.md'), 'w') as f:
+    with open(os.path.join(opt.out_dir, 'ablation.md'), 'w', encoding='utf-8') as f:
         f.write(table + '\n')
     print('\n' + table)
 

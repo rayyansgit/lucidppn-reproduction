@@ -16,3 +16,9 @@ MetiNet/*.zip
 MetiNet/stage4_outputs/
 # Local copy of a Colab notebook that contains a GitHub token: never commit it
 Copy_of_Untitled1.ipynb
+# Part maps from the 28-epoch part detector (regenerate with part_detection/generate_maps.py)
+CUB_subset_maps_pdisco28/
+# ImageNet weights downloaded by MetiNet/features/resnet_features.py
+MetiNet/pretrained_models/
+# Side file written by the upstream PDiscoNet CUB loader
+testset.tsv
