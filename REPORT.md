@@ -1,268 +1,217 @@
-# Reproducing LucidPPN: Unambiguous Prototypical Parts for Interpretable Bird Classification
+# Reproducing LucidPPN: Interpretable Bird Classification with Separate Shape and Colour Evidence
 
 **Team:** Rayyan Saeed (31629), Laksh Kumar (30598), Ahmad Mustafa Khan (30496)
 
 **Paper:** Pach, Lewandowska, Tabor, Zieliński, Rymarczyk. *LucidPPN: Unambiguous Prototypical Parts Network for
 User-centric Interpretable Computer Vision.* ICLR 2025.
 
-**Code:** https://github.com/rayyansgit/lucidppn-reproduction (branch `m3&m4`)
+**Code:** https://github.com/rayyansgit/lucidppn-reproduction. Branch `main`: reproduction (Milestone 2). Branch
+`m3&m4`: experiment and deployment (Milestones 3-4).
 
 ## 1. Introduction and problem statement
 
-Image classifiers are accurate, but they do not say why they reached a decision. Prototypical-part networks address
-this by classifying an image through comparisons with parts of training images: "this part of the image looks like
-that part of a Cardinal". The comparison itself is the explanation.
+Image classifiers rarely explain their decisions. Prototypical-part networks do: they classify an image by matching
+its parts to parts of training images ("this part looks like that part of a Cardinal").
 
-LucidPPN points out that these explanations are ambiguous. When a prototype matches the red wing of a bird, the user
-cannot tell whether the match was on the wing's shape, its texture or its colour. Prototypes of different classes
-also attach to different body parts, so two classes cannot be compared part by part. LucidPPN removes both problems
-by design: colour is handled by a separate branch, and each prototype is tied to the same object part in every class.
+LucidPPN identifies two problems with these explanations:
 
-Our goals were to reproduce the method at a scale that fits our compute, to test one of its central claims with an
-experiment of our own, and to deploy the trained model as an application that shows the explanation.
+1. **A match mixes shape, texture and colour.** The user cannot tell which one the model used.
+2. **Prototypes of different classes sit on different body parts.** Two classes cannot be compared part by part.
+
+LucidPPN fixes both by design. We reproduced the method on a subset of a bird dataset, tested one of its claims with
+our own experiment, and deployed the trained model as an application.
 
 ## 2. Background
 
-- **ProtoPNet** (Chen et al., 2019) introduced classification by comparing image patches with learned prototype
-  vectors and scoring classes from those similarities.
-- **ProtoPShare and ProtoPool** (Rymarczyk et al., 2021, 2022) share prototypes between classes. **PIP-Net**
-  (Nauta et al., 2023) learns prototypes that better match human notions of a part and is LucidPPN's direct baseline.
-- **Nauta et al. (2021)** showed that users often cannot tell whether a prototype matched on colour or on shape, and
-  proposed explaining prototypes after training. LucidPPN builds that separation into the architecture instead.
-- **PDiscoNet** (van der Klis et al., 2023) discovers object parts from class labels only. LucidPPN uses its part maps
-  as weak supervision for where each prototype should fire.
+- **ProtoPNet** (Chen et al., 2019): classification by comparing image patches with learned prototypes.
+- **ProtoPShare, ProtoPool** (Rymarczyk et al., 2021, 2022): prototypes shared between classes.
+- **PIP-Net** (Nauta et al., 2023): prototypes closer to human notions of a part; LucidPPN's main baseline.
+- **Nauta et al. (2021)**: users often cannot tell whether a prototype matched on colour or shape.
+- **PDiscoNet** (van der Klis et al., 2023): finds object parts using class labels only. LucidPPN uses its part masks.
 
-## 3. The paper's method
+## 3. Paper methodology
 
-1. **Part discovery.** PDiscoNet (ResNet-101) is trained with class labels only and produces K part maps per image.
-2. **Shape branch (ShapeTexNet).** A CNN receives a grayscale copy of the image. A 1 x 1 convolution with a sigmoid
-   gives K x M maps (K parts, M classes); map (k, m) shows how much each location looks like part k of class m.
-3. **Colour branch (ColorNet).** A small network applied to one pixel at a time, on the image downsampled to the
-   feature-map size. Because it sees single pixels, it can learn colour but not shape.
-4. **Fusion.** The colour map multiplies a stop-gradient copy of the shape map, and the product is max-pooled per part.
-   A class score is the mean over its K parts. Colour can therefore only confirm or suppress what the shape branch
-   found, and the colour branch never changes what the shape branch learns.
-5. **Losses** (binary cross-entropy): part alignment of shape maps with PDiscoNet's masks (weight 1.4), classification
-   with the shape branch alone, and classification with the fused scores.
+<p align="center"><img src="assets/report/architecture.png" alt="LucidPPN architecture" width="95%"><br><em>Figure 1. LucidPPN: shape and colour branches, combined per part.</em></p>
 
-**Novelty:** the colour/shape split with one-way fusion, and the part alignment that gives prototype k the same meaning
-in every class. **Datasets:** CUB-200-2011, Stanford Cars, Stanford Dogs, Oxford Flowers. **Metrics:** top-1 accuracy,
-IoU between prototype maps and part masks, and user studies.
+- **Shape branch.** A CNN sees only a grayscale copy of the image. For every part *k* and class *m* it produces a map
+  of how much each location looks like part *k* of class *m*.
+- **Colour branch.** A small network applied to one pixel at a time, so it learns colour but never shape.
+- **Fusion.** Per part, evidence = shape map × colour map (best location). The class score is the mean over parts.
+  The shape map is passed with a stop-gradient, so colour can confirm or block shape evidence but never changes what
+  the shape branch learns.
+- **Part alignment.** A training loss pushes each part's shape map towards PDiscoNet's mask for that part, so
+  prototype *k* means the same body part in every class.
 
-**Headline results on CUB:** 81.5 ± 0.4% (PIP-Net 84.3%); shape branch alone 80.4% against 81.8% for the full model;
-under random hue changes the full model drops from 81.9% to 71.7%, the shape branch stays at 80.3%, and PIP-Net drops
-from 83.9% to 53.0% (Tables 1-3). The authors note that the colour mechanism cannot capture other visual features such
-as texture or contrast, and that the model inherits known prototypical-part issues such as spatial misalignment.
+**Datasets:** CUB-200-2011, Stanford Cars, Stanford Dogs, Oxford Flowers. **Metrics:** top-1 accuracy, overlap of
+prototype maps with part masks, user studies.
 
-## 4. Implementation
+**Results on CUB (paper):**
 
-We forked the official repository and kept the authors' model, loss and training-step code unchanged, so that
-differences in results come from scale and configuration rather than re-implementation errors. We wrote the data
-preparation, the training and evaluation drivers, the experiments and the deployment. `PROVENANCE.md` tags every file
-as reused, adapted or written by us, and separates the authors' results from ours.
+| | Accuracy |
+|---|---|
+| LucidPPN | 81.5 ± 0.4% |
+| PIP-Net (baseline) | 84.3% |
+| Shape branch alone | 80.4% |
+| Under random colour (hue) changes: LucidPPN / shape branch | 81.9 → 71.7% / 80.3 → 80.3% |
 
-| | Paper | Ours | Reason |
-|---|---|---|---|
-| Classes | 200 | 25 (CUB classes 1-25) | Compute |
-| Shape backbone | ConvNeXt-Tiny, 28 x 28 maps | ResNet18, also 28 x 28 maps | Compute |
-| Parts K | 12 | 8 | Code default |
-| PDiscoNet (authors' scripts) | 448 px, 28 epochs | 224 px, 5 epochs (28 in Section 6.2) | Compute |
-| Schedule | 40 epochs, batch 64, lr 0.002, 15 frozen | 82 epochs, batch 32, lr 0.0005, 10 frozen | Jump 4 (Section 6.1) |
-| Part-alignment weight | 1.4 | 1.0 | Code default |
-| Runs | 3 seeds | 1 in Stage 3; 3-4 per setting in Section 6.2 | Compute |
+## 4. Implementation details
 
-Workflow, as the brief recommends: a one-batch forward pass checking shapes and losses, an 8-class trial, 25 classes
-without and with part maps, then long runs. Every run logs loss and train/test accuracy per epoch. The upstream
-evaluation script computes part IoU and failed without full-dataset part maps, so we wrote our own evaluation loop
-using the authors' `topk_accuracy`, and later a full evaluation (`MetiNet/eval_full.py`) with the authors' IoU
-definition. Stages 3-5 ran on Colab (T4), the follow-up study on a local RTX 2080 laptop GPU.
+We forked the authors' code and kept their model, losses and training step unchanged, so differences come from scale
+and settings, not from re-implementation. We wrote the data preparation, training and evaluation scripts, the
+experiments and the deployment. `PROVENANCE.md` lists the origin of every file.
+
+**Pipeline:** (1) prepare the subset, (2) train PDiscoNet and save 8 part masks per image, (3) train LucidPPN with
+those masks, (4) evaluate, (5) run the experiment, (6) deploy.
+
+| | Paper | Ours |
+|---|---|---|
+| Species | 200 | 25 |
+| Shape backbone | ConvNeXt-Tiny | ResNet18 (same 28 × 28 feature maps) |
+| Parts per bird | 12 | 8 |
+| Part detector | 448 px, 28 epochs | 224 px, 5 epochs (28 in a later study) |
+| Training | 40 epochs, batch 64, learning rate 0.002 | 82 epochs, batch 32, learning rate 0.0005 |
+| Runs | 3 | 12 models in total (3-4 per setting) |
+
+**Process:** a one-batch check, an 8-species trial, then 25 species. Every run logs train and test accuracy per
+epoch. Hardware: Google Colab (T4 GPU), then a laptop RTX 2080 for the multi-run study.
 
 ## 5. Dataset and preprocessing
 
-CUB-200-2011 (Wah et al., 2011) contains 11,788 images of 200 North American bird species with bounding boxes and 15
-annotated keypoints per bird. We used the first 25 species with the official split: **750 training and 652 test
-images**, each cropped to its bounding box as in the paper. Training uses the authors' augmentation (resize to 232,
-geometric-only TrivialAugment so colours are never changed, horizontal flip, random crop to 224); testing only resizes
-to 224. The shape branch receives a grayscale copy normalised with mean 0.445 and standard deviation 0.269; the colour
-branch receives the RGB image.
+**CUB-200-2011:** 11,788 photos of 200 North American bird species, with a bounding box and 15 marked body points
+(beak, eye, wing, tail, ...) per bird.
 
-With 25 classes chance is 4%, and many of CUB's hardest look-alike groups (most sparrows and warblers) are absent, so
-our accuracy cannot be compared with the paper's 200-class figure. The species were taken in index order, not chosen
-for the question we later asked; Section 10 returns to this.
+**Our subset: the first 25 species by CUB's numbering.**
+
+| | |
+|---|---|
+| Included | Black-footed, Laysan and Sooty Albatross; Groove-billed Ani; Crested, Least, Parakeet and Rhinoceros Auklet; Brewer's, Red-winged, Rusty and Yellow-headed Blackbird; Bobolink; Indigo, Lazuli and Painted Bunting; Cardinal; Spotted and Gray Catbird; Yellow-breasted Chat; Eastern Towhee; Chuck-will's-widow; Brandt's, Red-faced and Pelagic Cormorant |
+| Images | 750 training (30 per species), 652 test, using CUB's official split |
+| Omitted | The other 175 species, including most of CUB's hardest look-alike groups (sparrows, warblers, gulls, terns, vireos, wrens) |
+| Why | Training time on free GPUs |
+
+**Preprocessing (as in the paper):**
+- Each photo is cropped to its bounding box.
+- Training: resize to 232 px, random geometric changes and flips, random crop to 224 px. Colours are never altered,
+  so the colour branch learns real colours.
+- Testing: resize to 224 px.
+- The shape branch receives a normalised grayscale copy; the colour branch receives the colour image.
+
+**Consequence:** chance is 4% (not 0.5%), and the task is easier than the full dataset. Our accuracy cannot be
+compared directly with the paper's. Most of our species are grey, brown or black, which matters for the colour
+experiment (Section 7).
 
 ## 6. Reproduction results
 
-All accuracies are test top-1 at the final epoch. We never report a best epoch, because without a validation split it
-would be chosen on the test set.
+We always report accuracy at the last epoch. Without a validation set, picking the best epoch would mean choosing on
+the test set.
 
-### 6.1 Stage 3 runs
-
-| Run | Change | Test top-1 |
+| Run | Change | Test accuracy |
 |---|---|---|
-| Jump 2 | 10 epochs, no part maps | 33.9% |
-| Jump 3 | 10 epochs, with PDiscoNet part maps | 41.6% |
-| Jump 4 | 82 epochs, batch 32, 10 frozen epochs | 81.9% |
-| Jump 4, all 4 runs | same settings | **83.1 ± 1.0%** |
-| Paper, Table 1 | 200 classes, ConvNeXt-Tiny | 81.5 ± 0.4% |
+| Jump 2 | 10 epochs, no part masks | 33.9% |
+| Jump 3 | 10 epochs, with part masks | 41.6% |
+| Jump 4 | 82 epochs, batch 32, longer warm-up | 81.9% |
+| Jump 4, 4 runs | same settings repeated | **83.1 ± 1.0%** |
+| Paper | 200 species, ConvNeXt-Tiny | 81.5 ± 0.4% |
 
-![Training curves](analysis/figures/training_curves.png)
+<p align="center"><img src="analysis/figures/training_curves.png" alt="Training curves" width="85%"><br><em>Figure 2. Test (solid) and train (dashed) accuracy per epoch, Jumps 2-4.</em></p>
 
-Part maps raised accuracy by 7.7 points at the same training accuracy and roughly halved the train-test gap (about 18
-to 10 points). Jump 4 changed three settings at once; its gain comes from many more epochs of full fine-tuning (72
-instead of 8), not from the longer warm-up. Accuracy plateaus from about epoch 40 while training accuracy approaches
-99%.
+- **Part masks reduce overfitting:** +7.7 points at the same training accuracy; the train-test gap roughly halved.
+- **Longer training gives most of the gain.** Accuracy levels off after about 40 epochs.
+- **Run-to-run noise is about ±1-2 points.** Re-running Jump 4 with identical settings gave 84.0% instead of 81.9%.
 
-The original Jump 4 checkpoint was lost with the Colab session. Rerunning the unchanged pipeline (including PDiscoNet)
-gave 84.0% instead of 81.9%. With identical code and settings, this 2.1-point gap is training non-determinism, and it
-sets the scale for what counts as a real difference on 652 test images (one image is 0.15 points).
-
-### 6.2 Follow-up study: training recipe and part detector (3 seeds each)
-
-The authors' launch script (`MetiNet/run_training.sh`) contains the paper's real settings, which differ from the
-code's default arguments. We crossed this recipe with a part detector trained for the paper's 28 epochs.
+**Follow-up study (3 runs per setting).**
 
 | | 5-epoch part detector | 28-epoch part detector |
 |---|---|---|
-| Jump 4 recipe (82 epochs) | 83.1 ± 1.0 (4 runs) | 83.0 ± 0.7 |
-| Paper recipe (40 epochs) | 81.0 ± 1.7 | 81.4 ± 2.0 |
+| Our settings (Jump 4) | 83.1 ± 1.0% | 83.0 ± 0.7% |
+| Paper's settings (authors' launch script) | 81.0 ± 1.7% | 81.4 ± 2.0% |
 
-| Part detector | NMI | ARI | Keypoint error | Prototype keypoint NMI (Jump 4 / paper recipe) |
-|---|---|---|---|---|
-| 5 epochs | 24.1 | 11.8 | 14.3% | 17.6 / 18.1 |
-| 28 epochs | 31.0 | 14.9 | 12.7% | 20.8 / 22.6 |
+- **The paper's settings score about 2 points lower here.** On 750 images, 40 epochs at batch 64 give 4× fewer
+  training steps than ours.
+- **A better part detector did not change accuracy, but improved where prototypes look.** Its parts match CUB's
+  marked body points better (NMI 24.1 → 31.0), and prototypes trained with them land more consistently on the same
+  body parts (17.6 → 20.8 and 18.1 → 22.6). This second score is PDiscoNet's metric applied to our prototypes; the
+  LucidPPN paper does not report it, so we only use it to compare our own models.
+- **Top-5 accuracy is 97-98%.** The most common errors are between look-alike dark species: Pelagic vs Brandt's
+  Cormorant, Rusty vs Brewer's Blackbird, Black-footed vs Sooty Albatross (37% of all errors).
 
-- **The paper's recipe ends about 2 points lower on our subset.** With 750 images and batch 64, its 40 epochs make
-  about 440 weight updates against about 1,900 for Jump 4. It was designed for eight times more images.
-- **Better parts improved alignment, not accuracy.** The longer-trained detector finds clearly better parts (first
-  three columns, the authors' metrics). Accuracy did not change, but every model trained with the better parts places
-  its prototypes more consistently on the same annotated body parts (last column). This prototype keypoint score is our
-  adaptation of PDiscoNet's metric and is not reported in the LucidPPN paper, so it only compares our own models. For
-  reference, the original PDiscoNet reaches an NMI of 50.1 with 8 parts on full CUB: our parts are weak.
-- **Top-5 accuracy** is 97-98% in every setting. The most frequent confusions are within look-alike dark species:
-  Pelagic Cormorant as Brandt's Cormorant (30% of its images), Rusty Blackbird as Brewer's Blackbird (26%) and
-  Black-footed Albatross as Sooty Albatross (19%). These three groups account for 37% of all errors.
+## 7. Additional experiment: ablation of the colour branch
 
-## 7. Our experiment: ablation of the colour branch
+**Question:** what does the colour branch add, and what does it cost when colours are misleading?
 
-**Question.** How much does the colour branch contribute to accuracy, and what does it cost when colours are
-misleading? (Experiment type A, ablation.)
+**Method:**
+1. **Colour branch off.** Because of the stop-gradient, the shape branch never learns from colour. The shape branch
+   inside a trained model is therefore the colour-free model, and no retraining is needed.
+2. **Misleading colours.** Test images are recoloured with a random hue shift of up to 0.1, 0.25 or 0.5 of the colour
+   wheel, keeping each pixel's brightness (the authors' method). The shape branch sees exactly the same image.
+3. **Repeats.** All 12 trained models, 5 random recolourings each. Results are also split by how colourful each
+   species is (Hasler and Süsstrunk colourfulness, measured on the test images).
 
-**Design.**
-- The fusion uses a stop-gradient copy of the shape map, so no gradient from the colour branch reaches the shape
-  branch. The shape branch inside a trained model is therefore the model we would obtain by training without the
-  colour branch, and removing the colour branch needs no retraining. For the same reason the shape maps, and hence
-  the part alignment, are identical with and without colour, so the ablation can only change accuracy.
-- For every test image we compare the full model with the shape branch alone, on original images and with the hue
-  rotated at random by up to 0.1, 0.25 and 0.5 of the colour wheel while each pixel keeps its brightness (the authors'
-  perturbation; 5 random seeds per level).
-- We ran it on all 12 trained models and also split the results by how colourful each species is (Hasler and
-  Süsstrunk colourfulness, measured on the test images).
+**Results** (accuracy change in points, mean of 12 models; recoloured = hue shift up to 0.5):
 
-**Results.**
-
-![Colour ablation on the deployed model](MetiNet/results/ablation_hue.png)
-
-| Test images | Colour gain, original colours | Full model, hue shift up to 0.5 | Shape only, hue shift up to 0.5 |
+| Test images | Colour branch adds (original colours) | Full model when recoloured | Shape only when recoloured |
 |---|---|---|---|
-| All 25 species (652 images) | +1.4 (positive in 12 of 12 models) | −4.1 (negative in 11 of 12) | 0.0 |
-| 12 most colourful species (328) | +1.7 | −7.5 | 0.0 |
-| 12 least colourful species (294) | +1.3 | −0.9 | 0.0 |
+| All 25 species | +1.4 (positive in 12 of 12 models) | −4.1 | 0.0 |
+| 12 most colourful species | +1.7 | −7.5 | 0.0 |
+| 12 least colourful species | +1.3 | −0.9 | 0.0 |
 | Paper, 200 species | +1.4 | −10.2 | 0.0 |
 
-Accuracy differences in points, mean over the 12 models.
+<p align="center"><img src="assets/report/loss_by_group.png" alt="Accuracy lost by species group" width="55%"><br><em>Figure 3. Accuracy lost by the full model when test images are recoloured (shape only: 0 in every group).</em></p>
 
-- **The gain is small but real.** On one model it was not significant (12 images fixed against 5 broken, McNemar
-  p ≈ 0.14). Over 12 models it is positive every time (sign test p = 0.0005), with 162 decisions fixed against 55
-  broken. Its size matches the paper's.
-- **The shape branch is exactly unaffected** at every hue level in every model. The perturbation keeps brightness and
-  the shape branch only sees brightness, so this confirms that the two branches really are separated.
-- **The cost depends on the species.** On the 12 most colourful species the full model loses 7.5 points and falls below
-  the shape-only model in 11 of 12 models; on the 12 least colourful it loses 0.9. Per species, the loss correlates
-  with colourfulness (Spearman ρ = 0.62, p = 0.001); the Cardinal loses 29 points and the Indigo Bunting 28.
+**Findings:**
+- **Colour helps a little, consistently.** +1.4 points, the same as the paper. One model alone was not enough to show
+  it (12 images fixed, 5 broken, p ≈ 0.14); over 12 models it is clear (p = 0.0005).
+- **The two branches are truly separate.** The shape-only model loses exactly 0 points in every model.
+- **The cost falls on colourful birds.** On the most colourful species, misleading colours cost 7.5 points and push the
+  full model below the shape-only model in 11 of 12 models. Grey species lose under 1 point. Cardinal loses 29 points.
 
-**Answer.** The colour branch adds about 1.4 points, as in the paper. When colours are wrong it costs accuracy, and
-the cost falls almost entirely on colourful species. Our average cost (−4.1) is smaller than the paper's (−10.2), which
-is consistent with our 25 species being mostly grey, brown and black.
+**Answer:** the paper's trade-off holds. Colour adds about 1.4 points but makes the model vulnerable to wrong
+colours, and how vulnerable depends on how colourful the birds are. This is consistent with our smaller average loss
+(−4.1) than the paper's (−10.2), since most of our species are dull.
 
 ## 8. Analysis and discussion
 
-**Why our accuracy looks like the paper's.** Our model is weaker (ResNet18 against ConvNeXt-Tiny, 8 parts against 12,
-a weaker part detector) but our task is much easier (25 classes, few look-alike groups). The second effect dominates,
-so the similar numbers are a coincidence, not a reproduction of the paper's figure.
+- **Our accuracy only looks like the paper's.** Our model is weaker, but our task is much easier (25 species, few
+  look-alikes). The similar numbers are a coincidence.
+- **Part supervision serves the explanation more than accuracy.** Part masks reduced overfitting, but a better part
+  detector changed where prototypes look, not accuracy. Interpretability needs its own measurements.
+- **Several prototypes often share one spot.** In many images several of the 8 parts focus on the head, so they act as
+  one piece of evidence. The app shows this.
+- **Noise matters.** Two early conclusions changed once we had several runs: the first colour gain was not
+  significant, and the slow start of training was mainly caused by the low default learning rate, not by the warm-up design.
+- **Settings depend on dataset size.** The paper's settings, designed for 8× more images, did not transfer.
 
-**Part supervision is a regulariser for accuracy and a tool for explanation.** Part maps reduced overfitting in Jump 3,
-yet a much better part detector did not change accuracy. What it changed was where prototypes look. An
-interpretability method has to be judged on interpretability metrics, not on accuracy alone.
-
-**Several prototypes share one region.** In many test images several of the 8 prototypes peak on the head, the most
-distinctive region, so they act as one piece of evidence. This is visible in the application, matches the low
-prototype keypoint scores, and is a limit of our trained model rather than of the method.
-
-**The colour result.** The paper's trade-off holds: separating colour costs nothing in shape-based accuracy, adds a
-little accuracy, and makes reliance on colour measurable for every part. How much that reliance costs under misleading
-colours is a property of the data: on our colourful species it approaches the paper's figure, on grey species it is
-almost zero.
-
-**Noise.** Runs with identical settings differ by up to about 2 points. Several conclusions changed once we had three
-seeds per setting: the first single-model colour gain was not significant, and the first explanation of the slow
-warm-up was wrong (it was mainly the low default learning rate: with the paper's learning rate the model reaches about
-30% before the backbone unfreezes).
-
-**What we learnt.** Measure seed-to-seed noise before comparing settings. Read the authors' launch scripts, not only
-the code defaults. Hyperparameters are tied to dataset size. Choose the test data to fit the question.
+**Limitations:**
+- Reduced scale: 25 species, ResNet18, 8 parts, weaker part detector.
+- The first 25 species are mostly dull; a colourful subset would test the colour question better.
+- No validation set; some settings were chosen after seeing test results.
+- Only hue changes were tested; user studies, the other datasets and the PIP-Net comparison were not reproduced.
 
 ## 9. Deployment
 
-A Streamlit application and a FastAPI REST API share one inference module and the trained checkpoint (Jump 4 rerun,
-84.0%). Both run on a laptop CPU (`run_demo.bat` / `run_demo.sh` install and start everything). Details and a worked
-example: `deploy/README.md`.
+A **Streamlit** web app and a **FastAPI** REST API, sharing one inference module and the trained model (84.0%). Both run
+on a laptop CPU; `run_demo.bat` / `run_demo.sh` install and start everything.
 
-The application has three views:
-1. **Prediction:** species, correctness for test images, and the top 3 relative match scores.
-2. **Explanation:** for each of the 8 parts, where its prototype fires, the image patch, the matching patch of a
-   training image (grayscale, because shape is judged without colour), and the colour check: the colour on the bird
-   and the colours the colour branch accepts for that part of that species. A chart compares the parts of the
-   prediction with any other species.
-3. **Colour ablation:** the full and shape-only models side by side, a slider that recolours the bird while keeping
-   brightness, and the test-set results of Section 7.
+The app has three tabs:
+1. **Prediction:** species, whether it is correct, top-3 scores.
+2. **Explanation:** for each of the 8 parts, where the model looked, the matching part of a training bird (in grayscale,
+   as the shape branch sees it), and whether the colour fits.
+3. **Colour ablation:** full model and shape-only model side by side, with a slider that recolours the bird, plus the
+   test-set results of Section 7.
 
-![Explanation view: parts 1-4 for a Cardinal test image, as shown in the app](assets/demo/explanation_cardinal.png)
+<p align="center"><img src="assets/report/app_ablation.png" alt="Colour ablation tab of the app" width="80%"><br><em>Figure 4. The app's colour-ablation tab: Indigo Bunting recoloured by +0.40.</em></p>
 
-Example (API, Cardinal test image): with original colours the Cardinal scores 0.725 (71% of the evidence) and every
-part's colour fits. With the hue shifted by 0.5 the score falls to 0.367 (45%): the colour check blocks parts 1, 2, 3
-and 7, whose accepted colours are reds and oranges, while the shape-only score stays at 0.726 and the answer holds. On
-an Indigo Bunting, a hue shift of 0.40 makes the full model answer Painted Bunting while the shape-only model stays
-correct: the experiment of Section 7, on one image.
+In this example the recoloured Indigo Bunting is classified as a Painted Bunting by the full model, while the shape-only
+model stays correct: Section 7's result on a single image.
 
-**Limits:** only the 25 trained species are known; tight crops work best; parts are numbered, not named; the
-accepted-colour grid is our visualisation of the trained colour branch (the paper shows colour patches from training
-images).
+## 10. Conclusion
 
-## 10. Limitations
+We reproduced LucidPPN's full pipeline on 25 CUB species (83.1 ± 1.0%). Our ablation confirmed the paper's colour
+trade-off: colour adds about 1.4 points, the shape branch is unaffected by recolouring, and the cost of misleading
+colours falls on colourful species. The deployed app shows the method's explanation part by part and runs the ablation
+live.
 
-- **Scale:** 25 of 200 classes, ResNet18 instead of ConvNeXt-Tiny, 8 parts instead of 12, PDiscoNet at 224 px.
-- **Subset choice:** we took the first 25 species, which are mostly grey, brown and black. For a question about
-  colour, a colourful subset would have been the better choice; the per-species split in Section 7 partly compensates.
-- **No validation split:** we report final epochs only, but the Jump 3-4 settings were chosen after seeing test results.
-- **Bundled changes:** Jump 4 changed three settings at once; the paper recipe is itself a bundle.
-- **Metrics:** prototype IoU is measured against each model's own unsupervised masks, and the keypoint score is our
-  adaptation. The user studies, the other three datasets and the PIP-Net comparison were not reproduced.
-- **Colour experiment:** evaluation-only (valid because of the stop-gradient) and limited to hue changes.
-
-**With more time:** a validation split; the ConvNeXt-Tiny backbone and a 448 px part detector; the colour experiment
-on a colourful subset or all 200 classes; other colour changes (saturation, lighting); a small user study.
-
-## 11. Conclusion
-
-We reproduced LucidPPN's three-stage pipeline on 25 CUB species with the authors' model code and our own drivers,
-reaching 83.1 ± 1.0% top-1. Our experiment confirmed the paper's colour trade-off: the colour branch adds about 1.4
-points in every model, the shape branch is untouched by colour changes, and misleading colours cost the full model 7.5
-points on colourful species but almost nothing on grey ones. A follow-up study showed that the paper's recipe does not
-transfer directly to a small subset, and that a better part detector improves where prototypes look rather than
-accuracy. The deployed application shows the method's explanation, per part with shape and colour separated, and lets
-the user run the ablation on any image.
-
-## 12. References
+## 11. References
 
 1. M. Pach, K. Lewandowska, J. Tabor, B. Zieliński, D. Rymarczyk. LucidPPN: Unambiguous Prototypical Parts Network for
    User-centric Interpretable Computer Vision. ICLR 2025.
@@ -282,7 +231,4 @@ the user run the ablation on any image.
    CNS-TR-2011-001, Caltech, 2011.
 9. K. He, X. Zhang, S. Ren, J. Sun. Deep Residual Learning for Image Recognition. CVPR 2016.
 10. Z. Liu, H. Mao, C.-Y. Wu, C. Feichtenhofer, T. Darrell, S. Xie. A ConvNet for the 2020s. CVPR 2022.
-11. S. G. Müller, F. Hutter. TrivialAugment: Tuning-free Yet State-of-the-Art Data Augmentation. ICCV 2021.
-12. D. Hasler, S. Süsstrunk. Measuring Colourfulness in Natural Images. Proc. SPIE 5007, 2003.
-13. Q. McNemar. Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages.
-    Psychometrika 12, 1947.
+11. D. Hasler, S. Süsstrunk. Measuring Colourfulness in Natural Images. Proc. SPIE 5007, 2003.

@@ -6,6 +6,10 @@ Paper: Pach, Lewandowska, Tabor, Zieliński, Rymarczyk. *LucidPPN: Unambiguous P
 User-centric Interpretable Computer Vision.* ICLR 2025.
 [Paper](https://openreview.net/forum?id=BM9qfolt6p) | [Official code](https://github.com/mateuszpach/LucidPPN)
 
+> **Branches:** `main` holds Milestone 2 (reproduction). This branch, **`m3&m4`**, holds Milestones 3-4: our
+> experiment (colour-branch ablation and follow-up study, `EXPERIMENTS.md`, `experiments/`) and the deployment
+> (`deploy/`). Final report: [`REPORT.pdf`](REPORT.pdf).
+
 ## Run the demo
 Needs Python 3.10-3.13. No GPU, dataset or Colab: the trained model and example images are in the repository.
 - **Windows:** double-click `run_demo.bat` (in PowerShell: `.\run_demo.bat`)
