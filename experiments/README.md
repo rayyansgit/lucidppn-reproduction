@@ -20,6 +20,7 @@ Stage 3's results and logs (`MetiNet/training_log_*.txt`, `MetiNet/results/`) an
 | `REPORT_INSERT.md` | Ready-to-paste text and tables for the report and slides |
 | `SUMMARY.md`, `summary.png` | All configurations side by side (mean ± std over seeds) |
 | `colour_by_species.{md,png,json}` | Hue sensitivity vs colourfulness, per species |
+| `*/eval/eval_full.json`, `EVALUATION.md`, `confusion_matrix.png`, `part_alignment.png` | Full evaluation of every model: top-1/top-5, per-species accuracy, confusion matrix, the paper's IoU, keypoint NMI/ARI |
 
 Each training-run folder holds `config.json` (exact settings), `train_log.txt`, `history.json` (per-epoch numbers),
 `tensorboard/`, `ablation/` (Stage 4 results) and `checkpoint.pt`. Checkpoints are not committed (`*.pt` is ignored).
@@ -57,8 +58,13 @@ python eval_part_quality.py --checkpoints 5ep=cub_quick/cub_quick_25class.pt 28e
 cd MetiNet && python eval_ablation.py --checkpoint ../experiments/jump5_paper_recipe/seed1/checkpoint.pt --seeds 5 \
     --num_workers 0 --out_dir ../experiments/jump5_paper_recipe/seed1/ablation && cd ..
 
+# Full evaluation per model (top-5, confusion matrix, IoU, keypoint alignment), with the maps it was trained on
+cd MetiNet && python eval_full.py --checkpoint ../experiments/jump5_paper_recipe/seed1/checkpoint.pt \
+    --maps ../CUB_subset_maps --out_dir ../experiments/jump5_paper_recipe/seed1/eval && cd ..
+
 # Summaries
 python analysis/summarize_runs.py
+python analysis/summarize_eval.py
 python analysis/colour_by_species.py --ablations experiments/*/ablation/ablation.json experiments/*/seed*/ablation/ablation.json \
     --out experiments/colour_by_species
 ```

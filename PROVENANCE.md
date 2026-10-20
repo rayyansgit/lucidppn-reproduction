@@ -27,6 +27,8 @@ data, training loop or evaluation); **written by us** = new code.
 | PDiscoNet driver with configurable epochs / output folder | `part_detection/train_pdisco_long.py` | adapted from `part_detection/main.py` | Same setup as `train_pdisco_quick.py` (left unchanged) plus command-line options and a Windows-safe `__main__` guard; used for the 28-epoch detector. |
 | Part-map generation for any detector | `part_detection/generate_maps.py` | adapted from `part_detection/save_maps.py` | Same as `generate_maps_quick.py` (left unchanged) with command-line options. |
 | Part-quality evaluation (NMI, ARI, keypoint regression) | `part_detection/eval_part_quality.py` | adapted from `part_detection/evaluate_cub.py` | Reuses upstream `eval_kpr` and `eval_nmi_ari` unchanged; filters upstream's 200-class CUB loader to our 25 classes. |
+| Full evaluation: top-1/top-5, confusion matrix, IoU, keypoint alignment | `MetiNet/eval_full.py` | adapted from `MetiNet/metinet/test.py` | IoU/IoP/IoT computed with the authors' definition; keypoint NMI/ARI on prototype maps is ours, using the metric from PDiscoNet's `evaluate_cub.py`. |
+| Evaluation summary and figures | `analysis/summarize_eval.py` | written by us | |
 | Multi-seed summary, colourfulness-vs-hue-sensitivity analysis | `analysis/summarize_runs.py`, `analysis/colour_by_species.py` | written by us | Colourfulness metric from Hasler & Süsstrunk (2003). |
 | Overnight experiment queue | `experiments/run_queue.sh` | written by us | |
 | Deployment: inference wrapper, Streamlit app, FastAPI API | `deploy/*` | written by us | Preprocessing copied from the test-time branch of upstream `util/data.py`. |

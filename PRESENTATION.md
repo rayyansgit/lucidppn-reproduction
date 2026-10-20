@@ -15,12 +15,13 @@ Ahmad (11-15 + demo). Every number below comes from `REPORT.md` / `EXPERIMENTS.m
 | 7 | Reproduction results | Jumps 2 → 4: 33.9 → 41.6 → 81.9%; over 4 runs **83.1 ± 1.0%** vs paper 81.5 ± 0.4%. Same-looking number, easier task (25 vs 200 classes): not a like-for-like match. | `analysis/figures/training_curves.png` |
 | 8 | What the curves taught us | (1) Part maps halve the train-test gap (18 → 10 points). (2) Accuracy stays at chance during the frozen warm-up, mainly because the default learning rate is 4× too low. (3) Plateau from ~epoch 40; train 99% vs test 83%. (4) We report final epochs, never the test-picked best. | Curves with unfreeze lines |
 | 9 | Following the paper more closely | We found the paper's real settings in the authors' `run_training.sh` (the defaults differ in 6 settings: epochs, frozen epochs, 3 learning rates, part weight) and ran a 2 × 2 study, 3 seeds each. Paper recipe: **81.0-81.4%** vs code defaults **83.0-83.1%**, because 40 epochs on 750 images = 4× fewer weight updates. | 2 × 2 accuracy table + `experiments/summary.png` |
-| 10 | Better parts, same accuracy | 28-epoch part detector: NMI 24.1 → 31.0, ARI 11.8 → 14.9, keypoint error 14.3 → 12.7%, yet accuracy unchanged (83.1 vs 83.0). Why: classification needs parts only roughly right; the part loss acts as a regulariser. (Prototypes also cluster on the head.) | Part-quality table |
+| 10 | Better parts: same accuracy, better explanations | 28-epoch part detector: NMI 24.1 → 31.0, yet accuracy unchanged (83.1 vs 83.0). But its prototypes sit more consistently on real bird parts: keypoint NMI 17.6 → 20.8 and 18.1 → 22.6, in every model. Part supervision improves the explanation, not the accuracy. | `experiments/part_alignment.png` |
+| 10b | Evaluation: where are the errors? | Top-5 97-98% everywhere. Errors are in look-alike dark birds: Pelagic → Brandt's Cormorant 30%, Rusty → Brewer's Blackbird 26%, Black-footed → Sooty Albatross 19%. Colour can't separate black birds. | `experiments/confusion_matrix.png` |
 | 11 | Our experiment: the question | "How much of the accuracy comes from the colour branch, and what does it cost in robustness to colour changes?" No retraining needed: the stop-gradient means ShapeTexNet never learns from colour. | One sentence, big |
 | 12 | Is the colour gain real? | First run, one model: +1.1, not significant (p ≈ 0.14). Over 12 models: **+1.4, positive in 12/12 (p = 0.0005)**, same as the paper's +1.4. Hue shift 0.5: LucidPPN **−4.1**, ShapeTexNet **0** (paper −10.2 / 0). | Ours vs paper table |
 | 13 | Who is affected by colour changes? | Hue sensitivity tracks colourfulness (Spearman ρ = 0.62, p = 0.001): Cardinal −29, Indigo Bunting −28, grey birds ≈ 0. Our 25 species are mostly grey, which explains −4.1 vs −10.2. | `experiments/colour_by_species.png` |
-| 14 | What we learnt | Measure noise before comparing (seed spread ±1-2 points); read the launch scripts, not just the defaults; hyperparameters depend on dataset size; better components ≠ better results; the test data shapes the conclusion. | 5 bullets |
-| 15 | Limitations | 25 mostly grey species, weaker ResNet18 backbone, no validation split, no prototype-part IoU, hue-only perturbation, paper recipe not re-tuned for small data | Bullets |
+| 14 | What we learnt | Measure noise before comparing (seed spread ±1-2 points); read the launch scripts, not just the defaults; hyperparameters depend on dataset size; judge a component by what it's for (parts → explanations, not accuracy); the test data shapes the conclusion. | 5 bullets |
+| 15 | Limitations | 25 mostly grey species, weaker ResNet18 backbone, no validation split, no user study, hue-only perturbation, paper recipe not re-tuned for small data | Bullets |
 | 16 | Demo | Live Streamlit app (below), then one API call | Live app (recorded backup ready) |
 
 ## Demo script (about 2 minutes)
@@ -56,7 +57,11 @@ Ahmad (11-15 + demo). Every number below comes from `REPORT.md` / `EXPERIMENTS.m
 - *Why did the paper's recipe do worse?* It's designed for 8× more images; on our subset it makes 4× fewer weight
   updates.
 - *If the part detector got better, why didn't accuracy?* Classification needs parts only roughly right, and the part
-  loss mainly regularises; the gain would show in explanation quality (IoU), which we didn't measure.
+  loss mainly regularises. The gain shows in the explanations instead: keypoint NMI rises by 3-4.5 points in every
+  model.
+- *Did you evaluate the model, or only train/test?* The test split is the evaluation (CUB's official held-out images,
+  as in the paper). On top: top-5, per-species accuracy, a confusion matrix, the paper's IoU, and keypoint alignment.
+  What we lack is a separate validation split, so we report final epochs only.
 - *Are the app's percentages probabilities?* No: normalised scores ("share of evidence"), because the model scores each
   species independently with its own sigmoid.
 - *What would you do with more compute?* The paper's stronger ConvNeXt-Tiny backbone, a validation split, prototype-part IoU, and the

@@ -186,5 +186,35 @@ every checkpoint we have: the Jump 4 rerun and the 11 models of Jumps 4-7.
 
 ![Hue sensitivity vs colourfulness per species](experiments/colour_by_species.png)
 
+## Full evaluation of all 12 models — top-5, per-species errors and part alignment
+
+`MetiNet/eval_full.py` on every checkpoint; pooled report in [`experiments/EVALUATION.md`](experiments/EVALUATION.md).
+
+| Configuration (3 models each) | Top-1 | Top-5 | IoU with own masks | Keypoint NMI ↑ | Keypoint ARI ↑ |
+|---|---|---|---|---|---|
+| Code defaults, 5-epoch parts | 83.5 ± 0.6 | 97.9 ± 0.2 | 0.33 ± 0.01 | 17.6 ± 0.6 | 8.6 ± 0.3 |
+| Code defaults, 28-epoch parts | 83.0 ± 0.7 | 97.8 ± 0.2 | 0.27 ± 0.01 | **20.8 ± 0.8** | **10.4 ± 0.2** |
+| Paper recipe, 5-epoch parts | 81.0 ± 1.7 | 97.2 ± 0.5 | **0.44 ± 0.03** | 18.1 ± 0.3 | 8.6 ± 0.2 |
+| Paper recipe, 28-epoch parts | 81.4 ± 2.0 | 97.2 ± 0.5 | 0.31 ± 0.01 | **22.6 ± 0.6** | **11.1 ± 0.3** |
+
+- **IoU** is the paper's metric (authors' definition from `metinet/test.py`): prototype map vs the PDiscoNet mask of
+  the same part, against the masks each model was trained with (the two detectors' unsupervised parts are numbered
+  differently, so IoU is only comparable within one part detector).
+- **Keypoint NMI/ARI** measures, at each of CUB's 15 annotated keypoints (7,571 in the test set), which part's
+  prototype is strongest, and how consistently each prototype lands on the same body part. It uses the same human
+  annotations for every model.
+
+**Findings:**
+1. **Better parts gave better explanations, not better accuracy.** Every model trained with the 28-epoch parts has
+   higher keypoint NMI than every model trained with the 5-epoch parts (+3.2 with the code defaults, +4.5 with the
+   paper recipe), at unchanged accuracy. This corrects the impression from accuracy alone that the better detector
+   "did nothing".
+2. **The paper's stronger alignment weight (α_D = 1.4) makes prototypes follow their masks more closely** (IoU 0.33 →
+   0.44 with the same 5-epoch masks), as in the paper's Fig. 6.
+3. **Top-5 accuracy is 97-98%** in every configuration: when the model is wrong, the right species is nearly always
+   among its top five.
+4. **Errors concentrate in near-identical dark species:** Pelagic → Brandt's Cormorant (30% of its images), Rusty →
+   Brewer's Blackbird (26%), Black-footed → Sooty Albatross (19%). Colour cannot separate these black or grey birds.
+
 The deployed demo model (Jump 4 rerun, 84.0%) remains the best single model; none of the new configurations is
 better on average, so it was not replaced.

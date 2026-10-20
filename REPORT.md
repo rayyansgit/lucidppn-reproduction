@@ -118,8 +118,9 @@ Workflow, as the brief recommends:
 4. A long run.
 
 Every run logs loss and train/test accuracy per epoch, to TensorBoard and to text logs kept in the repo. We evaluate
-with the authors' `topk_accuracy`. We had to rewrite the evaluation loop, because the upstream `test.py` computes
-part-IoU and crashes without part annotations for the whole dataset.
+with the authors' `topk_accuracy`. We had to rewrite the evaluation loop for training, because the upstream
+`test.py` computes part-IoU and crashed without part maps. Once part maps were available we added a full evaluation
+script (`MetiNet/eval_full.py`) that also computes the paper's IoU with the authors' definition (Section 6.3).
 
 Environment: Google Colab (T4 GPU) for Stages 3-5, with dependencies pinned in `requirements_pip.txt`; a local
 RTX 2080 Max-Q laptop GPU for the follow-up study (PyTorch 2.11, CUDA 12.8).
@@ -205,6 +206,39 @@ PDiscoNet's learning-rate decay (every 5 epochs) never took effect.
 The code-defaults / 5-epoch cell includes the team's original Jump 4 run (81.9%) and the rerun (84.0%).
 
 ![Every run's test accuracy per epoch](experiments/summary.png)
+
+### 6.3 Full evaluation: top-5, per-species errors and part alignment
+
+`MetiNet/eval_full.py` evaluates every trained model on the test set with both of the paper's metric families. Full
+tables: `experiments/EVALUATION.md`.
+- **Classification:** top-1 and top-5 accuracy, per-species accuracy and the confusion matrix.
+- **Part alignment (the paper's IoU):** overlap between each part's prototype map and the PDiscoNet mask for that
+  part, using the authors' definition from `metinet/test.py` (it failed in Stage 3 only because the part maps were
+  missing). Because PDiscoNet's parts are unsupervised and numbered arbitrarily, IoU is measured against the masks each
+  model was trained with.
+- **Part alignment against human annotations (comparable across all models):** at each of CUB's 15 annotated
+  keypoints (beak, eye, crown, wing, tail, ...; 7,571 visible keypoints in the test set), which part's prototype is
+  strongest. NMI/ARI then measure how consistently each prototype lands on the same body part, the metric
+  PDiscoNet's authors use for part discovery, applied to LucidPPN's prototype maps.
+
+| Configuration (3 models each) | Top-1 | Top-5 | IoU with own masks | Keypoint NMI ↑ | Keypoint ARI ↑ |
+|---|---|---|---|---|---|
+| Code defaults, 5-epoch parts | 83.5 ± 0.6 | 97.9 ± 0.2 | 0.33 ± 0.01 | 17.6 ± 0.6 | 8.6 ± 0.3 |
+| Code defaults, 28-epoch parts | 83.0 ± 0.7 | 97.8 ± 0.2 | 0.27 ± 0.01 | **20.8 ± 0.8** | **10.4 ± 0.2** |
+| Paper recipe, 5-epoch parts | 81.0 ± 1.7 | 97.2 ± 0.5 | **0.44 ± 0.03** | 18.1 ± 0.3 | 8.6 ± 0.2 |
+| Paper recipe, 28-epoch parts | 81.4 ± 2.0 | 97.2 ± 0.5 | 0.31 ± 0.01 | **22.6 ± 0.6** | **11.1 ± 0.3** |
+
+(The code-defaults / 5-epoch row here covers the 3 models with a checkpoint: the rerun and seeds 2-3.)
+
+![Keypoint alignment per configuration](experiments/part_alignment.png)
+
+**Where the errors are.** Pooled over all 12 models, almost all errors fall inside three groups of near-identical
+dark species: Pelagic Cormorant is predicted as Brandt's Cormorant on 30% of its test images, Rusty Blackbird as
+Brewer's Blackbird on 26%, and Black-footed Albatross as Sooty Albatross on 19%. These are the hardest species
+(47-67% accuracy), while 10 species are above 90%.
+
+![Confusion matrix, 12 models pooled](experiments/confusion_matrix.png)
+
 
 ## 7. Additional experiment: is the colour branch worth it?
 
@@ -329,15 +363,17 @@ images and batch 64, its 40 epochs make only about 440 weight updates, against a
 schedule was designed for all 200 classes, 8× more images. Hyperparameters are tied to dataset size, so "using the
 paper's settings" is not automatically "reproducing the paper" at a different scale.
 
-**Better parts did not mean better accuracy.** The 28-epoch part detector is clearly better on all three part
-metrics (NMI 24.1 → 31.0), yet classification accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4, well inside the
-seed spread). The most likely reason is that classification only needs parts to be roughly right: part
-supervision mainly acts as a regulariser (Section 8.1), and with 25 classes the 5-epoch parts were apparently already
-good enough for that. The prototype patches in the app (Section 9) add a further hint: several of the 8 prototypes
-concentrate on the head and beak, the most distinctive region, rather than spreading evenly over the body, so the
-model does not use all parts as separate evidence anyway. Better parts may still give better *explanations* (prototypes more tightly on the
-right body part), which we would need the paper's prototype-part IoU to measure. This mirrors the paper's own Fig. 6,
-where stronger part alignment improves IoU much more than accuracy.
+**Better parts gave better explanations, not better accuracy.** The 28-epoch part detector is clearly better on
+all three part metrics (NMI 24.1 → 31.0), yet classification accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4,
+well inside the seed spread). What did change is where the prototypes look: measured against CUB's human-annotated
+keypoints, prototypes trained with the better parts sit far more consistently on the same body parts (keypoint NMI
+17.6 → 20.8 with the code defaults, 18.1 → 22.6 with the paper recipe; every 28-epoch model beats every 5-epoch
+model). The stronger alignment weight of the paper recipe (α_D = 1.4) also makes prototypes follow their part masks
+more closely (IoU 0.33 → 0.44 with the same masks). So part supervision affects the *explanation*, while
+classification only needs parts to be roughly right; the part loss acts mainly as a regulariser for accuracy. This
+mirrors the paper's own Fig. 6, where stronger part alignment improves IoU much more than accuracy. The prototype
+patches in the app (Section 9) show the remaining weakness: several prototypes still concentrate on the head and
+beak, the most distinctive region, rather than spreading evenly over the body.
 
 ### 8.3 The colour branch
 
@@ -374,8 +410,9 @@ where stronger part alignment improves IoU much more than accuracy.
 2. **Read the authors' launch scripts, not only the defaults.** The paper's real configuration was in
    `run_training.sh`; the argument defaults differ in six settings (epochs, frozen epochs, three learning rates, part weight).
 3. **Hyperparameters are tied to dataset size.** The paper's 40-epoch schedule makes 4× fewer updates on our subset.
-4. **Better intermediate components don't guarantee better end results.** Better parts, same accuracy: the
-   role of the part loss (a regulariser, which only needs roughly right parts) matters more than part quality.
+4. **Measure what a component is for.** Better parts left accuracy unchanged, so judged on accuracy alone they
+   looked useless. Measured on part alignment, the quantity they are meant to improve, they clearly helped. An
+   interpretability method needs interpretability metrics, not only accuracy.
 5. **The test data shapes the conclusion.** Colour reliance depends on which species are in the subset; an average
    over mostly grey birds hides a 29-point effect on a cardinal.
 6. **Log everything, every epoch.** The warm-up problem, the plateau and the overfitting were only visible because
@@ -459,19 +496,23 @@ demonstration doesn't depend on Colab.
 - **The warm-up stayed ineffective with the default learning rate** (Section 8.1); we did not make it train
   ResNet18's last block (`layer4.1`).
 - **PDiscoNet at 224 px rather than 448**, and its better parts were not tested with finer feature maps.
-- **Not reproduced:** prototype-part IoU, the user studies, the other three datasets, and the PIP-Net comparison.
+- **Not reproduced:** the user studies, the other three datasets, and the PIP-Net comparison.
+- **Part-alignment metrics depend on references:** IoU is measured against PDiscoNet's own (unsupervised) masks, and
+  our keypoint NMI/ARI is our adaptation of PDiscoNet's metric to prototype maps, not a metric reported in the paper.
 - **The colour experiment is evaluation-only** (valid because of the stop-gradient, Section 7) and only tests hue,
   not saturation or lighting changes.
 
 Addressed in the follow-up study (they were limitations of Stages 3-4): single-seed results (now 3-4 runs per
 configuration), unchecked part quality (now measured), the paper's recipe (now tested), the significance of the
-colour gain (now p = 0.0005), and the reason for our small hue-shift drop (now explained per species).
+colour gain (now p = 0.0005), the reason for our small hue-shift drop (now explained per species), and the
+paper's second metric, prototype-part IoU (now measured, plus a keypoint-based alignment score).
 
 **What we would do with more time**, most valuable first:
 1. Hold out a validation split (e.g. 5 training images per class) for choosing epochs and settings.
 2. Use the paper's backbone (`convnext_tiny_26`, which the code supports), a much stronger feature extractor, and
    re-test whether the better part detector (and a 448 px one) pays off there.
-3. Measure prototype-part IoU, to test whether better parts give better explanations.
+3. Run a small user study, as the paper does, to test whether the better-aligned prototypes are actually easier
+   for people to understand.
 4. Repeat the colour experiment on a colourful 25-species subset (warblers, tanagers, orioles), or on all 200 classes.
 5. Re-tune the paper recipe for small data (match the number of weight updates) and fix the warm-up for ResNet18.
 6. Test other colour changes (saturation, lighting) besides hue.
@@ -491,8 +532,10 @@ paper's trade-off holds, but its size depends on the dataset.
 
 Following the paper more closely taught us as much as reproducing it. The authors' published recipe, found in their
 launch script, ended about 2 points lower on our small subset, because it makes 4× fewer weight updates on 8× fewer
-images. A part detector trained for the paper's 28 epochs found clearly better parts but gave no accuracy gain,
-consistent with the part loss acting mainly as a regulariser. And with 652 test images, differences below about 2 points are noise: several seeds were
+images. A part detector trained for the paper's 28 epochs found clearly better parts. It gave no accuracy gain, but
+it made the prototypes sit more consistently on real bird parts (keypoint NMI up by 3-4.5 points in every model):
+part supervision improves the explanations, which is what it is for. Most remaining errors are between near-identical
+dark species (cormorants, blackbirds, albatrosses), where colour cannot help. And with 652 test images, differences below about 2 points are noise: several seeds were
 needed before any of these conclusions could be stated.
 
 Finally, we deployed the model as an interactive app and a REST API that show the paper's main selling point: for

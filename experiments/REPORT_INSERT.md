@@ -52,6 +52,16 @@ Part-detector quality (authors' `evaluate_cub.py` metrics on the 25-class test s
 
 Per-species figure: `experiments/colour_by_species.png`.
 
+## Section 6, new subsection: full evaluation (see `experiments/EVALUATION.md`)
+| Configuration (3 models each) | Top-1 | Top-5 | IoU with own masks | Keypoint NMI ↑ | Keypoint ARI ↑ |
+|---|---|---|---|---|---|
+| Code defaults, 5-epoch parts | 83.5 ± 0.6 | 97.9 ± 0.2 | 0.33 ± 0.01 | 17.6 ± 0.6 | 8.6 ± 0.3 |
+| Code defaults, 28-epoch parts | 83.0 ± 0.7 | 97.8 ± 0.2 | 0.27 ± 0.01 | 20.8 ± 0.8 | 10.4 ± 0.2 |
+| Paper recipe, 5-epoch parts | 81.0 ± 1.7 | 97.2 ± 0.5 | 0.44 ± 0.03 | 18.1 ± 0.3 | 8.6 ± 0.2 |
+| Paper recipe, 28-epoch parts | 81.4 ± 2.0 | 97.2 ± 0.5 | 0.31 ± 0.01 | 22.6 ± 0.6 | 11.1 ± 0.3 |
+
+Figures: `experiments/part_alignment.png`, `experiments/confusion_matrix.png`.
+
 ## Section 8, Analysis and discussion: new points
 1. **One model was not enough.** On the single Stage 4 model the colour gain was not significant (12 images fixed vs
    5 broken, p ≈ 0.14). Across 12 models it is (12/12 positive, p = 0.0005). Colour reliance also varies widely
@@ -62,9 +72,9 @@ Per-species figure: `experiments/colour_by_species.png`.
    7.2 points, the 12 least colourful 0.8. Cardinal (−29) and Indigo Bunting (−28) dominate, while albatrosses,
    cormorants and auklets barely change. This explains why our average drop (−4.1) is well below the paper's (−10.2):
    our 25 species are mostly grey, brown and black; the full CUB has many more colour-defined species.
-3. **Better parts did not mean better accuracy.** The 28-epoch part detector is clearly better on all three part
-   metrics, yet accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4). Classification only needs roughly correct
-   parts: the part loss acts mainly as a regulariser. Any
+3. **Better parts gave better explanations, not better accuracy.** The 28-epoch part detector is clearly better on
+   all three part metrics, and accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4). But its prototypes sit more
+   consistently on real bird parts: keypoint NMI 17.6 → 20.8 and 18.1 → 22.6, higher in every model. Any
    benefit would show in explanation quality (prototype-part IoU), which we did not measure.
 4. **The paper's recipe doesn't transfer one-to-one to a small subset.** It learns faster early (higher learning
    rate) but ends ~2 points lower: with 750 images and batch 64, 40 epochs make only ~440 weight updates vs ~1,900 for
