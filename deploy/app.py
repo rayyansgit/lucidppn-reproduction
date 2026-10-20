@@ -45,7 +45,7 @@ st.sidebar.write(', '.join(pretty(c) for c in CLASSES))
 examples = (sorted(glob.glob(os.path.join(ROOT, 'CUB_subset', 'test', '*', '*.jpg')))
             or sorted(glob.glob(os.path.join(ROOT, 'deploy', 'examples', '*', '*.jpg'))))
 source = st.radio('Image source', ['Upload', 'Example from test set'] if examples else ['Upload'], horizontal=True)
-image = None
+image, true_species = None, None
 if source == 'Upload':
     f = st.file_uploader('Bird photo (JPG/PNG). Crop it tightly around the bird: the model was trained on '
                          'bounding-box crops.', type=['jpg', 'jpeg', 'png'])
@@ -55,6 +55,7 @@ else:
     path = st.selectbox('Test image', examples, format_func=lambda p: f'{pretty(os.path.basename(os.path.dirname(p)))}'
                                                                      f' / {os.path.basename(p)}')
     image = Image.open(path).convert('RGB')
+    true_species = pretty(os.path.basename(os.path.dirname(path)))
 
 hue = st.slider('Hue shift (recolours the bird, keeps brightness; tests the colour-branch ablation live)',
                 -0.5, 0.5, 0.0, 0.05)
@@ -66,9 +67,28 @@ if image is not None:
         st.image(shown, caption='Model input (224×224)' + (f', hue shifted by {hue:+.2f}' if hue else ''))
     with right:
         st.subheader(f"Prediction: {result['prediction']}")
+        if true_species:
+            mark = '✓ correct' if true_species == result['prediction'] else '✗ wrong'
+            st.write(f"True species: **{true_species}** ({mark})")
         st.write(f"Shape/texture branch alone would say: **{result['shapetexnet_prediction']}**")
-        st.table([{'Species': t['class'], 'LucidPPN score': f"{t['lucidppn_score']:.3f}",
-                   'Shape/texture only': f"{t['shapetexnet_score']:.3f}"} for t in result['top_k']])
+
+        top = result['top_k']
+        fig, ax = plt.subplots(figsize=(6, 2.4))
+        names = [t['class'] for t in top][::-1]
+        shares = [100 * t['share_of_evidence'] for t in top][::-1]
+        bars = ax.barh(names, shares, color=['#9bbcf0'] * (len(top) - 1) + ['#3d7be8'])
+        ax.bar_label(bars, labels=[f'{v:.0f}%' for v in shares], padding=3, fontsize=8)
+        ax.set_xlim(0, 100); ax.set_xlabel('Share of evidence (%)')
+        ax.spines[['top', 'right']].set_visible(False); ax.tick_params(labelsize=8)
+        fig.tight_layout()
+        st.pyplot(fig)
+        st.caption('The model scores every species independently (0-1, "how much does this bird look like '
+                   'species X"), so the scores don\'t add up to 1. "Share of evidence" divides each score by the sum '
+                   'over all 25 species: it adds up to 100% and reads like a probability, but it is not a calibrated '
+                   'one.')
+        st.table([{'Species': t['class'], 'Share of evidence': f"{100 * t['share_of_evidence']:.1f}%",
+                   'LucidPPN score': f"{t['lucidppn_score']:.3f}",
+                   'Shape/texture only': f"{t['shapetexnet_score']:.3f}"} for t in top])
 
     st.subheader(f"Evidence per part for '{result['prediction']}'")
     st.caption('Parts are discovered without labels by PDiscoNet, so they are numbered rather than named. '

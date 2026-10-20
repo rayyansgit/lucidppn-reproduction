@@ -4,7 +4,7 @@ Two front ends share one inference module (`lucid_inference.py`):
 
 | | What it is | Start it |
 |---|---|---|
-| **Streamlit app** (`app.py`) | Web UI: upload a bird photo, see the top-5 species, per-part shape vs colour evidence, prototype heatmaps, and a hue slider that recolours the bird live | `streamlit run deploy/app.py` |
+| **Streamlit app** (`app.py`) | Web UI: upload a bird photo or pick a test image, see the top-5 species as a share-of-evidence bar chart (and, for test images, whether the prediction is correct), per-part shape vs colour evidence, prototype heatmaps, and a hue slider that recolours the bird live | `streamlit run deploy/app.py` |
 | **REST API** (`api.py`) | FastAPI service returning JSON; interactive docs at `/docs` | `uvicorn deploy.api:app --port 8000` |
 
 Both run on an ordinary laptop CPU (the checkpoint loads in about 0.2 s and each prediction takes about 0.1 s) or on
@@ -66,9 +66,9 @@ A real response from our trained checkpoint (shortened to 3 parts; the full resp
   "shapetexnet_prediction": "Cardinal",
   "hue_shift": 0.0,
   "top_k": [
-    {"class": "Cardinal", "class_index": 4, "lucidppn_score": 0.7252, "shapetexnet_score": 0.7257},
-    {"class": "Painted Bunting", "class_index": 14, "lucidppn_score": 0.0754, "shapetexnet_score": 0.0875},
-    {"class": "Gray Catbird", "class_index": 8, "lucidppn_score": 0.0688, "shapetexnet_score": 0.1737}
+    {"class": "Cardinal", "class_index": 4, "lucidppn_score": 0.7252, "share_of_evidence": 0.714, "shapetexnet_score": 0.7257},
+    {"class": "Painted Bunting", "class_index": 14, "lucidppn_score": 0.0754, "share_of_evidence": 0.0742, "shapetexnet_score": 0.0875},
+    {"class": "Gray Catbird", "class_index": 8, "lucidppn_score": 0.0688, "share_of_evidence": 0.0678, "shapetexnet_score": 0.1737}
   ],
   "parts": [
     {"part": 1, "shape_texture": 0.7289, "shape_plus_colour": 0.7289},
@@ -78,6 +78,10 @@ A real response from our trained checkpoint (shortened to 3 parts; the full resp
 }
 ```
 - `lucidppn_score`: the full model's score for a class (mean over the 8 parts of shape match × colour match, in 0-1).
+  The model scores every species independently (one sigmoid per species, trained with binary cross-entropy), so these
+  scores do not add up to 1.
+- `share_of_evidence`: `lucidppn_score` divided by the sum over all 25 species. It adds up to 1 (100%) and reads like
+  the model's belief over species, which is what the app's bar chart shows. It is not a calibrated probability.
 - `shapetexnet_score`: the grayscale (shape/texture) branch alone.
 - `parts`: evidence for the predicted class, per part. When `shape_plus_colour` is much lower than `shape_texture`,
   that part has the right shape but the wrong colour for the species.
@@ -99,6 +103,7 @@ Both responses are in [`example_response_cardinal.json`](example_response_cardin
 |---|---|---|
 | Prediction | Cardinal | Cardinal |
 | LucidPPN score for Cardinal | 0.725 | **0.368** (halved) |
+| Share of evidence for Cardinal | 71% | **46%** (Gray Catbird rises to 21%) |
 | Shape/texture-only score | 0.726 | 0.727 (unchanged) |
 | Parts 1, 2, 3, 7: shape + colour | 0.33-0.99 | **≈ 0** |
 | Parts 4, 5, 6, 8: shape + colour | unchanged | unchanged |

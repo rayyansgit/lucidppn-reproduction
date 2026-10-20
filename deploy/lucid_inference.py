@@ -86,8 +86,13 @@ def predict(net, image: Image.Image, top_k=5, hue_shift=0.0):
     # proto_pooled: ShapeTexNet (grayscale) resemblance per part and class; its mean over parts is P_S
     lucid = out[0]
     shape = proto_pooled[0].mean(dim=0)
+    # The model scores each species independently (one sigmoid per species, trained with binary cross-entropy), so
+    # the scores do not sum to 1. "Share of evidence" normalises them over the 25 species: it sums to 100% and reads
+    # like a probability, but it is not a calibrated one.
+    share = lucid / lucid.sum()
     order = torch.argsort(lucid, descending=True)[:top_k].tolist()
     top = [{'class': pretty(CLASSES[c]), 'class_index': c, 'lucidppn_score': round(lucid[c].item(), 4),
+            'share_of_evidence': round(share[c].item(), 4),
             'shapetexnet_score': round(shape[c].item(), 4)} for c in order]
     c = order[0]
     parts = [{'part': k + 1,
