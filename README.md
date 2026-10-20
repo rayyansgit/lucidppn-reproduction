@@ -16,7 +16,7 @@ Needs Python 3.10-3.13. No GPU, dataset or Colab: the trained model and example 
 - **macOS / Linux:** `bash run_demo.sh`
 
 The first run installs dependencies into `.venv` (5-10 minutes); the app then opens at http://localhost:8501.
-App, REST API and worked example: [`deploy/README.md`](deploy/README.md).
+App, REST API and worked example: [`deploy/README.md`](deploy/README.md). Demo video: [`Demo.md`](Demo.md).
 
 ## What LucidPPN does
 A prototypical-parts network classifies an image by matching its parts to parts of training images ("this looks like
