@@ -54,13 +54,13 @@ test accuracy, which is selection on the test set, so it is not a fair estimate.
 |---|---|---|
 | Classes | 200 | 25 (first 25 CUB species) |
 | Test top-1 | **81.5 ± 0.4%** (3 runs) | **81.9%** (1 run) |
-| ShapeTexNet backbone | ConvNeXt-Tiny, 28×28 feature maps | ResNet18, 7×7 feature maps |
+| ShapeTexNet backbone | ConvNeXt-Tiny, 28×28 feature maps | ResNet18, also 28×28 feature maps: the authors' ResNet code uses stride 1 in its last two stages |
 | Object parts K | 12 (best model) | 8 |
 | PDiscoNet | 448 px, 28 epochs | 224 px, 5 epochs |
 | Schedule | 40 epochs, batch 64, lr 0.002 → 0.0002, 15 frozen | 82 epochs, batch 32, lr 0.0005 → 0.00005, 10 frozen |
 
 The numbers look the same, but they don't measure the same thing. Telling 25 species apart is much easier than
-telling 200 apart, and our model is smaller with coarser feature maps. So our 81.9% shows that the pipeline and method
+telling 200 apart, and our backbone is weaker (ResNet18 vs ConvNeXt-Tiny). So our 81.9% shows that the pipeline and method
 work end to end at a meaningful scale. It is not evidence that we matched the paper. On 200 classes we would expect a
 clearly lower number with this setup.
 

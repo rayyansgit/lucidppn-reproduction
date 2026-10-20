@@ -63,8 +63,8 @@ Per-species figure: `experiments/colour_by_species.png`.
    cormorants and auklets barely change. This explains why our average drop (−4.1) is well below the paper's (−10.2):
    our 25 species are mostly grey, brown and black; the full CUB has many more colour-defined species.
 3. **Better parts did not mean better accuracy.** The 28-epoch part detector is clearly better on all three part
-   metrics, yet accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4). Our ResNet18 reduces part maps to 7×7 before
-   using them, so finer part boundaries are mostly lost, and classification only needs roughly correct parts. Any
+   metrics, yet accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4). Classification only needs roughly correct
+   parts: the part loss acts mainly as a regulariser. Any
    benefit would show in explanation quality (prototype-part IoU), which we did not measure.
 4. **The paper's recipe doesn't transfer one-to-one to a small subset.** It learns faster early (higher learning
    rate) but ends ~2 points lower: with 750 images and batch 64, 40 epochs make only ~440 weight updates vs ~1,900 for
@@ -76,7 +76,7 @@ Per-species figure: `experiments/colour_by_species.png`.
 ## Section 10, Limitations: update
 - Remove or soften "one seed" and "PDiscoNet quality unchecked": both are now addressed (3 seeds per configuration;
   part quality measured with NMI/ARI/keypoint error).
-- Keep: 25 classes, ResNet18 with 7×7 maps, K = 8, no validation split, no prototype-part IoU, hue-only perturbation.
+- Keep: 25 classes, ResNet18 backbone (weaker than ConvNeXt-Tiny; same 28×28 map resolution), K = 8, no validation split, no prototype-part IoU, hue-only perturbation.
 - Add: the colour finding depends on which species are in the subset (see point 2 above).
 - Add: the paper recipe was not re-tuned for our smaller dataset (e.g. more epochs to match its number of updates).
 

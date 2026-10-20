@@ -59,7 +59,7 @@ robustness to colour changes does that cost?
 **Why it matters:** the paper's main claim is that keeping colour separate from shape/texture makes explanations less
 ambiguous, at a small cost in accuracy (Table 2: ShapeTexNet 80.4% vs LucidPPN 81.8% on CUB) and robustness (Table 3:
 under hue perturbation LucidPPN drops 81.9 → 71.7% while ShapeTexNet stays at 80.3%). We test whether the same
-trade-off holds in our reduced setting (25 classes, ResNet18, 7×7 maps).
+trade-off holds in our reduced setting (25 classes, ResNet18 backbone).
 
 **Design:**
 - Model: the Jump 4 checkpoint, unchanged.
@@ -141,8 +141,8 @@ on our Stage 3 configuration, once seed-to-seed noise is taken into account?
 
 **Findings:**
 1. **The better part detector gives clearly better parts but no better accuracy** (83.1 → 83.0 and 81.0 → 81.4, both
-   well inside the seed spread). Our ResNet18 shrinks every part map to 7×7 before the alignment loss sees it, so
-   finer part boundaries are largely lost, and classification only needs parts to be roughly right. Whether the
+   well inside the seed spread). Classification seems to need parts only roughly right: the part-alignment loss acts
+   mainly as a regulariser, and with 25 classes the 5-epoch parts were apparently good enough for that. Whether the
    better parts make the *explanations* better (prototype-part IoU) we did not measure.
 2. **On our small subset, the code-default recipe beats the paper's recipe by about 2 points.** The paper recipe
    learns faster (higher learning rate; ~75% by epoch 25 vs ~68%) but stops at epoch 40. With 750 training images and

@@ -96,7 +96,7 @@ reused, adapted or written by us in [`PROVENANCE.md`](PROVENANCE.md).
 | | Paper | Ours | Why |
 |---|---|---|---|
 | Classes | 200 | 25 (CUB classes 1-25) | Free-tier Colab time |
-| ShapeTexNet backbone | ConvNeXt-Tiny, 28×28 feature maps | ResNet18, 7×7 feature maps | Speed / memory |
+| ShapeTexNet backbone | ConvNeXt-Tiny (~82% ImageNet top-1), 28×28 feature maps | ResNet18 (~70% ImageNet top-1), also 28×28 feature maps: the authors' ResNet code uses stride 1 in its last two stages | Speed / memory |
 | Parts K | 12 | 8 | Default of the code |
 | PDiscoNet | ResNet-101, 448 px, 28 epochs | ResNet-101, 224 px, 5 epochs (28 epochs in the follow-up study) | Time |
 | Epochs | 40 | 80 (+2 in which only ColorNet still trains) | Jump 4 change |
@@ -309,11 +309,12 @@ points. The model memorises the 750 training images, but test accuracy does not 
 compute rather than harmful.
 
 **Why our accuracy matches the paper's despite a weaker model.** Two effects pull in opposite directions. Our model
-is weaker: ResNet18 instead of ConvNeXt-Tiny, 7×7 instead of 28×28 maps, fewer parts, a shorter-trained PDiscoNet. Our
-task is much easier: 25 classes instead of 200, and the hardest look-alike groups are missing. The second effect
-clearly dominates, so the matching numbers are a coincidence, not a reproduction of the paper's figure. The 7×7 maps
-also mean each prototype location covers a 32×32-pixel cell, so part alignment and the explanation heatmaps are much
-coarser than in the paper.
+is weaker: ResNet18 instead of ConvNeXt-Tiny (about 70% vs 82% top-1 on ImageNet), 8 instead of 12 parts, and a
+shorter-trained PDiscoNet. Our task is much easier: 25 classes instead of 200, and the hardest look-alike groups are
+missing. The second effect clearly dominates, so the matching numbers are a coincidence, not a reproduction of the
+paper's figure. The feature-map resolution, on the other hand, matches the paper: the authors' ResNet code removes the
+last two downsampling steps, so our prototype maps are 28×28 (each cell covers 8×8 pixels), like their ConvNeXt
+maps.
 
 **Run-to-run spread is about ±1-2 points.** Our 3-4 runs per configuration vary by 0.7-2.0 points (standard
 deviation), against the paper's ±0.4. The difference is expected: one of our 652 test images is worth 0.15 points,
@@ -330,9 +331,11 @@ paper's settings" is not automatically "reproducing the paper" at a different sc
 
 **Better parts did not mean better accuracy.** The 28-epoch part detector is clearly better on all three part
 metrics (NMI 24.1 → 31.0), yet classification accuracy did not change (83.1 vs 83.0; 81.0 vs 81.4, well inside the
-seed spread). Two reasons fit. Our ResNet18 shrinks every part map to 7×7 before the alignment loss sees it, so finer
-part boundaries are largely lost. And classification only needs parts to be roughly right: part supervision mainly
-acts as a regulariser (Section 8.1). Better parts may still give better *explanations* (prototypes more tightly on the
+seed spread). The most likely reason is that classification only needs parts to be roughly right: part
+supervision mainly acts as a regulariser (Section 8.1), and with 25 classes the 5-epoch parts were apparently already
+good enough for that. The prototype patches in the app (Section 9) add a further hint: several of the 8 prototypes
+concentrate on the head and beak, the most distinctive region, rather than spreading evenly over the body, so the
+model does not use all parts as separate evidence anyway. Better parts may still give better *explanations* (prototypes more tightly on the
 right body part), which we would need the paper's prototype-part IoU to measure. This mirrors the paper's own Fig. 6,
 where stronger part alignment improves IoU much more than accuracy.
 
@@ -352,7 +355,8 @@ where stronger part alignment improves IoU much more than accuracy.
   hue sensitivity is concentrated in colourful species (ρ = 0.62), and our 25 species are mostly grey, brown and black
   (albatrosses, auklets, cormorants, blackbirds). Rotating the hue of an unsaturated pixel barely changes it, so for
   most of our test set the perturbation does almost nothing. The full 200-class CUB has many more colour-defined
-  species (warblers, tanagers, orioles). A coarser colour input (7×7) may also play a part.
+  species (warblers, tanagers, orioles). Input resolution is not the explanation: ColorNet sees the image at the
+  same 28×28 resolution as in the paper.
 - **How much a model relies on colour varies a lot between seeds.** With identical settings, the hue-shift change
   ranged from +0.2 to −6.6 points (paper recipe). Models whose ColorNet output varied more with pixel colour tended to
   lose more. A single-model ablation, like our first run, can therefore give a misleading picture of colour reliance.
@@ -371,7 +375,7 @@ where stronger part alignment improves IoU much more than accuracy.
    `run_training.sh`; the argument defaults differ in six settings (epochs, frozen epochs, three learning rates, part weight).
 3. **Hyperparameters are tied to dataset size.** The paper's 40-epoch schedule makes 4× fewer updates on our subset.
 4. **Better intermediate components don't guarantee better end results.** Better parts, same accuracy: the
-   bottleneck (7×7 maps) and the role of the loss (regulariser) matter more than component quality.
+   role of the part loss (a regulariser, which only needs roughly right parts) matters more than part quality.
 5. **The test data shapes the conclusion.** Colour reliance depends on which species are in the subset; an average
    over mostly grey birds hides a 29-point effect on a cardinal.
 6. **Log everything, every epoch.** The warm-up problem, the plateau and the overfitting were only visible because
@@ -392,7 +396,10 @@ is copied from the test-time branch of the training data pipeline, so training a
     scores, not calibrated probabilities.
   - For test images it shows the true species and whether the prediction is correct.
   - A bar chart compares, for each of the 8 parts, the shape/texture match with the shape+colour match.
-  - Heatmaps show where each part's prototype fired.
+  - **"This looks like that":** for each of the 8 parts, a heatmap of where its prototype fires on the image, the
+    image patch at the strongest spot, and the *prototype patch*: the patch of a training image of the predicted
+    species where the same prototype fires most strongly (`deploy/build_prototypes.py`, precomputed for all
+    25 species × 8 parts). This is the paper's prototype visualisation.
   - A hue slider recolours the bird live, which demonstrates the Stage 4 experiment interactively.
 - **FastAPI REST API** (`uvicorn deploy.api:app`): `POST /predict` with an image file returns JSON (prediction, top-k,
   per-part evidence). `GET /classes` lists the 25 species. Interactive docs are at `/docs`.
@@ -412,6 +419,12 @@ notebook starts both and exposes the app through a Cloudflare tunnel.
 | Share of evidence for Cardinal | 71% | 46% (Gray Catbird rises to 21%) |
 | Shape/texture-only score | 0.726 | 0.727 |
 | Parts with shape + colour ≈ 0 | none | 4 of 8 (parts 1, 2, 3, 7) |
+
+![This looks like that: per part, the image, its patch, and the training prototype](assets/demo/this_looks_like_that_cardinal.png)
+
+In this example the Cardinal's crest, black face mask and orange beak (parts 2, 3, 5, 6, 8) are matched to the same
+features on training Cardinals, and its red wing and body (parts 1, 4, 7) to red plumage. It also shows that five of
+the eight prototypes concentrate on the head: PDiscoNet's parts are not used evenly.
 
 **What the app shows beyond the aggregate numbers.** The hue slider makes the Stage 4 result visible per image and
 per part. For the red Cardinal, half of the parts lose all colour evidence and the score halves. For the grey
@@ -433,8 +446,8 @@ demonstration doesn't depend on Colab.
 
 ## 10. Limitations
 
-- **Scale:** 25 of 200 classes, a smaller backbone with 16× coarser feature maps and 8 instead of 12 parts. Our
-  accuracy is not comparable to the paper's headline number.
+- **Scale:** 25 of 200 classes, a weaker backbone (ResNet18 instead of ConvNeXt-Tiny, at the same 28×28 feature-map
+  resolution) and 8 instead of 12 parts. Our accuracy is not comparable to the paper's headline number.
 - **Subset composition:** our first 25 species are mostly grey, brown and black. Colour-related results (Section 7)
   depend on that mix and would be stronger on a colourful subset or the full dataset.
 - **No validation split:** we evaluated on the test set every epoch. We only report final-epoch numbers to avoid
@@ -456,8 +469,8 @@ colour gain (now p = 0.0005), and the reason for our small hue-shift drop (now e
 
 **What we would do with more time**, most valuable first:
 1. Hold out a validation split (e.g. 5 training images per class) for choosing epochs and settings.
-2. Use the paper's backbone (`convnext_tiny_26`, which the code supports) for finer feature maps; then the better part
-   detector (and a 448 px one) could actually pay off.
+2. Use the paper's backbone (`convnext_tiny_26`, which the code supports), a much stronger feature extractor, and
+   re-test whether the better part detector (and a 448 px one) pays off there.
 3. Measure prototype-part IoU, to test whether better parts give better explanations.
 4. Repeat the colour experiment on a colourful 25-species subset (warblers, tanagers, orioles), or on all 200 classes.
 5. Re-tune the paper recipe for small data (match the number of weight updates) and fix the warm-up for ResNet18.
@@ -478,8 +491,8 @@ paper's trade-off holds, but its size depends on the dataset.
 
 Following the paper more closely taught us as much as reproducing it. The authors' published recipe, found in their
 launch script, ended about 2 points lower on our small subset, because it makes 4× fewer weight updates on 8× fewer
-images. A part detector trained for the paper's 28 epochs found clearly better parts but gave no accuracy gain with our
-coarse 7×7 feature maps. And with 652 test images, differences below about 2 points are noise: several seeds were
+images. A part detector trained for the paper's 28 epochs found clearly better parts but gave no accuracy gain,
+consistent with the part loss acting mainly as a regulariser. And with 652 test images, differences below about 2 points are noise: several seeds were
 needed before any of these conclusions could be stated.
 
 Finally, we deployed the model as an interactive app and a REST API that show the paper's main selling point: for
